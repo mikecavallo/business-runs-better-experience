@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 40" width="360" height="40" role="img" aria-label="Business Runs Better">
+  <title>Business Runs Better</title>
+  <g>
+    <rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5"
+          fill="none" stroke="#dce3ef" stroke-opacity=".22" stroke-width="1.5"/>
+    <path d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".5" stroke-width="3" stroke-linecap="square"/>
+    <path d="M9 22 L29 11.5" stroke="#1d5cff" stroke-width="3" stroke-linecap="square"/>
+    <circle cx="30.25" cy="10.75" r="3.25" fill="#1d5cff"/>
+  </g>
+  <text x="56" y="25.5" fill="#f3f6fb"
+        font-family="Michroma, 'Eurostile', 'Bank Gothic', sans-serif"
+        font-size="12.5" letter-spacing="0.055em">BUSINESS RUNS BETTER</text>
+</svg>
