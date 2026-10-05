@@ -88,7 +88,23 @@ Any static server:
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Then open `http://localhost:8000`. The contact form needs PHP (see below); without it,
+the form falls back to opening a pre-filled email.
+
+### Deploying (Bluehost / any cPanel host)
+
+Upload these to `public_html/`:
+
+```
+index.html  contact.php  .htaccess  robots.txt  sitemap.xml  assets/
+```
+
+- `contact.php` emails each inquiry to `CONTACT_TO` (edit the constant at the top) and
+  appends a copy to `brb-leads.csv` one level above the web root, so a lead is never lost
+  if mail delivery fails. Spam protection is a honeypot field, a minimum fill time, and
+  a per-IP rate limit. No third-party form service.
+- `.htaccess` forces HTTPS on the bare domain, blocks dev files, and sets cache headers.
+- Run the AutoSSL / Let's Encrypt certificate in cPanel before relying on the HTTPS redirect.
 
 ### Re-rendering the narration
 
@@ -107,9 +123,11 @@ Any of Kokoro's 67 voices works. Takes about 3 seconds for all thirteen lines.
 
 ```
 index.html              everything — markup, styles, canvas engine, theme system
+contact.php             contact form handler (email + CSV backup, spam protection)
+.htaccess               HTTPS, caching and security headers for Apache hosts
 assets/fonts/           Michroma (display), Manrope (body), DM Mono (labels)
 assets/img/             six generated WebP scenes
-assets/audio/           thirteen pre-rendered narration clips
+assets/audio/           pre-rendered narration clips (browser TTS covers any missing one)
 render-narration.py     narration build script (dev only)
 ```
 

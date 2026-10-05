@@ -1,0 +1,39 @@
+# Business Runs Better - Apache config for shared hosting (Bluehost/cPanel)
+
+Options -Indexes
+DirectoryIndex index.html
+
+# Force HTTPS and the bare domain
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://businessrunsbetter.com%{REQUEST_URI} [L,R=301]
+
+# Never serve source/dev files if they get uploaded by accident
+<FilesMatch "\.(py|md|csv|log|sh)$|^\.git">
+  Require all denied
+</FilesMatch>
+
+# Correct types for the self-hosted assets
+AddType image/webp .webp
+AddType font/woff2 .woff2
+AddType audio/mpeg .mp3
+
+# Cache static assets for a month; always revalidate the page itself
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType audio/mpeg "access plus 30 days"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml text/xml text/plain
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>

@@ -22,8 +22,8 @@ LINES = [
  "Useful beats impressive. I don't sell A.I. I find the hours your business is losing, and give them back.",
  "How it works. First, find the wasted time. Second, choose the best return. Third, put it to work.",
  "Nine places A.I. can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
- "Nine areas. Three steps. One practical next step, explained without jargon.",
  "What I do. A.I. implementation. Automated lead generation. Web development. A.I. consulting and strategy. M.V.P. development. Customer service and support. Scheduling and admin. Reporting and team knowledge.",
+ "Simple pricing. Start with a five hundred dollar time audit, credited to your first build. Builds start at twenty five hundred dollars, fixed price. Ongoing support starts at three hundred a month.",
  "Every build gets judged the same way. Useful, is greater than, impressive.",
  "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step.",
 ]
