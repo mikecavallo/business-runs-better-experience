@@ -6,6 +6,9 @@ you navigate.
 
 **[Live demo →](https://mikecavallo.github.io/business-runs-better-experience/)**
 
+![Hero section: "Your business. Running better." over a perspective-grid canvas](docs/hero.webp)
+![Method section with the converging-rays canvas pattern](docs/method.webp)
+
 No frameworks. No build step. No CDN. One HTML file and a folder of assets.
 
 ---

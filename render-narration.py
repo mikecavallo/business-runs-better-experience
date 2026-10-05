@@ -32,7 +32,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--voice", default="bm_george")
     ap.add_argument("--speed", type=float, default=0.95)
-    ap.add_argument("--out", default="/home/mike/Projects/Business Runs Better Website/interactive/assets/audio")
+    ap.add_argument("--out", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "audio"))
     ap.add_argument("--bitrate", default="48k", help="mono opus/mp3 bitrate; speech is fine at 40-56k")
     args = ap.parse_args()
 
