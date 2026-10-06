@@ -168,4 +168,11 @@ brb_mail(
     $email
 );
 
+brb_notify_phone(
+    'Paid ' . brb_money($amount) . ': ' . ($name ?: $email),
+    $description,
+    "https://$host/leads.php?id=$leadId",
+    'high'
+);
+
 done(200, 'Recorded');

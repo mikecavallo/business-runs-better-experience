@@ -7,6 +7,8 @@
  * - Emails it to contact_to (see ../brb-private/config.php) with Reply-To set
  *   to the visitor.
  * - Appends it to ../brb-private/leads.csv as a last-resort backup.
+ * - Sends the visitor an instant "got your message" email and, if configured,
+ *   a push notification to your phone (ntfy).
  * - Spam protection: hidden honeypot field, minimum fill time, per-IP rate limit.
  *
  * Responds with JSON for fetch() requests and redirects for plain form posts.
@@ -130,6 +132,15 @@ brb_mail(
     $body,
     $lead['name'],
     $lead['email']
+);
+
+// 4. Instant acknowledgement to the visitor, and a push to your phone.
+brb_auto_reply($lead['name'], $lead['email'], $lead['interest']);
+brb_notify_phone(
+    'New lead: ' . $lead['name'],
+    $lead['interest'] . ($lead['company'] ? ' · ' . $lead['company'] : '') . "\n" . mb_substr($message, 0, 280),
+    $leadId ? "https://$host/leads.php?id=$leadId" : '',
+    'high'
 );
 
 // The lead is saved, so report success even if mail() failed.

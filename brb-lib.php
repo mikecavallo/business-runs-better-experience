@@ -42,6 +42,10 @@ function brb_config(): array {
         'stripe_audit_link_id'  => '',
         'audit_price_cents'     => 50000,
         'timezone'              => 'America/New_York',
+        'auto_reply'            => true,
+        'calendar_url'          => '',
+        'ntfy_topic'            => '',
+        'ntfy_server'           => 'https://ntfy.sh',
     ];
     $file = brb_private_dir() . '/config.php';
     $loaded = is_file($file) ? include $file : [];
@@ -181,6 +185,66 @@ function brb_mail(string $subject, string $body, string $replyName = '', string 
         error_log('brb_mail: mail() failed for "' . $subject . '"');
     }
     return $ok;
+}
+
+/**
+ * Push notification to your phone via ntfy (https://ntfy.sh, free and open source).
+ * Install the ntfy app, subscribe to your topic, and put the same topic in config.
+ * Never blocks the request for more than a few seconds and never throws.
+ */
+function brb_notify_phone(string $title, string $message, string $clickUrl = '', string $priority = 'default'): void {
+    $config = brb_config();
+    $topic = (string)$config['ntfy_topic'];
+    if ($topic === '' || !preg_match('/^[A-Za-z0-9_-]{8,64}$/', $topic)) {
+        return;
+    }
+    $headers = [
+        'Content-Type: text/plain; charset=utf-8',
+        // HTTP headers must be plain ASCII; ntfy reads RFC 2047 encoded titles.
+        'Title: =?UTF-8?B?' . base64_encode($title) . '?=',
+        'Priority: ' . $priority,
+        'Tags: briefcase',
+    ];
+    if ($clickUrl !== '') {
+        $headers[] = 'Click: ' . $clickUrl;
+    }
+    $ctx = stream_context_create(['http' => [
+        'method' => 'POST', 'header' => implode("\r\n", $headers), 'content' => mb_substr($message, 0, 3000),
+        'timeout' => 4, 'ignore_errors' => true,
+    ]]);
+    if (@file_get_contents(rtrim($config['ntfy_server'], '/') . '/' . $topic, false, $ctx) === false) {
+        error_log('brb_notify_phone: push failed');
+    }
+}
+
+/** Instant "got your message" email to the person who filled in the form. */
+function brb_auto_reply(string $name, string $email, string $interest): void {
+    $c = brb_config();
+    if (!$c['auto_reply'] || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return;
+    }
+    $first = trim(explode(' ', trim($name))[0] ?? '');
+    $lines = [
+        'Hi' . ($first !== '' ? " $first" : '') . ',',
+        '',
+        'Thanks for reaching out to Business Runs Better. I got your message and will reply personally within one business day.',
+    ];
+    if ($c['calendar_url'] !== '') {
+        $lines[] = '';
+        $lines[] = 'If you would rather grab a time now, book a free 20-minute call here:';
+        $lines[] = $c['calendar_url'];
+    }
+    $lines = array_merge($lines, ['', 'Talk soon,', 'Mike Cavallo', 'Business Runs Better', 'https://businessrunsbetter.com']);
+    $headers = [
+        'From: Mike Cavallo <' . $c['contact_from'] . '>',
+        'Reply-To: ' . $c['contact_to'],
+        'Content-Type: text/plain; charset=UTF-8',
+        'Auto-Submitted: auto-replied',
+    ];
+    $subject = 'Got your message' . ($interest !== '' ? " ($interest)" : '');
+    if (!@mail($email, '=?UTF-8?B?' . base64_encode($subject) . '?=', implode("\n", $lines), implode("\r\n", $headers), '-f' . $c['contact_from'])) {
+        error_log('brb_auto_reply: mail() failed');
+    }
 }
 
 function brb_money(int $cents): string {

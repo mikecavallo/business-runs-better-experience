@@ -24,6 +24,16 @@ return [
     'stripe_audit_link_id' => '',
     'audit_price_cents'    => 50000,
 
+    // Send each person who fills in the form an instant "got your message" email.
+    'auto_reply'   => true,
+    // Optional booking link included in that email (Cal.com, Calendly, Odoo...).
+    'calendar_url' => '',
+
+    // Optional push notifications to your phone for new leads and payments, free via ntfy:
+    // install the ntfy app, subscribe to a long random topic name, and put it here.
+    // Anyone who knows the topic can read it, so make it unguessable, e.g. brb-leads-7f3k9q2xw8.
+    'ntfy_topic' => '',
+
     // Used for follow-up dates and timestamps.
     'timezone' => 'America/New_York',
 ];

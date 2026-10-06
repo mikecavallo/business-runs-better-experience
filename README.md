@@ -96,7 +96,7 @@ the form falls back to opening a pre-filled email.
 Upload these to `public_html/`:
 
 ```
-index.html  pricing.html  work.html  thanks.html  privacy.html  terms.html
+index.html  about.html  pricing.html  work.html  thanks.html  privacy.html  terms.html
 contact.php  leads.php  stripe-webhook.php  brb-lib.php
 .htaccess  robots.txt  sitemap.xml  assets/
 ```
@@ -107,10 +107,10 @@ Then create a folder **next to** `public_html` (not inside it) called `brb-priva
 
 | File | What it does |
 |---|---|
-| `contact.php` | Saves each inquiry to the lead tracker, emails you, and appends a CSV backup. Honeypot, fill-time check and per-IP rate limit against spam. |
+| `contact.php` | Saves each inquiry to the lead tracker, emails you, sends the visitor an instant acknowledgement, pushes to your phone (ntfy, optional), and appends a CSV backup. Honeypot, fill-time check and per-IP rate limit against spam. |
 | `leads.php` | Password-protected lead tracker: follow-ups due today, pipeline by status, notes timeline, deal values, payments, CSV export. |
 | `stripe-webhook.php` | Records Stripe payments against the right lead (by email), moves its status forward, and emails you. Verifies Stripe's signature; needs no API key. |
-| `assets/site-config.js` | Public settings: Stripe Payment Link URLs and booking-calendar links. Empty values fall back to the contact form. |
+| `assets/site-config.js` | Public settings: Stripe Payment Link URLs, booking-calendar links, and testimonials for the About page (hidden while empty). Empty links fall back to the contact form. |
 | `.htaccess` | HTTPS on the bare domain, clean URLs (`/pricing`), blocks private files, cache headers. |
 
 ### Stripe setup
@@ -146,7 +146,8 @@ Any of Kokoro's 67 voices works. Takes about 3 seconds for all thirteen lines.
 
 ```
 index.html              everything — markup, styles, canvas engine, theme system
-pricing.html, work.html standard pages (pricing, portfolio), plus thanks/privacy/terms
+about.html, pricing.html, work.html   standard pages, plus thanks/privacy/terms
+assets/about.js         About page animations; testimonials render from site-config.js
 assets/site.css|js      shared styles and behavior for the standard pages
 assets/site-config.js   Stripe Payment Links and booking links (public)
 contact.php             contact form handler (lead tracker + email + CSV backup)

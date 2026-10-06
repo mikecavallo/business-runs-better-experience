@@ -296,6 +296,9 @@ nav.visible { opacity: 1; transform: translateY(0); }
   position: relative; padding: 4px 0;
 }
 .nav-links button:hover, .nav-links a:hover { color: var(--cobalt-lift); }
+.nav-links button, .nav-links a { white-space: nowrap; }
+/* Two extra pages in the nav: drop the in-page jump links first on mid-width screens. */
+@media (max-width: 1240px) { .nav-links > :nth-child(-n+2) { display: none; } }
 .nav-links button::after, .nav-links a::after {
   content: ''; position: absolute; bottom: 0; left: 0;
   width: 0; height: 1px; background: var(--cobalt-lift);
@@ -926,6 +929,20 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .btn-primary:hover { transform: none; }
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Business Runs Better",
+  "url": "https://businessrunsbetter.com/",
+  "email": "hello@businessrunsbetter.com",
+  "image": "https://businessrunsbetter.com/assets/img/social.webp",
+  "description": "Practical AI implementation, automation and consulting for local businesses.",
+  "founder": {"@type": "Person", "name": "Mike Cavallo", "url": "https://businessrunsbetter.com/about.html"},
+  "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"},
+  "areaServed": [{"@type": "City", "name": "Leland, NC"}, {"@type": "City", "name": "Wilmington, NC"}, {"@type": "AdministrativeArea", "name": "Brunswick County, NC"}, {"@type": "AdministrativeArea", "name": "New Hanover County, NC"}]
+}
+</script>
 </head>
 <body>
 
@@ -940,7 +957,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       <p><strong style="color:#f3f6fb">What I do:</strong> AI implementation · Automated lead generation · Web development · AI consulting &amp; strategy · MVP development · Customer service &amp; support · Scheduling, estimates &amp; admin · Reviews, reporting &amp; team knowledge</p>
       <p>The interactive version of this site needs JavaScript. Either way, the fastest way to start is to email me directly.</p>
       <p style="margin-top:26px"><a class="final-email" href="mailto:hello@businessrunsbetter.com">hello@businessrunsbetter.com</a></p>
-      <p><a href="pricing.html">Pricing</a> · <a href="work.html">Work</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+      <p><a href="about.html">About</a> · <a href="pricing.html">Pricing</a> · <a href="work.html">Work</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
     </div>
   </div>
 </noscript>
@@ -990,6 +1007,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       <button onclick="goToSection(9)">Services</button>
       <button onclick="goToSection(10)">Pricing</button>
       <a href="work.html">Work</a>
+      <a href="about.html">About</a>
       <button class="nav-cta" onclick="bookCall()">Book a free call</button>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
@@ -1230,7 +1248,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <button class="btn-primary" onclick="bookCall()">Book a free 20-minute call</button>
           <a href="mailto:hello@businessrunsbetter.com" class="final-email">hello@businessrunsbetter.com</a>
         </div>
-        <p class="final-footer">&copy; <span id="year"></span> Business Runs Better · <a href="work.html">Work</a> · <a href="pricing.html">Pricing</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+        <p class="final-footer">&copy; <span id="year"></span> Business Runs Better · <a href="about.html">About</a> · <a href="work.html">Work</a> · <a href="pricing.html">Pricing</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
       </div>
     </section>
 
