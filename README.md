@@ -96,15 +96,38 @@ the form falls back to opening a pre-filled email.
 Upload these to `public_html/`:
 
 ```
-index.html  contact.php  .htaccess  robots.txt  sitemap.xml  assets/
+index.html  pricing.html  work.html  thanks.html  privacy.html  terms.html
+contact.php  leads.php  stripe-webhook.php  brb-lib.php
+.htaccess  robots.txt  sitemap.xml  assets/
 ```
 
-- `contact.php` emails each inquiry to `CONTACT_TO` (edit the constant at the top) and
-  appends a copy to `brb-leads.csv` one level above the web root, so a lead is never lost
-  if mail delivery fails. Spam protection is a honeypot field, a minimum fill time, and
-  a per-IP rate limit. No third-party form service.
-- `.htaccess` forces HTTPS on the bare domain, blocks dev files, and sets cache headers.
-- Run the AutoSSL / Let's Encrypt certificate in cPanel before relying on the HTTPS redirect.
+Then create a folder **next to** `public_html` (not inside it) called `brb-private/`, and put
+`config.sample.php` in it renamed to `config.php`. Set at least `admin_password` and
+`contact_to`. The lead database and CSV backup are created in that folder automatically.
+
+| File | What it does |
+|---|---|
+| `contact.php` | Saves each inquiry to the lead tracker, emails you, and appends a CSV backup. Honeypot, fill-time check and per-IP rate limit against spam. |
+| `leads.php` | Password-protected lead tracker: follow-ups due today, pipeline by status, notes timeline, deal values, payments, CSV export. |
+| `stripe-webhook.php` | Records Stripe payments against the right lead (by email), moves its status forward, and emails you. Verifies Stripe's signature; needs no API key. |
+| `assets/site-config.js` | Public settings: Stripe Payment Link URLs and booking-calendar links. Empty values fall back to the contact form. |
+| `.htaccess` | HTTPS on the bare domain, clean URLs (`/pricing`), blocks private files, cache headers. |
+
+### Stripe setup
+
+1. **Payment Link for the audit.** Stripe → Payment Links → New: product "Time Audit", $500, one time.
+   Under *After payment*, choose "Don't show confirmation page" and redirect to
+   `https://businessrunsbetter.com/thanks.html`. Paste the link URL into `stripe.timeAudit` in
+   `assets/site-config.js`.
+2. **(Optional) Run & Improve.** A recurring $300/month Payment Link to send to clients after a
+   build; paste it into `stripe.runAndImprove` if you want it on the site.
+3. **Builds.** Send Stripe Invoices from the dashboard (50% deposit, 50% on handoff).
+4. **Webhook.** Stripe → Developers → Webhooks → Add endpoint
+   `https://businessrunsbetter.com/stripe-webhook.php`, events `checkout.session.completed` and
+   `invoice.paid`. Copy its signing secret (`whsec_...`) into `stripe_webhook_secret` in
+   `brb-private/config.php`.
+5. Test with Stripe's test mode first: a test payment should show up in `/leads.php` as
+   "Audit paid" within seconds.
 
 ### Re-rendering the narration
 
@@ -123,8 +146,15 @@ Any of Kokoro's 67 voices works. Takes about 3 seconds for all thirteen lines.
 
 ```
 index.html              everything — markup, styles, canvas engine, theme system
-contact.php             contact form handler (email + CSV backup, spam protection)
-.htaccess               HTTPS, caching and security headers for Apache hosts
+pricing.html, work.html standard pages (pricing, portfolio), plus thanks/privacy/terms
+assets/site.css|js      shared styles and behavior for the standard pages
+assets/site-config.js   Stripe Payment Links and booking links (public)
+contact.php             contact form handler (lead tracker + email + CSV backup)
+leads.php               private lead tracker
+stripe-webhook.php      Stripe payment → lead tracker
+brb-lib.php             shared PHP helpers (database, mail)
+config.sample.php       template for ../brb-private/config.php
+.htaccess               HTTPS, clean URLs, caching and security headers for Apache hosts
 assets/fonts/           Michroma (display), Manrope (body), DM Mono (labels)
 assets/img/             six generated WebP scenes
 assets/audio/           pre-rendered narration clips (browser TTS covers any missing one)

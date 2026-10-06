@@ -2,26 +2,24 @@
 /**
  * Contact form handler for businessrunsbetter.com (any PHP host, e.g. Bluehost).
  *
- * - Emails each inquiry to CONTACT_TO with Reply-To set to the visitor.
- * - Appends every inquiry to a CSV one level ABOVE the web root, so a lead is
- *   never lost if mail delivery fails.
+ * - Saves each inquiry to the lead tracker (leads.php). A repeat inquiry from
+ *   the same email is attached to the existing lead instead of duplicating it.
+ * - Emails it to contact_to (see ../brb-private/config.php) with Reply-To set
+ *   to the visitor.
+ * - Appends it to ../brb-private/leads.csv as a last-resort backup.
  * - Spam protection: hidden honeypot field, minimum fill time, per-IP rate limit.
  *
  * Responds with JSON for fetch() requests and redirects for plain form posts.
  */
 
-// ---- Configuration -------------------------------------------------------
-// Inbox that receives inquiries. Use one you actually check.
-const CONTACT_TO   = 'hello@businessrunsbetter.com';
-// Sender address. Must be on this domain or SPF/DMARC will junk the mail.
-const CONTACT_FROM = 'website@businessrunsbetter.com';
-const SITE_NAME    = 'Business Runs Better';
+require __DIR__ . '/brb-lib.php';
+
 const MIN_FILL_SECONDS = 3;
 const MAX_PER_HOUR     = 5;
-// --------------------------------------------------------------------------
 
 header('X-Content-Type-Options: nosniff');
 
+$config = brb_config();
 $wantsJson = stripos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
 
 function respond(bool $ok, string $error = '', int $status = 200): void {
@@ -58,18 +56,20 @@ if ($started > 0 && (microtime(true) * 1000 - $started) < MIN_FILL_SECONDS * 100
     respond(true);
 }
 
-$name     = field('name', 120);
-$email    = field('email', 200);
-$company  = field('company', 160);
-$phone    = field('phone', 40);
-$interest = field('interest', 80);
-$budget   = field('budget', 40);
-$message  = field('message', 5000);
+$lead = [
+    'name'     => field('name', 120),
+    'email'    => field('email', 200),
+    'company'  => field('company', 160),
+    'phone'    => field('phone', 40),
+    'interest' => field('interest', 80),
+    'budget'   => field('budget', 40),
+];
+$message = field('message', 5000);
 
-if ($name === '' || $message === '' || $interest === '') {
+if ($lead['name'] === '' || $message === '' || $lead['interest'] === '') {
     respond(false, 'Please fill in your name, what you need help with, and a short message.', 422);
 }
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if (!filter_var($lead['email'], FILTER_VALIDATE_EMAIL)) {
     respond(false, 'That email address doesn\'t look right.', 422);
 }
 
@@ -82,47 +82,55 @@ $hits = array_filter(
     fn($t) => $t > $now - 3600
 );
 if (count($hits) >= MAX_PER_HOUR) {
-    respond(false, 'Too many messages from this connection. Please email ' . CONTACT_TO . ' directly.', 429);
+    respond(false, 'Too many messages from this connection. Please email ' . $config['contact_to'] . ' directly.', 429);
 }
 $hits[] = $now;
 @file_put_contents($rateFile, implode("\n", $hits));
 
-// Always keep a copy, outside the public web root.
-$logFile = dirname(__DIR__) . '/brb-leads.csv';
-$isNew = !file_exists($logFile);
-if ($fh = @fopen($logFile, 'a')) {
+// 1. CSV backup first: plain append, nothing to go wrong.
+$csv = brb_private_dir() . '/leads.csv';
+if (!is_dir(dirname($csv))) {
+    @mkdir(dirname($csv), 0700, true);
+}
+$isNew = !file_exists($csv);
+if ($fh = @fopen($csv, 'a')) {
     if ($isNew) {
         fputcsv($fh, ['received', 'name', 'email', 'company', 'phone', 'interest', 'budget', 'message', 'ip']);
     }
-    fputcsv($fh, [date('c'), $name, $email, $company, $phone, $interest, $budget, $message, $ip]);
+    fputcsv($fh, [date('c'), ...array_values($lead), $message, $ip]);
     fclose($fh);
 }
 
-$subject = sprintf('New %s inquiry: %s (%s)', SITE_NAME, $interest, $name);
+// 2. Lead tracker.
+$noteBody = "Website inquiry ({$lead['interest']}" . ($lead['budget'] ? ", budget {$lead['budget']}" : '') . "):\n\n$message";
+$leadId = null;
+try {
+    [$leadId] = brb_upsert_lead($lead, 'website', $noteBody, 'inquiry');
+} catch (Throwable $e) {
+    error_log('contact.php: could not save lead: ' . $e->getMessage());
+}
+
+// 3. Email notification.
+$host = $_SERVER['HTTP_HOST'] ?? 'businessrunsbetter.com';
 $body = implode("\n", [
-    "Name:     $name",
-    "Email:    $email",
-    "Business: " . ($company ?: '-'),
-    "Phone:    " . ($phone ?: '-'),
-    "Interest: $interest",
-    "Budget:   " . ($budget ?: 'Not sure yet'),
+    "Name:     {$lead['name']}",
+    "Email:    {$lead['email']}",
+    'Business: ' . ($lead['company'] ?: '-'),
+    'Phone:    ' . ($lead['phone'] ?: '-'),
+    "Interest: {$lead['interest']}",
+    'Budget:   ' . ($lead['budget'] ?: 'Not sure yet'),
     '',
     $message,
     '',
     '--',
-    'Sent from the contact form on ' . ($_SERVER['HTTP_HOST'] ?? 'the website') . ' at ' . date('Y-m-d H:i T'),
+    $leadId ? "Open in lead tracker: https://$host/leads.php?id=$leadId" : 'Lead tracker save failed; see leads.csv.',
 ]);
-$headers = implode("\r\n", [
-    'From: ' . SITE_NAME . ' <' . CONTACT_FROM . '>',
-    'Reply-To: "' . str_replace(['"', '\\'], '', $name) . '" <' . $email . '>',
-    'Content-Type: text/plain; charset=UTF-8',
-]);
+brb_mail(
+    sprintf('New %s inquiry: %s (%s)', $config['site_name'], $lead['interest'], $lead['name']),
+    $body,
+    $lead['name'],
+    $lead['email']
+);
 
-$sent = @mail(CONTACT_TO, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers, '-f' . CONTACT_FROM);
-
-// The lead is already saved to the CSV, so report success even if mail() failed,
-// but log the failure for the host's error log.
-if (!$sent) {
-    error_log('contact.php: mail() failed for inquiry from ' . $email);
-}
+// The lead is saved, so report success even if mail() failed.
 respond(true);
