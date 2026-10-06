@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Business Runs Better | Practical AI for Local Business">
 <meta property="og:description" content="Less busywork, more business. Practical AI implementation, consulting, and MVP development.">
-<meta property="og:image" content="assets/img/social.webp">
+<meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.webp">
 <meta property="og:url" content="https://businessrunsbetter.com/">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -296,6 +296,9 @@ nav.visible { opacity: 1; transform: translateY(0); }
   position: relative; padding: 4px 0;
 }
 .nav-links button:hover, .nav-links a:hover { color: var(--cobalt-lift); }
+.nav-links button, .nav-links a { white-space: nowrap; }
+/* Two extra pages in the nav: drop the in-page jump links first on mid-width screens. */
+@media (max-width: 1240px) { .nav-links > :nth-child(-n+2) { display: none; } }
 .nav-links button::after, .nav-links a::after {
   content: ''; position: absolute; bottom: 0; left: 0;
   width: 0; height: 1px; background: var(--cobalt-lift);
@@ -636,20 +639,7 @@ nav.visible { opacity: 1; transform: translateY(0); }
   background: rgba(var(--brand-rgb),.06);
 }
 
-/* ---- 9 counters ---- */
-.count-section .section-inner {
-  display: flex; gap: clamp(40px, 8vw, 96px);
-  justify-content: center; align-items: flex-start; flex-wrap: wrap;
-}
-.count-item { text-align: center; max-width: 22ch; }
-.count-number {
-  font-family: var(--font-display);
-  font-size: clamp(48px, 7.4vw, 112px);
-  color: var(--cobalt-lift); line-height: 1;
-}
-.count-label { font-size: clamp(14.5px, 1.2vw, 18px); line-height: 1.6; color: var(--muted); margin-top: 18px; }
-
-/* ---- 10 services ---- */
+/* ---- 9 services ---- */
 .services-section .section-inner { max-width: min(1440px, 100%); }
 .services-section h2 {
   font-family: var(--font-display); font-weight: 400;
@@ -681,6 +671,50 @@ nav.visible { opacity: 1; transform: translateY(0); }
   color: var(--cobalt-lift); flex-shrink: 0;
 }
 .service-row.active .svc-chip { display: flex; }
+
+/* ---- 10 pricing ---- */
+.pricing-section .section-inner { max-width: min(1240px, 100%); }
+.pricing-section h2 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(26px, 3.6vw, 54px);
+  color: var(--ink); margin-bottom: 12px; letter-spacing: -.04em;
+}
+.pricing-lede { margin-inline: auto; margin-bottom: clamp(20px, 3.4vh, 38px); }
+.price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.6vw, 22px); text-align: left; }
+.price-card {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: clamp(18px, 2.2vw, 28px);
+  border: 1px solid rgba(var(--brand-rgb), .18); border-radius: 8px;
+  background: rgba(10, 13, 19, .62); backdrop-filter: blur(6px);
+  transition: border-color .35s, transform .35s var(--ease-out);
+}
+.price-card:hover { border-color: rgba(var(--brand-rgb), .45); transform: translateY(-3px); }
+.price-card.featured { border-color: rgba(var(--brand-rgb), .55); background: rgba(var(--brand-rgb), .07); }
+.price-step { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+.price-step span { color: var(--cobalt-lift); margin-right: 6px; }
+.price-card h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(16px, 1.45vw, 21px); color: var(--ink); letter-spacing: -.02em; }
+.price-amount { font-family: var(--font-display); font-size: clamp(24px, 2.5vw, 38px); color: var(--cobalt-lift); letter-spacing: -.03em; line-height: 1.1; }
+.price-amount span { font-family: var(--font-body); font-size: 13.5px; color: var(--muted); letter-spacing: 0; }
+.price-card ul { list-style: none; display: grid; gap: 8px; flex: 1; }
+.price-card li { font-size: clamp(13.5px, 1.02vw, 15.5px); line-height: 1.5; color: var(--muted); padding-left: 18px; position: relative; }
+.price-card li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 1.5px; background: var(--cobalt-lift); }
+.price-card li strong { color: var(--ink); font-weight: 600; }
+.price-cta {
+  margin-top: 6px; min-height: 46px; padding: 12px 18px;
+  border: 1px solid rgba(var(--brand-rgb), .45); border-radius: 3px;
+  background: transparent; color: var(--ink);
+  font-family: var(--font-body); font-size: 14.5px; font-weight: 600; cursor: pointer;
+  transition: background .3s, border-color .3s;
+}
+.price-cta:hover, .price-cta:focus-visible { background: rgba(var(--brand-rgb), .14); border-color: var(--cobalt-lift); }
+.price-cta.primary { background: var(--cobalt); border-color: var(--cobalt); color: var(--on-brand); }
+.price-cta.primary:hover, .price-cta.primary:focus-visible { background: var(--cobalt-lift); }
+.pricing-foot { margin-top: clamp(16px, 3vh, 30px); font-size: clamp(13.5px, 1.1vw, 16.5px); color: var(--muted); }
+.text-link {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: inherit; color: var(--cobalt-lift); text-decoration: underline; text-underline-offset: 3px;
+}
+.text-link:hover { color: var(--ink); }
 
 /* ---- 11 rule ---- */
 .rule-section .section-inner { max-width: min(1360px, 100%); }
@@ -767,6 +801,13 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   transition: border-color .25s, background .25s, box-shadow .25s;
 }
 .field textarea { min-height: 118px; resize: vertical; line-height: 1.6; }
+.form-status { min-height: 1.4em; margin-top: 14px; font-size: 14px; color: var(--muted); }
+.form-status.error { color: #ff8a8a; }
+.form-foot a, .form-done a { color: var(--cobalt-lift); }
+.form-done { display: grid; gap: 14px; justify-items: start; padding: 8px 0 4px; }
+.form-done[hidden] { display: none; }
+.form-done h3 { font-family: var(--font-display); font-weight: 400; font-size: 22px; color: var(--ink); }
+.form-done p { color: var(--muted); line-height: 1.6; }
 .field select { color-scheme: dark; cursor: pointer; }
 .field input::placeholder, .field textarea::placeholder { color: #7f8898; opacity: 1; }
 .field input:focus, .field select:focus, .field textarea:focus {
@@ -827,8 +868,6 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .rule-sub         { font-size: 11.5px; }
   .section-desc     { font-size: 14px; line-height: 1.65; }
   .label-mono       { font-size: 11px; }
-  .count-number     { font-size: clamp(42px, 13vw, 62px); }
-  .count-label      { font-size: 13px; margin-top: 12px; }
   .areas-strip span { font-size: 11.5px; padding: 8px 12px; }
   .areas-strip      { gap: 7px; margin-top: 24px; }
   .services-section h2 { font-size: 23px; margin-bottom: 20px; }
@@ -845,7 +884,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .method-section .section-inner { gap: 20px; }
   .bottom-nav { padding: 14px 20px; }
   .scroll-hint { bottom: 62px; }
-  .count-section .section-inner { flex-direction: column; align-items: center; gap: 34px; }
+  .pricing-section h2 { font-size: 23px; }
+  .price-grid { grid-template-columns: 1fr; gap: 10px; }
+  .price-card { padding: 15px 16px; gap: 7px; }
+  .price-card ul { gap: 4px; }
+  .price-card li { font-size: 12.5px; }
+  .price-amount { font-size: 22px; }
+  .price-cta { min-height: 40px; padding: 9px 14px; font-size: 13.5px; }
+  .pricing-foot { font-size: 13px; }
   .stance-desc { text-align: left; margin-left: 0; }
   .form-grid { grid-template-columns: 1fr; }
   .dialog-head, .dialog-body { padding-inline: 22px; }
@@ -883,6 +929,20 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .btn-primary:hover { transform: none; }
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Business Runs Better",
+  "url": "https://businessrunsbetter.com/",
+  "email": "hello@businessrunsbetter.com",
+  "image": "https://businessrunsbetter.com/assets/img/social.webp",
+  "description": "Practical AI implementation, automation and consulting for local businesses.",
+  "founder": {"@type": "Person", "name": "Mike Cavallo", "url": "https://businessrunsbetter.com/about.html"},
+  "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"},
+  "areaServed": [{"@type": "City", "name": "Leland, NC"}, {"@type": "City", "name": "Wilmington, NC"}, {"@type": "AdministrativeArea", "name": "Brunswick County, NC"}, {"@type": "AdministrativeArea", "name": "New Hanover County, NC"}]
+}
+</script>
 </head>
 <body>
 
@@ -897,6 +957,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       <p><strong style="color:#f3f6fb">What I do:</strong> AI implementation · Automated lead generation · Web development · AI consulting &amp; strategy · MVP development · Customer service &amp; support · Scheduling, estimates &amp; admin · Reviews, reporting &amp; team knowledge</p>
       <p>The interactive version of this site needs JavaScript. Either way, the fastest way to start is to email me directly.</p>
       <p style="margin-top:26px"><a class="final-email" href="mailto:hello@businessrunsbetter.com">hello@businessrunsbetter.com</a></p>
+      <p><a href="about.html">About</a> · <a href="pricing.html">Pricing</a> · <a href="work.html">Work</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
     </div>
   </div>
 </noscript>
@@ -943,8 +1004,11 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <div class="nav-links">
       <button onclick="goToSection(3)">Where it helps</button>
       <button onclick="goToSection(7)">How it works</button>
-      <button onclick="goToSection(10)">Services</button>
-      <button class="nav-cta" onclick="openContact()">Start a project</button>
+      <button onclick="goToSection(9)">Services</button>
+      <button onclick="goToSection(10)">Pricing</button>
+      <a href="work.html">Work</a>
+      <a href="about.html">About</a>
+      <button class="nav-cta" onclick="bookCall()">Book a free call</button>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
   </nav>
@@ -1102,26 +1166,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 9: Counters -->
-    <section class="section count-section" id="section-9" data-section="9" tabindex="-1" aria-label="At a glance">
-      <div class="section-inner">
-        <div class="count-item">
-          <div class="count-number"><span class="counter" data-target="9">0</span></div>
-          <p class="count-label">Areas of your business it can take work off</p>
-        </div>
-        <div class="count-item">
-          <div class="count-number"><span class="counter" data-target="3">0</span></div>
-          <p class="count-label">Steps from first conversation to working system</p>
-        </div>
-        <div class="count-item">
-          <div class="count-number"><span class="counter" data-target="1">0</span></div>
-          <p class="count-label">Practical next step, explained without jargon</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10: Services -->
-    <section class="section services-section" id="section-10" data-section="10" tabindex="-1" aria-label="Services">
+    <!-- 9: Services -->
+    <section class="section services-section" id="section-9" data-section="9" tabindex="-1" aria-label="Services">
       <div class="section-inner">
         <h2 class="animated-title" data-text="What I do">What I do</h2>
         <div class="services-list">
@@ -1134,6 +1180,53 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Scheduling, estimates &amp; admin</span></div>
           <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Reviews, reporting &amp; team knowledge</span></div>
         </div>
+      </div>
+    </section>
+
+    <!-- 10: Pricing -->
+    <section class="section pricing-section" id="section-10" data-section="10" tabindex="-1" aria-label="Pricing">
+      <div class="section-inner">
+        <h2 class="animated-title" data-text="Simple pricing">Simple pricing</h2>
+        <p class="section-desc pricing-lede">Fixed prices, agreed before work starts. No hourly meter, no surprise invoices.</p>
+        <div class="price-grid">
+          <article class="price-card">
+            <p class="price-step"><span>01</span> Find</p>
+            <h3>Time Audit</h3>
+            <p class="price-amount">$500 <span>one time</span></p>
+            <ul>
+              <li>90-minute walkthrough of how your business actually runs</li>
+              <li>Written plan: your top 3 opportunities, ranked by hours saved</li>
+              <li>A fixed quote for each one</li>
+              <li><strong>Full $500 credited</strong> to your first build</li>
+            </ul>
+            <button class="price-cta" id="auditCta" onclick="payAudit()">Book an audit</button>
+          </article>
+          <article class="price-card featured">
+            <p class="price-step"><span>02</span> Build</p>
+            <h3>Build</h3>
+            <p class="price-amount"><span>from</span> $2,500 <span>per system</span></p>
+            <ul>
+              <li>One working system: lead follow-up, AI receptionist, estimates, scheduling, or reporting</li>
+              <li>Connected to the tools you already use</li>
+              <li>Tested on your real work, then your team gets trained on it</li>
+              <li>30 days of fixes included</li>
+            </ul>
+            <button class="price-cta primary" onclick="openContact('A specific build')">Start a build</button>
+          </article>
+          <article class="price-card">
+            <p class="price-step"><span>03</span> Run</p>
+            <h3>Run &amp; Improve</h3>
+            <p class="price-amount"><span>from</span> $300 <span>/ month</span></p>
+            <ul>
+              <li>Monitoring, so problems get fixed before you notice them</li>
+              <li>Small changes and new automations each month</li>
+              <li>Monthly report of hours saved</li>
+              <li>Cancel anytime</li>
+            </ul>
+            <button class="price-cta" onclick="openContact('Monthly support')">Ask about support</button>
+          </article>
+        </div>
+        <p class="pricing-foot">Not sure where to start? <button class="text-link" onclick="bookCall()">Book a free 20-minute call</button> and I'll tell you honestly whether AI is worth it for your business yet.</p>
       </div>
     </section>
 
@@ -1150,12 +1243,12 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <section class="section final-section" id="section-12" data-section="12" tabindex="-1" aria-label="Contact">
       <div class="section-inner">
         <div class="final-title animated-title" data-text="If you can imagine it,|we can build it" data-multiline="true" data-accent-line="1">If you can imagine it, we can build it</div>
-        <p class="section-desc" style="margin-inline:auto">Tell me where your business loses time, or what you've been picturing. I'll come back with a practical next step — not a proposal deck.</p>
+        <p class="section-desc" style="margin-inline:auto">Tell me where your business loses time, or what you've been picturing. I'll reply within one business day with a practical next step, not a proposal deck.</p>
         <div class="final-actions">
-          <button class="btn-primary" onclick="openContact()">Start a project</button>
+          <button class="btn-primary" onclick="bookCall()">Book a free 20-minute call</button>
           <a href="mailto:hello@businessrunsbetter.com" class="final-email">hello@businessrunsbetter.com</a>
         </div>
-        <p class="final-footer">&copy; <span id="year"></span> Business Runs Better</p>
+        <p class="final-footer">&copy; <span id="year"></span> Business Runs Better · <a href="about.html">About</a> · <a href="work.html">Work</a> · <a href="pricing.html">Pricing</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
       </div>
     </section>
 
@@ -1166,15 +1259,16 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 <dialog class="contact" id="contactDialog" aria-labelledby="dialogTitle">
   <div class="dialog-head">
     <div>
-      <h2 id="dialogTitle">Start a project</h2>
-      <p>Tell me where your business loses time, what you want to improve, or what you want to build.</p>
+      <h2 id="dialogTitle">Let's talk</h2>
+      <p>Tell me where your business loses time or what you want to build. I reply within one business day.</p>
     </div>
     <button class="dialog-close" id="dialogClose" aria-label="Close">&times;</button>
   </div>
   <div class="dialog-body">
-    <form action="https://formsubmit.co/hello@businessrunsbetter.com" method="POST">
+    <form id="contactForm" action="contact.php" method="POST" novalidate>
       <input type="hidden" name="_subject" value="New Business Runs Better inquiry">
-      <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="text" name="website" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="started" id="formStarted" value="">
       <div class="form-grid">
         <div class="field">
           <label for="name">Your name</label>
@@ -1190,17 +1284,28 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
         </div>
         <div class="field">
           <label for="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional">
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional, if you prefer a call">
         </div>
         <div class="field full">
           <label for="interest">What can I help with?</label>
           <select id="interest" name="interest" required>
             <option value="" selected disabled>Choose one</option>
-            <option>Automating repetitive work</option>
-            <option>Lead follow-up and customer service</option>
-            <option>AI consulting and strategy</option>
+            <option>Free 20-minute call</option>
+            <option>Time Audit</option>
+            <option>A specific build</option>
+            <option>Monthly support</option>
             <option>Building an MVP</option>
             <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="budget">Rough budget</label>
+          <select id="budget" name="budget">
+            <option value="" selected>Not sure yet</option>
+            <option>Under $2,500</option>
+            <option>$2,500 to $5,000</option>
+            <option>$5,000 to $10,000</option>
+            <option>$10,000+</option>
           </select>
         </div>
         <div class="field full">
@@ -1208,14 +1313,21 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <textarea id="message" name="message" placeholder="Tell me about the work, bottleneck, or idea you have in mind." required></textarea>
         </div>
       </div>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
       <div class="form-foot">
-        <p>Your information is only used to respond to your inquiry.</p>
-        <button class="btn-primary" type="submit">Send inquiry</button>
+        <p>Your information is only used to respond to your inquiry. Prefer email? <a href="mailto:hello@businessrunsbetter.com">hello@businessrunsbetter.com</a></p>
+        <button class="btn-primary" type="submit" id="formSubmit">Send</button>
       </div>
     </form>
+    <div class="form-done" id="formDone" hidden>
+      <h3>Got it. Thanks.</h3>
+      <p>I'll reply within one business day. If it's urgent, email <a href="mailto:hello@businessrunsbetter.com">hello@businessrunsbetter.com</a>.</p>
+      <button class="btn-primary" type="button" onclick="closeContact()">Close</button>
+    </div>
   </div>
 </dialog>
 
+<script src="assets/site-config.js"></script>
 <script>
 // ============================================
 // CONFIG
@@ -1239,11 +1351,11 @@ const SECTION_NAMES = [
   'Introduction', 'What I do', 'Find, build, put to work',
   'Automate the follow-up', 'Accelerate every reply', 'Eliminate the busywork',
   'Useful beats impressive', 'How it works', 'Where AI pays off',
-  'At a glance', 'Services', 'The rule', 'Contact'
+  'Services', 'Pricing', 'The rule', 'Contact'
 ];
 const SLUGS = [
   'start','about','approach','automate','accelerate','eliminate',
-  'philosophy','how-it-works','where-it-helps','at-a-glance','services','the-rule','contact'
+  'philosophy','how-it-works','where-it-helps','services','pricing','the-rule','contact'
 ];
 // Photographic backdrop per section (files in assets/img/)
 const SECTION_BG = [
@@ -1344,8 +1456,8 @@ const sectionNarration = [
   "Useful beats impressive. I don't sell A I. I find the hours your business is losing, and give them back.",
   "How it works. First, find the wasted time. Second, choose the best return. Third, put it to work.",
   "Nine places A I can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
-  "Nine areas. Three steps. One practical next step, explained without jargon.",
   "What I do. A I implementation. Automated lead generation. Web development. A I consulting and strategy. M V P development. Customer service and support. Scheduling and admin. Reporting and team knowledge.",
+  "Simple pricing. Start with a five hundred dollar time audit, credited to your first build. Builds start at twenty five hundred dollars, fixed price. Ongoing support starts at three hundred a month.",
   "Every build gets judged the same way. Useful, is greater than, impressive.",
   "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step."
 ];
@@ -1812,8 +1924,7 @@ function setSectionState(index) {
   document.getElementById('liveRegion').textContent =
     `Section ${index + 1} of ${TOTAL_SECTIONS}: ${SECTION_NAMES[index]}`;
   if (history.replaceState) history.replaceState(null, '', '#' + SLUGS[index]);
-  if (index === 9) animateCounters();
-  if (index === 10) startServiceCycle(); else stopServiceCycle();
+  if (index === 9) startServiceCycle(); else stopServiceCycle();
   if (soundEnabled) speakSection(index);
 }
 
@@ -1955,23 +2066,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ============================================
-// COUNTERS + SERVICE CYCLE
+// SERVICE CYCLE
 // ============================================
-let countersRun = false;
-function animateCounters() {
-  if (countersRun) return;
-  countersRun = true;
-  document.querySelectorAll('.counter').forEach(counter => {
-    const target = parseInt(counter.dataset.target, 10);
-    if (RM) { counter.textContent = target; return; }
-    const start = performance.now();
-    (function tick(now) {
-      const p = Math.min((now - start) / 1400, 1);
-      counter.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(tick);
-    })(start);
-  });
-}
 let serviceCycleInterval = null;
 function startServiceCycle() {
   if (serviceCycleInterval || RM) return;
@@ -1991,11 +2087,75 @@ function stopServiceCycle() {
 // CONTACT DIALOG
 // ============================================
 let lastFocused = null;
-function openContact() {
+function openContact(interest) {
   lastFocused = document.activeElement;
   closeMenu();
+  if (typeof interest === 'string') {
+    const sel = document.getElementById('interest');
+    if ([...sel.options].some(o => o.value === interest)) sel.value = interest;
+  }
+  if (!formStarted.value) formStarted.value = String(Date.now());
   dialog.showModal();
   setTimeout(() => document.getElementById('name').focus(), 60);
+}
+
+// Submits to contact.php (works on the PHP host). Where PHP isn't available
+// (e.g. the GitHub Pages copy) it falls back to a pre-filled email.
+const contactForm = document.getElementById('contactForm');
+const formStarted = document.getElementById('formStarted');
+const formStatus  = document.getElementById('formStatus');
+const formSubmit  = document.getElementById('formSubmit');
+const CONTACT_EMAIL = 'hello@businessrunsbetter.com';
+
+function setFormStatus(msg, isError) {
+  formStatus.textContent = msg;
+  formStatus.classList.toggle('error', !!isError);
+}
+function mailtoFallback(data) {
+  const body = ['name', 'email', 'company', 'phone', 'interest', 'budget', 'message']
+    .map(k => `${k[0].toUpperCase() + k.slice(1)}: ${data.get(k) || ''}`).join('\n');
+  const subject = `Business Runs Better inquiry: ${data.get('interest') || 'General'}`;
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!contactForm.reportValidity()) return;
+  const data = new FormData(contactForm);
+  formSubmit.disabled = true;
+  setFormStatus('Sending...');
+  try {
+    const res = await fetch(contactForm.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    const json = await res.json().catch(() => null);
+    if (json && json.ok) {
+      contactForm.hidden = true;
+      document.getElementById('formDone').hidden = false;
+      setFormStatus('');
+      return;
+    }
+    if (json && json.error) { setFormStatus(json.error, true); return; }
+    setFormStatus('Opening your email app instead...');
+    mailtoFallback(data);
+  } catch (err) {
+    setFormStatus('Opening your email app instead...');
+    mailtoFallback(data);
+  } finally {
+    formSubmit.disabled = false;
+  }
+});
+// Free call: booking calendar when configured (assets/site-config.js), else the form.
+function bookCall() {
+  const url = (window.BRB_CONFIG || {}).calendarUrl;
+  if (url) window.open(url, '_blank', 'noopener');
+  else openContact('Free 20-minute call');
+}
+// Time Audit: Stripe Payment Link when configured, else the form.
+function payAudit() {
+  const url = ((window.BRB_CONFIG || {}).stripe || {}).timeAudit;
+  if (url) window.location.href = url;
+  else openContact('Time Audit');
+}
+if ((((window.BRB_CONFIG || {}).stripe) || {}).timeAudit) {
+  document.getElementById('auditCta').textContent = 'Pay $500 and book';
 }
 function closeContact() {
   dialog.close();
