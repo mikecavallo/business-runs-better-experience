@@ -53,11 +53,34 @@
     status.textContent = msg;
     status.classList.toggle('error', !!isError);
   }
-  function mailtoFallback(data) {
+  // Last resort: say so, and offer a pre-filled email link the visitor can choose to click.
+  function sendFailed(data) {
     const body = ['name', 'email', 'company', 'phone', 'interest', 'budget', 'message']
       .map(k => `${k[0].toUpperCase() + k.slice(1)}: ${data.get(k) || ''}`).join('\n');
     const subject = `Business Runs Better inquiry: ${data.get('interest') || 'General'}`;
-    window.location.href = `mailto:${cfg.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const link = document.createElement('a');
+    link.href = `mailto:${cfg.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    link.textContent = cfg.email;
+    status.textContent = 'Sorry, that didn\'t send. Please try again, or email ';
+    status.append(link, '.');
+    status.classList.add('error');
+  }
+
+  // Bluehost answers a script's first POST with a tiny "are you human" page (HTTP 409) that
+  // sets a cookie and reloads. A fetch() can't run that script, so set the cookie it names
+  // and retry once.
+  async function postForm(url, data) {
+    const opts = { method: 'POST', body: data, headers: { Accept: 'application/json' }, credentials: 'same-origin' };
+    let res = await fetch(url, opts);
+    if (res.status === 409) {
+      const body = await res.text();
+      const m = body.match(/document\.cookie\s*=\s*["']([^"'=;\s]+)=([^"';]*)/);
+      if (m) {
+        document.cookie = `${m[1]}=${m[2]}; path=/; SameSite=Lax; Secure`;
+        res = await fetch(url, opts);
+      }
+    }
+    return res;
   }
 
   form.addEventListener('submit', async e => {
@@ -67,7 +90,7 @@
     submit.disabled = true;
     setStatus('Sending...');
     try {
-      const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      const res = await postForm(form.action, data);
       const json = await res.json().catch(() => null);
       if (json && json.ok) {
         form.hidden = true;
@@ -75,11 +98,9 @@
         return;
       }
       if (json && json.error) { setStatus(json.error, true); return; }
-      setStatus('Opening your email app instead...');
-      mailtoFallback(data);
+      sendFailed(data);
     } catch (err) {
-      setStatus('Opening your email app instead...');
-      mailtoFallback(data);
+      sendFailed(data);
     } finally {
       submit.disabled = false;
     }
