@@ -8,10 +8,19 @@
  */
 return [
     // Inbox that receives new inquiries and payment alerts. Use one you check daily.
-    'contact_to'   => 'hello@businessrunsbetter.com',
+    'contact_to'   => 'mikecavallo@gmail.com',
 
-    // Sender address. Must be on your domain or spam filters will junk it.
-    'contact_from' => 'website@businessrunsbetter.com',
+    // Resend API key (resend.com → API Keys, starts with re_). When set, all email goes
+    // through Resend instead of the web host's mail server.
+    'resend_api_key' => '',
+
+    // Sender address.
+    // - Before businessrunsbetter.com is verified in Resend: keep 'onboarding@resend.dev'.
+    //   Resend then only delivers to the email you signed up to Resend with, so contact_to
+    //   must be that address, and the visitor auto-reply is skipped.
+    // - After verifying the domain in Resend (Domains → Add, then add its DNS records in
+    //   Cloudflare): use e.g. 'hello@businessrunsbetter.com' and auto-replies turn on.
+    'contact_from' => 'onboarding@resend.dev',
 
     // Password for /leads.php. At least 12 characters. Make it long and unique.
     'admin_password' => '',

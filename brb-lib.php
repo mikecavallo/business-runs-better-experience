@@ -34,8 +34,10 @@ function brb_config(): array {
         return $config;
     }
     $defaults = [
-        'contact_to'            => 'hello@businessrunsbetter.com',
-        'contact_from'          => 'website@businessrunsbetter.com',
+        'contact_to'            => 'mikecavallo@gmail.com',
+        'contact_from'          => 'onboarding@resend.dev',
+        'resend_api_key'        => '',
+        'resend_api_url'        => 'https://api.resend.com/emails',
         'site_name'             => 'Business Runs Better',
         'admin_password'        => '',
         'stripe_webhook_secret' => '',
@@ -165,26 +167,83 @@ function brb_upsert_lead(array $f, string $source, string $noteBody, string $not
     return [$id, true];
 }
 
-function brb_mail(string $subject, string $body, string $replyName = '', string $replyEmail = ''): bool {
+/**
+ * Send one plain-text email. Uses Resend (https://resend.com) when resend_api_key is set,
+ * otherwise falls back to PHP mail(). Never throws; returns whether the send was accepted.
+ */
+function brb_send_email(string $to, string $subject, string $text, string $fromName,
+                        string $replyTo = '', array $headers = []): bool {
     $c = brb_config();
-    $headers = [
-        'From: ' . $c['site_name'] . ' <' . $c['contact_from'] . '>',
+    $from = $fromName . ' <' . $c['contact_from'] . '>';
+
+    if ($c['resend_api_key'] !== '') {
+        $payload = ['from' => $from, 'to' => [$to], 'subject' => $subject, 'text' => $text];
+        if ($replyTo !== '') {
+            $payload['reply_to'] = $replyTo;
+        }
+        if ($headers) {
+            $payload['headers'] = $headers;
+        }
+        $json = json_encode($payload);
+        $auth = 'Authorization: Bearer ' . $c['resend_api_key'];
+        if (function_exists('curl_init')) {
+            $ch = curl_init($c['resend_api_url']);
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $json,
+                CURLOPT_HTTPHEADER => [$auth, 'Content-Type: application/json'],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 10,
+            ]);
+            $resp = curl_exec($ch);
+            $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            curl_close($ch);
+        } else {
+            $ctx = stream_context_create(['http' => [
+                'method' => 'POST', 'header' => $auth . "\r\nContent-Type: application/json",
+                'content' => $json, 'timeout' => 10, 'ignore_errors' => true,
+            ]]);
+            $resp = @file_get_contents($c['resend_api_url'], false, $ctx);
+            $status = 0;
+            foreach ($http_response_header ?? [] as $h) {
+                if (preg_match('#^HTTP/\S+\s+(\d{3})#', $h, $m)) {
+                    $status = (int)$m[1];
+                }
+            }
+        }
+        if ($status >= 200 && $status < 300) {
+            return true;
+        }
+        error_log('brb_send_email: Resend returned HTTP ' . $status . ': ' . substr((string)$resp, 0, 300));
+        return false;
+    }
+
+    $lines = [
+        'From: ' . $from,
         'Content-Type: text/plain; charset=UTF-8',
     ];
-    if ($replyEmail !== '' && filter_var($replyEmail, FILTER_VALIDATE_EMAIL)) {
-        $headers[] = 'Reply-To: "' . str_replace(['"', '\\', "\r", "\n"], '', $replyName) . '" <' . $replyEmail . '>';
+    if ($replyTo !== '') {
+        $lines[] = 'Reply-To: ' . $replyTo;
     }
-    $ok = @mail(
-        $c['contact_to'],
-        '=?UTF-8?B?' . base64_encode($subject) . '?=',
-        $body,
-        implode("\r\n", $headers),
-        '-f' . $c['contact_from']
-    );
+    foreach ($headers as $k => $v) {
+        $lines[] = "$k: $v";
+    }
+    $ok = @mail($to, '=?UTF-8?B?' . base64_encode($subject) . '?=', $text, implode("\r\n", $lines),
+                '-f' . $c['contact_from']);
     if (!$ok) {
-        error_log('brb_mail: mail() failed for "' . $subject . '"');
+        error_log('brb_send_email: mail() failed for "' . $subject . '"');
     }
     return $ok;
+}
+
+/** Notification email to you (contact_to), with Reply-To set to the person it's about. */
+function brb_mail(string $subject, string $body, string $replyName = '', string $replyEmail = ''): bool {
+    $c = brb_config();
+    $replyTo = '';
+    if ($replyEmail !== '' && filter_var($replyEmail, FILTER_VALIDATE_EMAIL)) {
+        $replyTo = '"' . str_replace(['"', '\\', "\r", "\n"], '', $replyName) . '" <' . $replyEmail . '>';
+    }
+    return brb_send_email($c['contact_to'], $subject, $body, $c['site_name'], $replyTo);
 }
 
 /**
@@ -223,6 +282,11 @@ function brb_auto_reply(string $name, string $email, string $interest): void {
     if (!$c['auto_reply'] || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return;
     }
+    // Resend's shared test sender (onboarding@resend.dev) can only email your own Resend
+    // account address. Auto-replies start working once contact_from is on your verified domain.
+    if (substr(strtolower($c['contact_from']), -11) === '@resend.dev') {
+        return;
+    }
     $first = trim(explode(' ', trim($name))[0] ?? '');
     $lines = [
         'Hi' . ($first !== '' ? " $first" : '') . ',',
@@ -235,16 +299,9 @@ function brb_auto_reply(string $name, string $email, string $interest): void {
         $lines[] = $c['calendar_url'];
     }
     $lines = array_merge($lines, ['', 'Talk soon,', 'Mike Cavallo', 'Business Runs Better', 'https://businessrunsbetter.com']);
-    $headers = [
-        'From: Mike Cavallo <' . $c['contact_from'] . '>',
-        'Reply-To: ' . $c['contact_to'],
-        'Content-Type: text/plain; charset=UTF-8',
-        'Auto-Submitted: auto-replied',
-    ];
     $subject = 'Got your message' . ($interest !== '' ? " ($interest)" : '');
-    if (!@mail($email, '=?UTF-8?B?' . base64_encode($subject) . '?=', implode("\n", $lines), implode("\r\n", $headers), '-f' . $c['contact_from'])) {
-        error_log('brb_auto_reply: mail() failed');
-    }
+    brb_send_email($email, $subject, implode("\n", $lines), 'Mike Cavallo', $c['contact_to'],
+                   ['Auto-Submitted' => 'auto-replied']);
 }
 
 function brb_money(int $cents): string {

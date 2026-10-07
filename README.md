@@ -102,12 +102,12 @@ contact.php  leads.php  stripe-webhook.php  brb-lib.php
 ```
 
 Then create a folder **next to** `public_html` (not inside it) called `brb-private/`, and put
-`config.sample.php` in it renamed to `config.php`. Set at least `admin_password` and
-`contact_to`. The lead database and CSV backup are created in that folder automatically.
+`config.sample.php` in it renamed to `config.php`. Set at least `admin_password`,
+`contact_to` and `resend_api_key`. The lead database and CSV backup are created in that folder automatically.
 
 | File | What it does |
 |---|---|
-| `contact.php` | Saves each inquiry to the lead tracker, emails you, sends the visitor an instant acknowledgement, pushes to your phone (ntfy, optional), and appends a CSV backup. Honeypot, fill-time check and per-IP rate limit against spam. |
+| `contact.php` | Saves each inquiry to the lead tracker, emails you (via Resend when `resend_api_key` is set, otherwise PHP mail()), sends the visitor an instant acknowledgement, pushes to your phone (ntfy, optional), and appends a CSV backup. Honeypot, fill-time check and per-IP rate limit against spam. |
 | `leads.php` | Password-protected lead tracker: follow-ups due today, pipeline by status, notes timeline, deal values, payments, CSV export. |
 | `stripe-webhook.php` | Records Stripe payments against the right lead (by email), moves its status forward, and emails you. Verifies Stripe's signature; needs no API key. |
 | `assets/site-config.js` | Public settings: Stripe Payment Link URLs, booking-calendar links, and testimonials for the About page (hidden while empty). Empty links fall back to the contact form. |
