@@ -197,6 +197,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect('leads.php?id=' . $id);
 }
 
+// ---------------------------------------------------------------- setup check
+if (isset($_GET['check'])) {
+    $file = brb_private_dir() . '/config.php';
+    $mask = fn(string $v) => $v === '' ? '' : substr($v, 0, 8) . '…';
+    $row = fn(string $name, bool $ok, string $detail) =>
+        '<tr><td>' . h($name) . '</td><td>' . ($ok ? '<b style="color:#3ecf8e">OK</b>' : '<b class="error">Missing</b>')
+        . '</td><td class="muted">' . $detail . '</td></tr>';
+    $stripeKey = (string)$config['stripe_secret_key'];
+    $whsec = (string)$config['stripe_webhook_secret'];
+    $test = brb_audit_checkout();
+
+    page_start('Setup check');
+    topbar();
+    echo '<div class="card"><h2>Setup check</h2><table>'
+        . $row('Settings file', is_file($file), '<code>' . h($file) . '</code>')
+        . $row('Resend API key', $config['resend_api_key'] !== '', h($mask((string)$config['resend_api_key'])))
+        . $row('Stripe key', $stripeKey !== '', $stripeKey === '' ? 'Add <code>stripe_secret_key</code> to config.php'
+            : h($mask($stripeKey)) . (strpos($stripeKey, '_test_') !== false ? ' <b class="error">test mode key</b>' : ''))
+        . $row('Stripe webhook secret', strpos($whsec, 'whsec_') === 0, h($mask($whsec)))
+        . $row('Checkout test', $test['url'] !== '', $test['url'] !== ''
+            ? 'Stripe created a payment page. <a href="' . h($test['url']) . '" target="_blank" rel="noopener">Open it</a> (nothing is charged unless you pay).'
+            : ($stripeKey === '' ? 'Needs the Stripe key.' : h($test['error'])))
+        . '</table></div>';
+    page_end();
+    exit;
+}
+
 // ---------------------------------------------------------------- export
 if (isset($_GET['export'])) {
     header('Content-Type: text/csv; charset=utf-8');
@@ -419,7 +446,7 @@ page_end();
 function topbar(): void {
     $msg = flash();
     echo '<header class="top"><a class="brand" href="leads.php">Business Runs Better <span>Leads</span></a>
-      <div><a class="btn small" href="leads.php?export=1">Export CSV</a>
+      <div><a class="btn small" href="leads.php?check=1">Setup check</a> <a class="btn small" href="leads.php?export=1">Export CSV</a>
       <form method="post" style="display:inline">' . csrf_field() . '<input type="hidden" name="action" value="logout"><button class="btn small">Sign out</button></form></div></header>';
     if ($msg) {
         echo '<p class="flash">' . h($msg) . '</p>';
