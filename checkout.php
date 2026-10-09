@@ -13,6 +13,8 @@ require __DIR__ . '/brb-lib.php';
 // Stripe Dashboard → Product catalog → Time Audit → Price ID (starts with price_).
 const TIME_AUDIT_PRICE = 'price_...';
 const SITE_URL = 'https://businessrunsbetter.com';
+// The API version Checkout Studio generated this checkout for.
+const STRIPE_VERSION = '2026-09-30.endive';
 
 function fallback(): void {
     header('Location: ' . SITE_URL . '/pricing.html#contact', true, 303);
@@ -47,6 +49,7 @@ curl_setopt_array($ch, [
     CURLOPT_POST           => true,
     CURLOPT_POSTFIELDS     => http_build_query($params),
     CURLOPT_USERPWD        => $secretKey . ':',
+    CURLOPT_HTTPHEADER     => ['Stripe-Version: ' . STRIPE_VERSION],
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_TIMEOUT        => 15,
 ]);

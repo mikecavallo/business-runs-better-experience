@@ -40,9 +40,9 @@ These parameters were configured in Checkout Studio and are already set correctl
 
 `payment_method_collection: always` is left out because it only applies to `subscription` mode.
 
-**ui_mode note:** this site calls the Stripe API directly (no Stripe SDK), so it uses your
-account's default API version. `hosted_page` is the current value. If Stripe ever rejects it,
-the error shows in the server's `error_log`; change it to `hosted` in checkout.php.
+**API version:** checkout.php sends `Stripe-Version: 2026-09-30.endive`, the version Checkout
+Studio shows for this checkout, so `ui_mode: hosted_page` is valid no matter what your account's
+default version is.
 
 Also set: `metadata.product = time_audit`, so `stripe-webhook.php` marks the lead "Audit paid".
 
