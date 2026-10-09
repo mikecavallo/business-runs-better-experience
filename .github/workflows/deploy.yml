@@ -7,9 +7,12 @@
 #     FTP_PASSWORD   that account's password
 #     CF_API_TOKEN   (optional) Cloudflare API token with "Zone → Cache Purge" permission
 #     CF_ZONE_ID     (optional) Cloudflare → businessrunsbetter.com → Overview → Zone ID
-#   Variables:
+#   Variables (optional):
 #     FTP_SERVER_DIR the site's document root as seen by that FTP account, ending in "/".
-#                    If the FTP account's directory IS the document root, use "./".
+#                    Defaults to "./", which is right when the FTP account's directory
+#                    IS the document root.
+#
+# Until FTP_SERVER is set, the workflow skips the upload and passes, so merging is safe.
 #
 # Only site files are uploaded. Private files (brb-private/config.php, the lead database)
 # live outside the document root and are never touched. Files deleted from the repo are
@@ -30,21 +33,27 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
+      HAS_FTP: ${{ secrets.FTP_SERVER != '' }}
       HAS_CLOUDFLARE: ${{ secrets.CF_API_TOKEN != '' && secrets.CF_ZONE_ID != '' }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Deploy not set up yet
+        if: env.HAS_FTP != 'true'
+        run: echo "::notice::FTP_SERVER secret is not set, so nothing was uploaded. See the top of deploy.yml."
 
       - name: Check PHP syntax
         run: for f in *.php; do php -l "$f"; done
 
       - name: Upload changed files over FTPS
+        if: env.HAS_FTP == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
           exclude: |
             **/.git*
             **/.git*/**
@@ -55,7 +64,7 @@ jobs:
             config.sample.php
 
       - name: Purge Cloudflare cache
-        if: env.HAS_CLOUDFLARE == 'true'
+        if: env.HAS_FTP == 'true' && env.HAS_CLOUDFLARE == 'true'
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
@@ -66,6 +75,7 @@ jobs:
             --data '{"purge_everything":true}'
 
       - name: Smoke test
+        if: env.HAS_FTP == 'true'
         run: |
           sleep 5
           code=$(curl -s -o /dev/null -w '%{http_code}' https://businessrunsbetter.com/)
