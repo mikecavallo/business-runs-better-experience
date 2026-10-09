@@ -32,11 +32,14 @@ These parameters were configured in Checkout Studio and are already set correctl
 | ui_mode | hosted_page |
 | billing_address_collection | auto |
 | phone_number_collection | { enabled: false } |
-| automatic_tax | { enabled: false } |
 | allow_promotion_codes | false |
 | submit_type | auto |
 | integration_identifier | hosted_web_0001 |
 | origin_context | web |
+
+Managed Payments is on by default for this account, so checkout sends
+`managed_payments[enabled]=false` and `automatic_tax[enabled]=false` to keep a flat $500 with
+no tax added.
 
 `payment_method_collection: always` is left out because it only applies to `subscription` mode.
 

@@ -326,6 +326,9 @@ function brb_audit_checkout(): array {
         'mode'                       => 'payment',
         'billing_address_collection' => 'auto',
         'phone_number_collection'    => ['enabled' => 'false'],
+        // Flat price: Stripe's Managed Payments (Stripe collects tax) is on by default for
+        // this account, so turn it off for this session and leave tax off.
+        'managed_payments'           => ['enabled' => 'false'],
         'automatic_tax'              => ['enabled' => 'false'],
         'allow_promotion_codes'      => 'false',
         'submit_type'                => 'auto',
