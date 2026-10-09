@@ -14,7 +14,7 @@ The following values are placeholders and must be updated before going live.
 
 | Field | Current Value | What to Set |
 |-------|--------------|-------------|
-| line_items[].price (`TIME_AUDIT_PRICE` in checkout.php) | `price_...` | The Time Audit's Price ID: Stripe Dashboard → Product catalog → Time Audit → Price ID. Sandbox and live have different IDs. |
+| line_items[].price_data | product `prod_VPYWQA4sRjWDl4` (live), `audit_price_cents` (50000) | Set. Uses the live Time Audit product with the amount from config, so no Price ID is needed. Testing in a sandbox needs that sandbox's product ID. |
 | `stripe_secret_key` (brb-private/config.php) | empty | Stripe Dashboard → Developers → API keys. Best: create a restricted key with **Checkout Sessions: Write** only. Use the `sk_test_`/`rk_test_` key while testing in the sandbox, then the live one. |
 | mode | `payment` | Correct for the one-time $500 audit. A recurring plan (Run & Improve) would need its own session with `subscription`. |
 | success_url | `https://businessrunsbetter.com/thanks.html?session_id={CHECKOUT_SESSION_ID}` | Already your real thank-you page. Keep the `{CHECKOUT_SESSION_ID}` template. |
@@ -51,7 +51,7 @@ Also set: `metadata.product = time_audit`, so `stripe-webhook.php` marks the lea
 1. Put the secret key in `/home2/yeqdovmy/brb-private/config.php`:
    `'stripe_secret_key' => 'rk_test_...',`
    Never put it in the website folder or in GitHub.
-2. Put the Price ID in `TIME_AUDIT_PRICE` in `checkout.php`, commit, and let the deploy run.
+2. To change the price, set `'audit_price_cents'` in config.php (the webhook uses it too).
 3. The webhook (`stripe-webhook.php`) is already set up and listens for
    `checkout.session.completed`. Its `whsec_` secret must match the mode you're testing in.
 4. No dependencies: it uses PHP's built-in curl, the same as the Resend email code.
@@ -90,7 +90,7 @@ to live.
 
 ## Next steps
 
-- Changing the price: edit the price in Stripe, then update `TIME_AUDIT_PRICE` and `audit_price_cents`.
+- Changing the price: update `audit_price_cents` in config.php. No code change or deploy needed.
 - Run & Improve (monthly): still uses the contact form. Add a second plan to checkout.php with
   `mode: subscription` and `payment_method_collection: always` when you want it payable online.
 - Fulfillment is handled by the webhook plus your follow-up email. Set `auditCalendarUrl` in
