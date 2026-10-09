@@ -1,6 +1,7 @@
 /* Public site settings. Safe to publish: nothing secret goes here.
  *
- * stripe.*    Stripe Payment Link URLs (Stripe Dashboard → Payment Links → Share).
+ * stripe.*    Where each pay button goes: /checkout.php (Stripe Checkout) or a Stripe
+ *             Payment Link URL (Stripe Dashboard → Payment Links → Share).
  *             Leave empty and the buttons open the contact form instead.
  * calendarUrl       A Cal.com or Calendly booking link for the free 20-minute call.
  *                   Leave empty and "Book a free call" opens the contact form.
@@ -11,7 +12,7 @@
 window.BRB_CONFIG = {
   email: 'info@businessrunsbetter.com',
   stripe: {
-    timeAudit: '',
+    timeAudit: '/checkout.php',
     runAndImprove: ''
   },
   calendarUrl: '',

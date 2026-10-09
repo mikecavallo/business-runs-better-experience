@@ -25,6 +25,11 @@ return [
     // Password for /leads.php. At least 12 characters. Make it long and unique.
     'admin_password' => '',
 
+    // Stripe → Developers → API keys → Secret key (sk_live_..., or sk_test_... in a sandbox).
+    // Used only by checkout.php to start a payment. A restricted key with write access to
+    // Checkout Sessions is safer than the full secret key.
+    'stripe_secret_key' => '',
+
     // Stripe → Developers → Webhooks → your endpoint → "Signing secret" (starts with whsec_).
     'stripe_webhook_secret' => '',
 
