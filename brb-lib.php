@@ -305,6 +305,67 @@ function brb_auto_reply(string $name, string $email, string $interest): void {
                    ['Auto-Submitted' => 'auto-replied']);
 }
 
+// Stripe Dashboard → Product catalog → Time Audit (live mode).
+const BRB_TIME_AUDIT_PRODUCT = 'prod_VPYWQA4sRjWDl4';
+// The API version Checkout Studio generated this checkout for.
+const BRB_STRIPE_VERSION = '2026-09-30.endive';
+
+/**
+ * Creates a Stripe Checkout Session for the Time Audit.
+ * Returns ['url' => Stripe's payment page or '', 'status' => HTTP status, 'error' => reason or ''].
+ */
+function brb_audit_checkout(): array {
+    $c = brb_config();
+    $key = (string)$c['stripe_secret_key'];
+    if ($key === '') {
+        return ['url' => '', 'status' => 0, 'error' => ''];
+    }
+    $site = 'https://businessrunsbetter.com';
+    $params = [
+        'ui_mode'                    => 'hosted_page',
+        'mode'                       => 'payment',
+        'billing_address_collection' => 'auto',
+        'phone_number_collection'    => ['enabled' => 'false'],
+        'automatic_tax'              => ['enabled' => 'false'],
+        'allow_promotion_codes'      => 'false',
+        'submit_type'                => 'auto',
+        'integration_identifier'     => 'hosted_web_0001',
+        'origin_context'             => 'web',
+        'success_url'                => $site . '/thanks.html?session_id={CHECKOUT_SESSION_ID}',
+        'cancel_url'                 => $site . '/pricing.html',
+        'line_items'                 => [[
+            'price_data' => [
+                'currency'    => 'usd',
+                'product'     => BRB_TIME_AUDIT_PRODUCT,
+                'unit_amount' => (int)$c['audit_price_cents'],
+            ],
+            'quantity' => 1,
+        ]],
+        // stripe-webhook.php marks the lead "Audit paid" when it sees this.
+        'metadata'                   => ['product' => 'time_audit'],
+    ];
+    $ch = curl_init('https://api.stripe.com/v1/checkout/sessions');
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => http_build_query($params),
+        CURLOPT_USERPWD        => $key . ':',
+        CURLOPT_HTTPHEADER     => ['Stripe-Version: ' . BRB_STRIPE_VERSION],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT        => 15,
+    ]);
+    $resp = curl_exec($ch);
+    $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    $session = json_decode((string)$resp, true);
+    if ($status === 200 && !empty($session['url'])) {
+        return ['url' => $session['url'], 'status' => 200, 'error' => ''];
+    }
+    $msg = $session['error']['message'] ?? ($curlError !== '' ? $curlError : substr((string)$resp, 0, 300));
+    return ['url' => '', 'status' => $status, 'error' => "Stripe returned HTTP $status: $msg"];
+}
+
 function brb_money(int $cents): string {
     return '$' . number_format($cents / 100, $cents % 100 ? 2 : 0);
 }

@@ -5,69 +5,20 @@
  *
  * Needs 'stripe_secret_key' in ../brb-private/config.php. Until it is set, visitors go
  * to the contact form instead. The amount comes from 'audit_price_cents' (default $500).
- * Payments are recorded by stripe-webhook.php (checkout.session.completed).
+ * The session itself is built in brb-lib.php (brb_audit_checkout); /leads.php?check=1
+ * tests it. Payments are recorded by stripe-webhook.php (checkout.session.completed).
  */
 
 require __DIR__ . '/brb-lib.php';
 
-// Stripe Dashboard → Product catalog → Time Audit (live mode).
-const TIME_AUDIT_PRODUCT = 'prod_VPYWQA4sRjWDl4';
 const SITE_URL = 'https://businessrunsbetter.com';
-// The API version Checkout Studio generated this checkout for.
-const STRIPE_VERSION = '2026-09-30.endive';
 
-function fallback(): void {
+$result = brb_audit_checkout();
+if ($result['url'] === '') {
+    if ($result['error'] !== '') {
+        error_log('checkout: ' . $result['error']);
+    }
     header('Location: ' . SITE_URL . '/pricing.html#contact', true, 303);
     exit;
 }
-
-$config = brb_config();
-$secretKey = (string)($config['stripe_secret_key'] ?? '');
-if ($secretKey === '') {
-    fallback();
-}
-
-$params = [
-    'ui_mode'                    => 'hosted_page',
-    'mode'                       => 'payment',
-    'billing_address_collection' => 'auto',
-    'phone_number_collection'    => ['enabled' => 'false'],
-    'automatic_tax'              => ['enabled' => 'false'],
-    'allow_promotion_codes'      => 'false',
-    'submit_type'                => 'auto',
-    'integration_identifier'     => 'hosted_web_0001',
-    'origin_context'             => 'web',
-    'success_url'                => SITE_URL . '/thanks.html?session_id={CHECKOUT_SESSION_ID}',
-    'cancel_url'                 => SITE_URL . '/pricing.html',
-    'line_items'                 => [[
-        'price_data' => [
-            'currency'    => 'usd',
-            'product'     => TIME_AUDIT_PRODUCT,
-            'unit_amount' => (int)$config['audit_price_cents'],
-        ],
-        'quantity' => 1,
-    ]],
-    // stripe-webhook.php marks the lead "Audit paid" when it sees this.
-    'metadata'                   => ['product' => 'time_audit'],
-];
-
-$ch = curl_init('https://api.stripe.com/v1/checkout/sessions');
-curl_setopt_array($ch, [
-    CURLOPT_POST           => true,
-    CURLOPT_POSTFIELDS     => http_build_query($params),
-    CURLOPT_USERPWD        => $secretKey . ':',
-    CURLOPT_HTTPHEADER     => ['Stripe-Version: ' . STRIPE_VERSION],
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT        => 15,
-]);
-$resp = curl_exec($ch);
-$status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-curl_close($ch);
-
-$session = json_decode((string)$resp, true);
-if ($status !== 200 || empty($session['url'])) {
-    error_log('checkout: Stripe returned HTTP ' . $status . ': ' . substr((string)$resp, 0, 300));
-    fallback();
-}
-
-header('Location: ' . $session['url'], true, 303);
+header('Location: ' . $result['url'], true, 303);
