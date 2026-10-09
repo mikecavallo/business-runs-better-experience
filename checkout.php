@@ -3,15 +3,15 @@
  * Starts a Stripe Checkout Session for the Time Audit and sends the visitor to
  * Stripe's hosted payment page. The pricing page's "Pay $500" button links here.
  *
- * Needs 'stripe_secret_key' in ../brb-private/config.php and a real Price ID in
- * TIME_AUDIT_PRICE below. Until both are set, visitors go to the contact form instead.
+ * Needs 'stripe_secret_key' in ../brb-private/config.php. Until it is set, visitors go
+ * to the contact form instead. The amount comes from 'audit_price_cents' (default $500).
  * Payments are recorded by stripe-webhook.php (checkout.session.completed).
  */
 
 require __DIR__ . '/brb-lib.php';
 
-// Stripe Dashboard → Product catalog → Time Audit → Price ID (starts with price_).
-const TIME_AUDIT_PRICE = 'price_...';
+// Stripe Dashboard → Product catalog → Time Audit (live mode).
+const TIME_AUDIT_PRODUCT = 'prod_VPYWQA4sRjWDl4';
 const SITE_URL = 'https://businessrunsbetter.com';
 // The API version Checkout Studio generated this checkout for.
 const STRIPE_VERSION = '2026-09-30.endive';
@@ -23,7 +23,7 @@ function fallback(): void {
 
 $config = brb_config();
 $secretKey = (string)($config['stripe_secret_key'] ?? '');
-if ($secretKey === '' || TIME_AUDIT_PRICE === 'price_...') {
+if ($secretKey === '') {
     fallback();
 }
 
@@ -39,7 +39,14 @@ $params = [
     'origin_context'             => 'web',
     'success_url'                => SITE_URL . '/thanks.html?session_id={CHECKOUT_SESSION_ID}',
     'cancel_url'                 => SITE_URL . '/pricing.html',
-    'line_items'                 => [['price' => TIME_AUDIT_PRICE, 'quantity' => 1]],
+    'line_items'                 => [[
+        'price_data' => [
+            'currency'    => 'usd',
+            'product'     => TIME_AUDIT_PRODUCT,
+            'unit_amount' => (int)$config['audit_price_cents'],
+        ],
+        'quantity' => 1,
+    ]],
     // stripe-webhook.php marks the lead "Audit paid" when it sees this.
     'metadata'                   => ['product' => 'time_audit'],
 ];
