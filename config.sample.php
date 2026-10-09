@@ -19,7 +19,7 @@ return [
     //   Resend then only delivers to the email you signed up to Resend with, so contact_to
     //   must be that address, and the visitor auto-reply is skipped.
     // - After verifying the domain in Resend (Domains → Add, then add its DNS records in
-    //   Cloudflare): use e.g. 'hello@businessrunsbetter.com' and auto-replies turn on.
+    //   Cloudflare): use e.g. 'info@businessrunsbetter.com' and auto-replies turn on.
     'contact_from' => 'onboarding@resend.dev',
 
     // Password for /leads.php. At least 12 characters. Make it long and unique.

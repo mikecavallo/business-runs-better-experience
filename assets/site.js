@@ -1,6 +1,6 @@
 /* Shared behavior for the standard pages. Reads window.BRB_CONFIG (site-config.js). */
 (function () {
-  const cfg = window.BRB_CONFIG || { stripe: {}, email: 'hello@businessrunsbetter.com' };
+  const cfg = window.BRB_CONFIG || { stripe: {}, email: 'info@businessrunsbetter.com' };
   const form = document.getElementById('contactForm');
 
   document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
