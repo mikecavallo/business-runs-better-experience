@@ -40,6 +40,7 @@ function brb_config(): array {
         'resend_api_url'        => 'https://api.resend.com/emails',
         'site_name'             => 'Business Runs Better',
         'admin_password'        => '',
+        'stripe_secret_key'     => '',
         'stripe_webhook_secret' => '',
         'stripe_audit_link_id'  => '',
         'audit_price_cents'     => 50000,

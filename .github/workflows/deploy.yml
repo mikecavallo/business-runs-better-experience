@@ -1,0 +1,73 @@
+# Deploys the site to Bluehost every time main changes, then clears Cloudflare's cache.
+#
+# One-time setup (GitHub repo → Settings → Secrets and variables → Actions):
+#   Secrets:
+#     FTP_SERVER     e.g. ftp.businessrunsbetter.com (Bluehost: Advanced → FTP Accounts)
+#     FTP_USERNAME   the FTP account's full username, e.g. deploy@businessrunsbetter.com
+#     FTP_PASSWORD   that account's password
+#     CF_API_TOKEN   (optional) Cloudflare API token with "Zone → Cache Purge" permission
+#     CF_ZONE_ID     (optional) Cloudflare → businessrunsbetter.com → Overview → Zone ID
+#   Variables:
+#     FTP_SERVER_DIR the site's document root as seen by that FTP account, ending in "/".
+#                    If the FTP account's directory IS the document root, use "./".
+#
+# Only site files are uploaded. Private files (brb-private/config.php, the lead database)
+# live outside the document root and are never touched. Files deleted from the repo are
+# also deleted from the server, but only files this workflow uploaded in the first place.
+
+name: Deploy to Bluehost
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HAS_CLOUDFLARE: ${{ secrets.CF_API_TOKEN != '' && secrets.CF_ZONE_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check PHP syntax
+        run: for f in *.php; do php -l "$f"; done
+
+      - name: Upload changed files over FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            docs/**
+            **/*.md
+            render-narration.py
+            config.sample.php
+
+      - name: Purge Cloudflare cache
+        if: env.HAS_CLOUDFLARE == 'true'
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        run: |
+          curl -fsS -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
+
+      - name: Smoke test
+        run: |
+          sleep 5
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://businessrunsbetter.com/)
+          echo "Homepage returned HTTP $code"
+          test "$code" = "200"

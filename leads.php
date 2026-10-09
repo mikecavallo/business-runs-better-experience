@@ -91,12 +91,25 @@ if (!$setupNeeded && ($_POST['action'] ?? '') === 'login') {
 if (!$authed) {
     page_start('Sign in');
     if ($setupNeeded) {
-        echo '<div class="card narrow"><h1>Lead tracker setup</h1>
-            <p>Set a password of at least 12 characters before using this page:</p>
+        // Show exactly where the settings file must go on this server, and what's missing.
+        $dir = brb_private_dir();
+        $file = $dir . '/config.php';
+        $docroot = __DIR__;
+        $check = fn(bool $ok) => $ok ? '<b style="color:#3ecf8e">found</b>' : '<b class="error">missing</b>';
+        $state = is_file($file) ? 'found, but <code>admin_password</code> is empty or shorter than 12 characters'
+                                : 'not found';
+        echo '<div class="card narrow" style="max-width:640px"><h1>Lead tracker setup</h1>
+            <p>The private settings file is ' . $state . '.</p>
+            <table>
+              <tr><td>Website folder (document root)</td><td><code>' . h($docroot) . '</code></td></tr>
+              <tr><td>Private folder</td><td><code>' . h($dir) . '</code> ' . $check(is_dir($dir)) . '</td></tr>
+              <tr><td>Settings file</td><td><code>' . h($file) . '</code> ' . $check(is_file($file)) . '</td></tr>
+            </table>
             <ol>
-              <li>In cPanel File Manager, open the folder <b>above</b> <code>public_html</code>.</li>
-              <li>Create a folder named <code>brb-private</code> if it isn\'t there.</li>
-              <li>Upload <code>config.sample.php</code> into it, rename it to <code>config.php</code>, and set <code>admin_password</code>.</li>
+              <li>In File Manager, go to <code>' . h(dirname($docroot)) . '</code>. That is the folder that <b>contains</b> your website folder.</li>
+              <li>Create a folder there named <code>brb-private</code> if it is missing.</li>
+              <li>Put your settings file inside it, named <code>config.php</code>. Start from <code>config.sample.php</code>, and set <code>admin_password</code> (12+ characters), <code>resend_api_key</code> and <code>contact_from</code>.</li>
+              <li>Reload this page.</li>
             </ol></div>';
     } else {
         echo '<form class="card narrow" method="post">' . csrf_field() . '

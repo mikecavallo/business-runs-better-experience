@@ -8,7 +8,7 @@
  * Then copy the endpoint's signing secret (whsec_...) into
  * ../brb-private/config.php as 'stripe_webhook_secret'.
  *
- * Only the signing secret is needed. No Stripe API key lives on this server.
+ * This script only needs the signing secret. (checkout.php uses the API key.)
  */
 
 require __DIR__ . '/brb-lib.php';
