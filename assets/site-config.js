@@ -9,7 +9,7 @@
  *                   while this list is empty. Only add quotes you have permission to use.
  */
 window.BRB_CONFIG = {
-  email: 'hello@businessrunsbetter.com',
+  email: 'info@businessrunsbetter.com',
   stripe: {
     timeAudit: '',
     runAndImprove: ''
