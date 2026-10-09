@@ -37,8 +37,9 @@ These parameters were configured in Checkout Studio and are already set correctl
 | integration_identifier | hosted_web_0001 |
 | origin_context | web |
 
-`automatic_tax` is left out because Managed Payments is on for this account: Stripe handles tax
-itself and rejects `automatic_tax[enabled]=false`.
+Managed Payments is on by default for this account, so checkout sends
+`managed_payments[enabled]=false` and `automatic_tax[enabled]=false` to keep a flat $500 with
+no tax added.
 
 `payment_method_collection: always` is left out because it only applies to `subscription` mode.
 
