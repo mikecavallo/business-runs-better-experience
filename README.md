@@ -113,6 +113,12 @@ Then create a folder **next to** `public_html` (not inside it) called `brb-priva
 | `assets/site-config.js` | Public settings: Stripe Payment Link URLs, booking-calendar links, and testimonials for the About page (hidden while empty). Empty links fall back to the contact form. |
 | `.htaccess` | HTTPS on the bare domain, clean URLs (`/pricing`), blocks private files, cache headers. |
 
+### Automatic deploys
+
+`.github/workflows/deploy.yml` uploads the site to Bluehost over FTPS every time `main`
+changes (only changed files), then purges Cloudflare's cache and checks the homepage
+loads. Setup steps are in the comment at the top of that file.
+
 ### Stripe setup
 
 1. **Payment Link for the audit.** Stripe → Payment Links → New: product "Time Audit", $500, one time.
