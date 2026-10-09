@@ -32,11 +32,13 @@ These parameters were configured in Checkout Studio and are already set correctl
 | ui_mode | hosted_page |
 | billing_address_collection | auto |
 | phone_number_collection | { enabled: false } |
-| automatic_tax | { enabled: false } |
 | allow_promotion_codes | false |
 | submit_type | auto |
 | integration_identifier | hosted_web_0001 |
 | origin_context | web |
+
+`automatic_tax` is left out because Managed Payments is on for this account: Stripe handles tax
+itself and rejects `automatic_tax[enabled]=false`.
 
 `payment_method_collection: always` is left out because it only applies to `subscription` mode.
 

@@ -326,7 +326,6 @@ function brb_audit_checkout(): array {
         'mode'                       => 'payment',
         'billing_address_collection' => 'auto',
         'phone_number_collection'    => ['enabled' => 'false'],
-        'automatic_tax'              => ['enabled' => 'false'],
         'allow_promotion_codes'      => 'false',
         'submit_type'                => 'auto',
         'integration_identifier'     => 'hosted_web_0001',
