@@ -9,6 +9,9 @@ RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\. [NC]
 RewriteRule ^ https://businessrunsbetter.com%{REQUEST_URI} [L,R=301]
 
+# /services on its own has no page: the services live on the landing page
+RewriteRule ^services/?$ /#explore [R=302,NE,L]
+
 # Clean URLs: /pricing serves pricing.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
