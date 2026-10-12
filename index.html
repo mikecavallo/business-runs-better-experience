@@ -1014,9 +1014,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     </button>
     <div class="nav-links">
       <button onclick="goToSection(3)">Where it helps</button>
-      <button onclick="goToSection(6)">How it works</button>
-      <button onclick="goToSection(8)">Services</button>
-      <button onclick="goToSection(9)">Pricing</button>
+      <button onclick="goToSection(7)">Services</button>
+      <button onclick="goToSection(8)">Pricing</button>
       <a href="work.html">Work</a>
       <a href="about.html">About</a>
       <button class="nav-cta" onclick="bookCall()">Book a free call</button>
@@ -1116,40 +1115,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 6: Method -->
-    <section class="section method-section" id="section-6" data-section="6" tabindex="-1" aria-label="How it works">
-      <div class="section-inner">
-        <div class="method-left">
-          <h2>How it works<span class="sub">start to finish</span></h2>
-        </div>
-        <div class="method-list">
-          <div class="method-item">
-            <span class="method-num">01</span>
-            <div>
-              <h3>Find the wasted time</h3>
-              <p>I look at the actual work — the bottlenecks, the handoffs, and the tasks quietly consuming your team's day.</p>
-            </div>
-          </div>
-          <div class="method-item">
-            <span class="method-num">02</span>
-            <div>
-              <h3>Choose the best return</h3>
-              <p>We start with the one opportunity that has clear value, realistic scope, and the least disruption to how you work today.</p>
-            </div>
-          </div>
-          <div class="method-item">
-            <span class="method-num">03</span>
-            <div>
-              <h3>Put it to work</h3>
-              <p>Build, connect, test, and hand over a system your team can confidently run — with training, not just a login.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7: Areas -->
-    <section class="section areas-section" id="section-7" data-section="7" tabindex="-1" aria-label="Where AI pays off">
+    <!-- 6: Areas -->
+    <section class="section areas-section" id="section-6" data-section="6" tabindex="-1" aria-label="Where AI pays off">
       <div class="section-inner">
         <p class="animated-title areas-title" data-text="Nine places AI can take work off your plate.">Nine places AI can take work off your plate.</p>
         <p class="section-desc" style="margin-inline:auto">Every business is different. These are the areas where it reliably pays for itself.</p>
@@ -1168,8 +1135,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 8: Services -->
-    <section class="section services-section" id="section-8" data-section="8" tabindex="-1" aria-label="Services">
+    <!-- 7: Services -->
+    <section class="section services-section" id="section-7" data-section="7" tabindex="-1" aria-label="Services">
       <div class="section-inner">
         <h2 class="animated-title" data-text="What I do">What I do</h2>
         <div class="services-list">
@@ -1185,8 +1152,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 9: Pricing -->
-    <section class="section pricing-section" id="section-9" data-section="9" tabindex="-1" aria-label="Pricing">
+    <!-- 8: Pricing -->
+    <section class="section pricing-section" id="section-8" data-section="8" tabindex="-1" aria-label="Pricing">
       <div class="section-inner">
         <h2 class="animated-title" data-text="Simple pricing">Simple pricing</h2>
         <p class="section-desc pricing-lede">Fixed prices, agreed before work starts. No hourly meter, no surprise invoices.</p>
@@ -1232,8 +1199,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 10: Rule -->
-    <section class="section rule-section" id="section-10" data-section="10" tabindex="-1" aria-label="The rule">
+    <!-- 9: Rule -->
+    <section class="section rule-section" id="section-9" data-section="9" tabindex="-1" aria-label="The rule">
       <div class="section-inner">
         <p class="rule-desc"><span class="accent">Every build gets judged the same way.</span> Not by how clever it is, or how much of it is AI — but by whether it gives back real hours in a real week.</p>
         <div class="rule-formula animated-title" data-text="USEFUL &gt; IMPRESSIVE">USEFUL &gt; IMPRESSIVE</div>
@@ -1241,8 +1208,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 11: Final -->
-    <section class="section final-section" id="section-11" data-section="11" tabindex="-1" aria-label="Contact">
+    <!-- 10: Final -->
+    <section class="section final-section" id="section-10" data-section="10" tabindex="-1" aria-label="Contact">
       <div class="section-inner">
         <div class="final-title animated-title" data-text="If you can imagine it,|we can build it" data-multiline="true" data-accent-line="1">If you can imagine it, we can build it</div>
         <p class="section-desc" style="margin-inline:auto">Tell me where your business loses time, or what you've been picturing. I'll reply within one business day with a practical next step, not a proposal deck.</p>
@@ -1334,7 +1301,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 // ============================================
 // CONFIG
 // ============================================
-const TOTAL_SECTIONS = 12;
+const TOTAL_SECTIONS = 11;
 const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MORPH_DURATION = RM ? 450 : 1800;
 let PC = '76, 125, 255';              // canvas pattern colour — driven by the active theme
@@ -1350,19 +1317,14 @@ let morphParticles = [], morphShockwave = 0, morphDirection = 1;
 let entered = false;
 
 const SECTION_NAMES = [
-  'Introduction', 'What I do', 'Find, build, put to work',
-  'Automate the follow-up', 'Accelerate every reply',
-  'Useful beats impressive', 'How it works', 'Where AI pays off',
-  'Services', 'Pricing', 'The rule', 'Contact'
+  'Introduction', 'What I do', 'Find, build, put to work', 'Automate the follow-up', 'Accelerate every reply', 'Useful beats impressive', 'Where AI pays off', 'Services', 'Pricing', 'The rule', 'Contact'
 ];
 const SLUGS = [
-  'start','about','approach','automate','accelerate',
-  'philosophy','how-it-works','where-it-helps','services','pricing','the-rule','contact'
+  'start', 'about', 'approach', 'automate', 'accelerate', 'philosophy', 'where-it-helps', 'services', 'pricing', 'the-rule', 'contact'
 ];
 // Photographic backdrop per section (files in assets/img/)
 const SECTION_BG = [
-  'hero','void','void','flow','flow',
-  'void','structure','void','structure','depth','void','hero'
+  'hero', 'void', 'void', 'flow', 'flow', 'void', 'void', 'structure', 'depth', 'void', 'hero'
 ];
 
 // ============================================
@@ -1455,7 +1417,6 @@ const sectionNarration = [
   "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
   "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
   "Useful beats impressive. I don't sell A I. I find the hours your business is losing, and give them back.",
-  "How it works. First, find the wasted time. Second, choose the best return. Third, put it to work.",
   "Nine places A I can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
   "What I do. A I implementation. Automated lead generation. Web development. A I consulting and strategy. M V P development. Customer service and support. Scheduling and admin. Reporting and team knowledge.",
   "Simple pricing. Start with a five hundred dollar time audit, credited to your first build. Builds start at twenty five hundred dollars, fixed price. Ongoing support starts at three hundred a month.",
@@ -1464,7 +1425,7 @@ const sectionNarration = [
 ];
 
 // ============================================
-// 12 GEOMETRIC PATTERNS
+// 11 GEOMETRIC PATTERNS
 // ============================================
 const patterns = [
   // 0: Perspective Grid Floor
@@ -1586,27 +1547,7 @@ const patterns = [
       c.beginPath(); c.moveTo(x1+d*Math.sin(t+i)*50,y); c.lineTo(x2+d*Math.cos(t+i)*50,y); c.stroke();
     }
   },
-  // 6: Connected Nodes
-  function(c, w, h, t, d) {
-    const nodes=[];
-    for(let i=0;i<30;i++){
-      const h1=(Math.sin(i*127.1)*43758.5453)%1, h2=(Math.sin(i*269.5)*43758.5453)%1;
-      nodes.push({x:(0.08+h1*0.84)*w+d*Math.sin(t+i)*100, y:(0.08+h2*0.84)*h+d*Math.cos(t+i*0.7)*100, r:5+Math.sin(t+i)*3});
-    }
-    for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
-      const dist=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);
-      if(dist<300){c.strokeStyle=`rgba(${PC},${0.08*A*(1-dist/300)*(1-d*0.5)})`;
-        c.lineWidth=1; c.beginPath(); c.moveTo(nodes[i].x,nodes[i].y); c.lineTo(nodes[j].x,nodes[j].y); c.stroke();}
-    }
-    nodes.forEach((n,i)=>{
-      const a=(0.15+Math.sin(t+i)*0.06)*A*(1-d*0.6);
-      c.fillStyle=`rgba(${PC},${a})`;
-      c.beginPath(); c.arc(n.x,n.y,n.r*(1-d*0.3),0,Math.PI*2); c.fill();
-      c.strokeStyle=`rgba(${PC},${a*0.5})`; c.lineWidth=1;
-      c.beginPath(); c.arc(n.x,n.y,n.r*3,0,Math.PI*2); c.stroke();
-    });
-  },
-  // 7: Constellation
+  // 6: Constellation
   function(c, w, h, t, d) {
     const stars=[];
     for(let i=0;i<80;i++){
@@ -1624,7 +1565,7 @@ const patterns = [
       c.fillStyle=`rgba(${PC},${a*0.4})`; c.beginPath(); c.arc(s.x,s.y,8,0,Math.PI*2); c.fill();
     });
   },
-  // 8: Rising Bars
+  // 7: Rising Bars
   function(c, w, h, t, d) {
     const n=40, bW=w/n;
     for(let i=0;i<n;i++){
@@ -1639,7 +1580,7 @@ const patterns = [
       c.strokeStyle=`rgba(${PC},${0.06*A*(1-d)})`; c.setLineDash([6,10]); c.lineWidth=0.8;
       c.beginPath(); c.moveTo(0,y); c.lineTo(w,y); c.stroke(); c.setLineDash([]);}
   },
-  // 9: Layered Cards
+  // 8: Layered Cards
   function(c, w, h, t, d) {
     for(let i=0;i<10;i++){
       const cx=w*0.5+(i-5)*50+Math.sin(t+i)*30;
@@ -1653,7 +1594,7 @@ const patterns = [
       c.strokeStyle=`rgba(${PC},${0.026*A*(1-d*0.5)})`; c.lineWidth=0.5;
       c.beginPath(); c.moveTo(w*0.15+d*40,y+d*Math.sin(t+i)*25); c.lineTo(w*0.85-d*40,y+d*Math.sin(t+i)*25); c.stroke();}
   },
-  // 10: Neural Network
+  // 9: Neural Network
   function(c, w, h, t, d) {
     const layers=[5,8,10,8,5];
     const lx=layers.map((_,i)=>w*0.12+(w*0.76)*(i/(layers.length-1)));
@@ -1672,7 +1613,7 @@ const patterns = [
     if(nodes[pl]) nodes[pl].forEach(n=>{c.fillStyle=`rgba(${PC},${0.2*A*(1-d)})`;
       c.beginPath(); c.arc(n.x,n.y,12,0,Math.PI*2); c.fill();});
   },
-  // 11: Expanding Rings
+  // 10: Expanding Rings
   function(c, w, h, t, d) {
     const cx=w*0.5,cy=h*0.5;
     for(let i=0;i<15;i++){
@@ -1906,7 +1847,7 @@ function setSectionState(index) {
   document.getElementById('liveRegion').textContent =
     `Section ${index + 1} of ${TOTAL_SECTIONS}: ${SECTION_NAMES[index]}`;
   if (history.replaceState) history.replaceState(null, '', '#' + SLUGS[index]);
-  if (index === 8) startServiceCycle(); else stopServiceCycle();
+  if (index === 7) startServiceCycle(); else stopServiceCycle();
   if (soundEnabled) speakSection(index);
 }
 
