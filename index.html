@@ -912,6 +912,29 @@ nav.visible { opacity: 1; transform: translateY(0); }
   .lp-kid small { display: block; }
 }
 
+/* arriving on the landing page */
+#progress, .nav-pips { transition: opacity .6s ease; }
+body.at-landing #progress, body.at-landing .nav-pips { opacity: 0; pointer-events: none; }
+.landing.lp-arrive .landing-need { animation: lpRise .8s var(--ease-out) .05s both; }
+.landing.lp-arrive .landing-foot { animation: lpRise .8s var(--ease-out) 1.6s both; }
+.landing.lp-arrive .lp-orb.top::before { animation: lpIgnite 1s var(--ease-out) both; }
+.landing.lp-arrive .lp-orb.top .in { animation: lpFade .7s ease both; }
+.landing.lp-arrive .lp-orb.top:nth-of-type(1)::before, .landing.lp-arrive .lp-orb.top:nth-of-type(1) .in { animation-delay: .25s; }
+.landing.lp-arrive .lp-orb.top:nth-of-type(2)::before, .landing.lp-arrive .lp-orb.top:nth-of-type(2) .in { animation-delay: .45s; }
+.landing.lp-arrive .lp-orb.top:nth-of-type(3)::before, .landing.lp-arrive .lp-orb.top:nth-of-type(3) .in { animation-delay: .65s; }
+.landing.lp-arrive .lp-orb.top:nth-of-type(4)::before, .landing.lp-arrive .lp-orb.top:nth-of-type(4) .in { animation-delay: .85s; }
+.landing.lp-arrive .lp-tile { animation: lpPop .6s var(--ease-out) both; }
+.landing.lp-arrive .lp-tile:nth-child(2) { animation-delay: .12s; }
+.landing.lp-arrive .lp-tile:nth-child(3) { animation-delay: .24s; }
+.landing.lp-arrive .lp-tile:nth-child(4) { animation-delay: .36s; }
+@keyframes lpIgnite {
+  0% { transform: translate(-50%, -50%) scale(0); }
+  55% { transform: translate(-50%, -50%) scale(2); box-shadow: 0 0 0 18px rgba(var(--brand-rgb), .2), 0 0 90px rgba(var(--brand-rgb), 1); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes lpFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lpRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
 /* ---- 9 services ---- */
 .services-section .section-inner { max-width: min(1440px, 100%); }
 .services-section h2 {
@@ -1636,6 +1659,9 @@ let soundEnabled = false;
 let morphProgress = 0, morphFrom = 0, morphTo = 0;
 let isMorphing = false, morphStart = 0;
 let morphParticles = [], morphShockwave = 0, morphDirection = 1;
+// End of the intro: the last screen streaks away and you arrive among the landing page's stars
+const WARP_MS = 1900, WARP_REVEAL = 1150;
+let warpStart = 0, warpFrom = 0, warpStreaks = [];
 let entered = false;
 
 const SECTION_NAMES = [
@@ -2162,6 +2188,10 @@ function setSectionState(index) {
   document.getElementById('liveRegion').textContent =
     `Section ${index + 1} of ${TOTAL_SECTIONS}: ${SECTION_NAMES[index]}`;
   if (history.replaceState) history.replaceState(null, '', '#' + SLUGS[index]);
+  // past the intro: its progress bar and dots step aside, and 'Back to start' becomes 'Replay intro'
+  document.body.classList.toggle('at-landing', index === LANDING_INDEX);
+  const backLabel = document.querySelector('.back-to-top span:not(.chip-icon)');
+  if (backLabel) backLabel.textContent = index === LANDING_INDEX ? 'Replay intro' : 'Back to start';
   if (index === LANDING_INDEX) landingActivated();
   if (soundEnabled) speakSection(index);
   runCounters(index);
@@ -2218,6 +2248,7 @@ function goToSection(index) {
   if (index < 0 || index >= TOTAL_SECTIONS || index === currentSection) return;
   // Queue the target instead of dropping it, so clicks during a morph still land
   if (isTransitioning) { pendingSection = index; return; }
+  if (index === LANDING_INDEX && !RM) { warpTo(index); return; }
   isTransitioning = true;
 
   const hint = document.getElementById('scrollHint');
@@ -2271,6 +2302,74 @@ function goToSection(index) {
       goToSection(next);
     }
   }, MORPH_DURATION * 0.7);
+}
+
+function warpTo(index) {
+  isTransitioning = true;
+  const hint = document.getElementById('scrollHint');
+  if (hint) hint.classList.add('hidden');
+  const prev = document.querySelectorAll('.section')[currentSection];
+  warpFrom = currentSection;
+  warpStart = performance.now();
+  isMorphing = false;
+  prev.classList.remove('active');
+  prev.classList.add('leaving');
+  prev.inert = true;
+  // a rising sweep under the jump, then a chime as you arrive
+  [260, 390, 585, 880].forEach((f, i) => setTimeout(() => playTransitionSound(f, 0.045, 'sine'), i * 140));
+  setTimeout(() => playTransitionSound(1320, 0.03, 'triangle'), WARP_REVEAL - 100);
+  setTimeout(() => { prev.classList.remove('leaving'); setSectionState(index); }, WARP_REVEAL);
+  setTimeout(() => {
+    isTransitioning = false;
+    if (pendingSection !== null) { const next = pendingSection; pendingSection = null; goToSection(next); }
+  }, WARP_REVEAL + 300);
+}
+
+// The warp itself, drawn on the background canvas: p runs 0 to 1 over WARP_MS.
+function drawWarp(c, w, h, p, time) {
+  const cx = w / 2, cy = h / 2, maxR = Math.hypot(cx, cy), dpr = w / Math.max(1, innerWidth);
+  if (!warpStreaks.length) {
+    warpStreaks = Array.from({ length: 280 }, () => ({
+      ang: Math.random() * 6.283, r0: Math.random(), v: 0.55 + Math.random() * 0.9,
+      a: 0.35 + Math.random() * 0.65, white: Math.random() < 0.3
+    }));
+  }
+  // 1. the screen you were on dissolves
+  if (p < 0.45) { try { patterns[warpFrom](c, w, h, time, Math.min(1, p / 0.4)); } catch (e) {} }
+  // 2. light streaks pour out of the centre, faster and longer
+  const go = Math.min(1, p / 0.62), accel = Math.pow(go, 2.4);
+  const streakA = p < 0.62 ? Math.min(1, p / 0.12) : Math.max(0, 1 - (p - 0.62) / 0.14);
+  if (streakA > 0) {
+    c.lineCap = 'round';
+    warpStreaks.forEach(st => {
+      const r = ((st.r0 + st.v * Math.pow(go, 3) * 2.6) % 1) * maxR;
+      const len = 4 * dpr + accel * 0.42 * maxR * st.v;
+      const a = streakA * st.a * (0.25 + 0.75 * r / maxR);
+      c.strokeStyle = st.white ? `rgba(255,255,255,${a})` : `rgba(${PC},${a})`;
+      c.lineWidth = (0.6 + st.v * 1.4 * (0.4 + accel)) * dpr;
+      c.beginPath();
+      c.moveTo(cx + Math.cos(st.ang) * r, cy + Math.sin(st.ang) * r);
+      c.lineTo(cx + Math.cos(st.ang) * (r + len), cy + Math.sin(st.ang) * (r + len));
+      c.stroke();
+    });
+  }
+  // a glow gathering at the centre
+  const glow = p < 0.62 ? go : Math.max(0, 1 - (p - 0.62) / 0.25);
+  if (glow > 0) {
+    const g = c.createRadialGradient(cx, cy, 0, cx, cy, maxR * (0.15 + glow * 0.55));
+    g.addColorStop(0, `rgba(255,255,255,${0.35 * glow})`);
+    g.addColorStop(0.25, `rgba(${PC},${0.3 * glow})`);
+    g.addColorStop(1, `rgba(${PC},0)`);
+    c.fillStyle = g; c.fillRect(0, 0, w, h);
+  }
+  // 3. the flash
+  const flash = p > 0.5 && p < 0.74 ? Math.max(0, 1 - Math.abs(p - 0.62) / 0.12) : 0;
+  if (flash > 0) {
+    c.fillStyle = `rgba(${PC},${0.55 * flash})`; c.fillRect(0, 0, w, h);
+    c.fillStyle = `rgba(255,255,255,${0.3 * flash})`; c.fillRect(0, 0, w, h);
+  }
+  // 4. and you're among the stars
+  if (p > 0.6) { try { patterns[LANDING_INDEX](c, w, h, time, Math.max(0, 1 - (p - 0.6) / 0.4)); } catch (e) {} }
 }
 
 // ============================================
@@ -2660,7 +2759,9 @@ function initBackground() {
       if (morphProgress >= 1) { isMorphing = false; morphProgress = 1; }
     }
 
-    if (isMorphing) {
+    if (warpStart && performance.now() - warpStart < WARP_MS) {
+      drawWarp(c, w, h, (performance.now() - warpStart) / WARP_MS, time);
+    } else if (isMorphing) {
       const ease = morphProgress < 0.5
         ? 2*morphProgress*morphProgress
         : 1 - Math.pow(-2*morphProgress+2, 2)/2;
@@ -2836,7 +2937,7 @@ let landingActivated = () => {};
   orbs.appendChild(wires);
   const hint = document.createElement('span'); hint.className = 'lp-hint'; orbs.appendChild(hint);
   stage.appendChild(orbs);
-  let open = null;
+  let open = null, wireStart = 0, arriveTimer = null;
   const items = [];
   GROUPS.forEach((g, gi) => {
     const b = document.createElement('button'); b.type = 'button'; b.className = 'lp-orb top';
@@ -2908,7 +3009,10 @@ let landingActivated = () => {};
       items.filter(i => !i.top && i.g === open).forEach(k => pairs.push([sel, k]));
       tops.filter(x => x !== sel).forEach(o => pairs.push([sel, o, 'faint']));
     }
-    wires.innerHTML = pairs.map(([p, q, c]) => { const A1 = centerOf(p), B1 = centerOf(q); return '<line' + (c ? ' class="' + c + '"' : '') + ' x1="' + A1[0].toFixed(1) + '" y1="' + A1[1].toFixed(1) + '" x2="' + B1[0].toFixed(1) + '" y2="' + B1[1].toFixed(1) + '"/>'; }).join('');
+    // on arrival the strings draw themselves from star to star
+    const grow = wireStart ? Math.max(0, Math.min(1, (performance.now() - wireStart) / 900)) : 1;
+    const k = 1 - Math.pow(1 - grow, 3);
+    wires.innerHTML = grow <= 0 ? '' : pairs.map(([p, q, c]) => { const A1 = centerOf(p), B1 = centerOf(q), x2 = A1[0] + (B1[0] - A1[0]) * k, y2 = A1[1] + (B1[1] - A1[1]) * k; return '<line' + (c ? ' class="' + c + '"' : '') + ' x1="' + A1[0].toFixed(1) + '" y1="' + A1[1].toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '"/>'; }).join('');
   }
   // sway like cat's cradle; a node holds still while the cursor is on it
   if (!RM) {
@@ -2988,7 +3092,14 @@ let landingActivated = () => {};
   let rt;
   addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 150); });
   setMode();
-  landingActivated = () => { requestAnimationFrame(layout); };
+  landingActivated = () => {
+    requestAnimationFrame(layout);
+    if (RM) return;
+    landing.classList.remove('lp-arrive'); void landing.offsetWidth; landing.classList.add('lp-arrive');
+    wireStart = performance.now() + 1000;
+    clearTimeout(arriveTimer);
+    arriveTimer = setTimeout(() => { landing.classList.remove('lp-arrive'); wireStart = 0; }, 3400);
+  };
 })();
 
 
