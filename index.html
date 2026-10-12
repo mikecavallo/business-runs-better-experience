@@ -9,7 +9,7 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/panel.css?v=1">
+<link rel="stylesheet" href="/assets/panel.css?v=2">
 <link rel="canonical" href="https://businessrunsbetter.com/">
 
 <meta property="og:type" content="website">
@@ -950,7 +950,6 @@ body.past-intro .bottom-nav { opacity: 0; visibility: hidden; pointer-events: no
 .svc-overlay .panel { height: 100%; max-height: 920px; opacity: 0; transform: translateY(16px) scale(.97); transition: opacity .35s ease, transform .5s var(--ease-out); }
 .svc-overlay.open .svc-backdrop { opacity: 1; }
 .svc-overlay.open .panel { opacity: 1; transform: none; }
-.svc-overlay .pc-foot .pc-themes { display: none; }
 @media (max-width: 640px) {
   .svc-overlay { padding: 8px; }
   .svc-overlay .panel { max-height: none; }
@@ -1606,7 +1605,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   <div class="dialog-head">
     <div>
       <h2 id="dialogTitle">Let's talk</h2>
-      <p>Tell me where your business loses time or what you want to build. I reply within one business day.</p>
+      <p>Tell me what you need, where your business loses time, or what you want to build. I reply within one business day.</p>
     </div>
     <button class="dialog-close" id="dialogClose" aria-label="Close">&times;</button>
   </div>
@@ -1639,6 +1638,11 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
             <option>Free 20-minute call</option>
             <option>Time Audit</option>
             <option>A specific build</option>
+            <option>Website or online store</option>
+            <option>SEO or marketing</option>
+            <option>Branding, copy or video</option>
+            <option>Custom software</option>
+            <option>AI or automation</option>
             <option>Monthly support</option>
             <option>Building an MVP</option>
             <option>Not sure yet</option>
@@ -1674,7 +1678,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 </dialog>
 
 <script src="/assets/site-config.js?v=202610091841"></script>
-<script src="/assets/panel.js?v=1"></script>
+<script src="/assets/panel.js?v=2"></script>
 <script>
 // ============================================
 // CONFIG
@@ -2948,19 +2952,19 @@ document.getElementById('year').textContent = new Date().getFullYear();
   if (!overlay || !window.BRBPanel) return;
   window.BRBPanel.enhance(panel);
   const baseTitle = document.title;
-  let pushed = false, returnFocus = null, closeTimer = null;
-  const isPage = href => /^\/services\/[a-z0-9-]+\/?$/.test(href || '');
+  let pushed = false, returnFocus = null, closeTimer = null, afterClose = null;
+  const isPage = href => /^\/(services\/[a-z0-9-]+\/?|(about|work|pricing|privacy|terms)\.html)$/.test(href || '');
 
   function comingSoon(href) {
     const a = document.querySelector('#landingMap a[href="' + href + '"]');
     const name = a ? a.firstChild.textContent.trim() : 'This page';
     const desc = a && a.querySelector('small') ? a.querySelector('small').textContent.trim() : '';
     const code = a ? a.dataset.code : '';
-    const group = a ? a.closest('.lm-group').querySelector('h3').textContent.trim() : '';
+    const group = a && a.closest('.lm-group') ? a.closest('.lm-group').querySelector('h3').textContent.trim() : '';
     return {
       title: name + ' | Business Runs Better',
-      crumb: (code ? '<span class="panel-code">' + code + '</span>' : '') + '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span><span>' + name + '</span>',
-      html: '<section><p class="pc-eyebrow">' + group + ' &middot; coming soon</p><h1>' + name + '</h1>' +
+      crumb: (code ? '<span class="panel-code">' + code + '</span>' : '') + (group ? '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span>' : '') + '<span>' + name + '</span>',
+      html: '<section><p class="pc-eyebrow">' + (group ? group + ' &middot; ' : '') + 'coming soon</p><h1>' + name + '</h1>' +
         '<p class="pc-lede">' + desc + '</p><p>This page is still being written. If it’s what you need, let’s talk now.</p>' +
         '<div class="pc-actions"><a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>' +
         '<a class="pc-link" href="tel:+19105240056">Or call 910-524-0056</a></div></section>'
@@ -2989,6 +2993,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     const page = await load(href);
     body.innerHTML = page.html;
     crumb.innerHTML = page.crumb;
+    window.BRBPanel.decorate(body);
     scroller.scrollTop = 0;
     document.title = page.title || baseTitle;
     overlay.hidden = false;
@@ -3003,14 +3008,22 @@ document.getElementById('year').textContent = new Date().getFullYear();
     closeTimer = setTimeout(() => { overlay.hidden = true; body.innerHTML = ''; }, 380);
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
   }
-  function closePage() {
+  // then: something to do once the window is shut and the address is back on the landing page
+  function closePage(then) {
     if (overlay.hidden) return;
+    afterClose = typeof then === 'function' ? then : null;
     if (pushed) { pushed = false; history.back(); return; }   // popstate hides it
     hide();
+    runAfterClose();
+  }
+  function runAfterClose() {
+    const fn = afterClose;
+    afterClose = null;
+    if (fn) setTimeout(fn, 60);
   }
   window.addEventListener('popstate', e => {
     if (e.state && e.state.brbPage) { pushed = true; openPage(e.state.brbPage, false); }
-    else if (!overlay.hidden) { pushed = false; hide(); }
+    else if (!overlay.hidden) { pushed = false; hide(); runAfterClose(); }
   });
 
   // links on the landing page and inside the window
@@ -3027,9 +3040,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
     }
     if (!inWindow) return;
     if (a.hasAttribute('data-book-call')) { e.preventDefault(); bookCall(); return; }
-    if (href === '/#explore' || href === '/') { e.preventDefault(); closePage(); }
+    if (a.hasAttribute('data-pay')) { e.preventDefault(); payAudit(); return; }
+    if (a.dataset.interest) { e.preventDefault(); openContact(a.dataset.interest); return; }
+    if (href === '/#explore' || href === '/') { e.preventDefault(); closePage(); return; }
+    // a link to a spot in the intro (say /#pricing): shut the window, then go there
+    const jump = /^\/#([a-z-]+)$/.exec(href || '');
+    if (jump && SLUGS.indexOf(jump[1]) >= 0) { e.preventDefault(); closePage(() => goToSection(SLUGS.indexOf(jump[1]))); }
   });
-  overlay.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closePage));
+  overlay.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => closePage()));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden && !dialog.open) closePage(); });
 })();
 

@@ -51,10 +51,6 @@ body.pg { overflow: hidden; background: var(--bg); color: var(--ink); font-famil
 }
 .pg-main .panel { height: 100%; }
 
-.pc-themes { display: inline-flex; align-items: center; gap: 8px; }
-.pc-themes button { width: 15px; height: 15px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; background: var(--sw); }
-.pc-themes button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); }
-
 @media (max-width: 640px) {
   body.pg { overflow: auto; height: auto; }
   .pg-head { height: 64px; }

@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://businessrunsbetter.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://businessrunsbetter.com/pricing.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://businessrunsbetter.com/work.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/web-design/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/real-estate-websites/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/ecommerce/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/custom-software/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/product-development/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/seo/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/marketing/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/creative/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/branding/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/ai-consulting/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/workflow-automation/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/ai-receptionist/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/lead-follow-up/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/ai-assistants/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/services/private-ai/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/pricing.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://businessrunsbetter.com/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://businessrunsbetter.com/work.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://businessrunsbetter.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
   <url><loc>https://businessrunsbetter.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>

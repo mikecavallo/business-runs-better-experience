@@ -3,166 +3,191 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About Mike Cavallo | Business Runs Better</title>
-<meta name="description" content="Mike Cavallo is an AI developer in Leland, North Carolina with 20+ years building software. He builds voice agents, automations and custom AI tools for local businesses.">
+<title>About Mike Cavallo | Web Developer &amp; AI Consultant in Leland, NC | Business Runs Better</title>
+<meta name="description" content="Mike Cavallo is a self-taught developer in Leland, NC with 20+ years of building websites, online stores, business software and AI. IDX certified, and the person behind Business Runs Better.">
 <link rel="canonical" href="https://businessrunsbetter.com/about.html">
-<meta property="og:type" content="website">
+<meta property="og:type" content="profile">
 <meta property="og:title" content="About Mike Cavallo | Business Runs Better">
-<meta property="og:description" content="Mike Cavallo is an AI developer in Leland, North Carolina with 20+ years building software. He builds voice agents, automations and custom AI tools for local businesses.">
+<meta property="og:description" content="Self-taught at 12. Twenty years of websites, stores, software and AI.">
 <meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.webp">
 <meta property="og:url" content="https://businessrunsbetter.com/about.html">
-<meta name="theme-color" content="#0e1116">
+<meta name="theme-color" content="#16191d">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="stylesheet" href="assets/site.css?v=202610091732">
+<link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<script src="/assets/theme.js?v=1"></script>
+<link rel="stylesheet" href="/assets/page.css?v=2">
+<link rel="stylesheet" href="/assets/panel.css?v=2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Mike Cavallo",
-  "jobTitle": "AI Developer and Consultant",
-  "image": "https://businessrunsbetter.com/assets/img/mike-cavallo.webp",
-  "url": "https://businessrunsbetter.com/about.html",
-  "worksFor": {"@type": "ProfessionalService", "name": "Business Runs Better", "url": "https://businessrunsbetter.com/"},
-  "homeLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"}},
-  "sameAs": ["https://github.com/mikecavallo", "https://twitter.com/The_Guy_For_AI"]
+  "@graph": [
+    {
+      "@type": "ProfilePage",
+      "url": "https://businessrunsbetter.com/about.html",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Mike Cavallo",
+        "jobTitle": "Web developer and AI consultant",
+        "image": "https://businessrunsbetter.com/assets/img/mike-cavallo.webp",
+        "url": "https://businessrunsbetter.com/about.html",
+        "worksFor": {"@type": "ProfessionalService", "name": "Business Runs Better", "url": "https://businessrunsbetter.com/"},
+        "homeLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"}},
+        "knowsAbout": ["Web development", "IDX and MLS integration", "Search engine optimization", "eCommerce", "Business process automation", "Artificial intelligence", "Voice agents"],
+        "sameAs": ["https://github.com/mikecavallo", "https://twitter.com/The_Guy_For_AI"]
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://businessrunsbetter.com/"},
+        {"@type": "ListItem", "position": 2, "name": "About Mike", "item": "https://businessrunsbetter.com/about.html"}
+      ]
+    }
+  ]
 }
 </script>
 </head>
-<body>
+<body class="pg">
+<canvas id="pgStars" aria-hidden="true"></canvas>
 
-<header class="site-head">
-  <div class="wrap">
-    <a class="logo" href="/" aria-label="Business Runs Better home">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width="1.5"/><path d="M9 28.5 H31" stroke="currentColor" stroke-opacity=".5" stroke-width="3"/><path d="M9 22 L29 11.5" stroke="#4c7dff" stroke-width="3"/><circle cx="30.25" cy="10.75" r="3.25" fill="#4c7dff"/></svg>
-      <span>BUSINESS RUNS BETTER</span>
-    </a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/">Home</a>
-      <a href="work.html">Work</a>
-      <a href="about.html" aria-current="page">About</a>
-      <a href="pricing.html">Pricing</a>
-      <a class="nav-cta" href="#contact" data-book-call>Book a free call</a>
-    </nav>
-  </div>
+<header class="pg-head">
+  <a class="pg-logo" href="/#explore" aria-label="Business Runs Better home">
+    <svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" rx="66" fill="var(--brand)"/><g transform="translate(-9 -3)"><rect x="78" y="52" width="38" height="196" rx="19" fill="var(--on-brand)"/><circle cx="165" cy="180" r="56" fill="none" stroke="var(--on-brand)" stroke-width="38"/><circle cx="165" cy="180" r="15" fill="var(--bg)"/></g></svg>
+    <span>BUSINESS RUNS BETTER</span>
+  </a>
+  <nav class="pg-nav" aria-label="Contact">
+    <a class="pg-phone" href="tel:+19105240056"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg><span>910-524-0056</span></a>
+    <a class="pg-cta" href="#contact" data-book-call>Book a free call</a>
+  </nav>
 </header>
 
-<main>
-  <section class="hero">
-    <div class="wrap about-hero">
-      <div class="reveal">
-        <p class="eyebrow">About</p>
-        <h1>Hi, I'm Mike.</h1>
-        <p class="lede">I've been building software for over 20 years. These days I build AI that takes the repetitive work off small business owners: the follow-ups, the scheduling, the quotes, and the same questions answered for the hundredth time.</p>
-        <p class="loc">Leland, North Carolina</p>
-        <div class="btn-row">
-          <a class="btn primary" href="pricing.html#contact" data-book-call>Book a free 20-minute call</a>
-          <a class="btn" href="work.html">See my work</a>
-        </div>
-      </div>
-      <div class="portrait" aria-hidden="false">
-        <div class="portrait-glow"></div>
-        <div class="portrait-ring"></div>
-        <img src="assets/img/mike-cavallo.webp" alt="Mike Cavallo" width="400" height="400">
-        <div class="orbit" aria-hidden="true"><span style="--a:0deg"><i>Voice agents</i></span><span style="--a:45deg"><i>Claude</i></span><span style="--a:90deg"><i>n8n</i></span><span style="--a:135deg"><i>Python</i></span><span style="--a:180deg"><i>React</i></span><span style="--a:225deg"><i>MCP</i></span><span style="--a:270deg"><i>Twilio</i></span><span style="--a:315deg"><i>OpenAI</i></span></div>
-      </div>
+<main class="pg-main">
+  <div class="panel">
+    <div class="panel-bar">
+      <span class="panel-crumb"><span class="panel-code">ME</span><a href="/#explore">Mike</a><span aria-hidden="true">/</span><span>About Mike</span></span>
+      <a class="pbtn" href="/#explore" aria-label="Close" data-close><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3l6 6M9 3 3 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></a>
     </div>
-  </section>
+    <div class="panel-well">
+      <div class="panel-scroll" tabindex="0" aria-label="About Mike">
+        <article class="panel-content" id="pageContent">
 
-  <section>
-    <div class="wrap">
-      <div class="stat-band">
-        <div class="card"><b data-count="20" data-suffix="+">20+</b><p>years building software</p></div>
-        <div class="card"><b data-count="5">5</b><p>AI systems built, from voice agents to virtual staging</p></div>
-        <div class="card"><b data-count="1">1</b><p>person you deal with, from first call to handoff</p></div>
-      </div>
-    </div>
-  </section>
+          <section class="pc-intro">
+            <div>
+              <p class="pc-eyebrow">Mike &middot; About</p>
+              <h1>Hi, I'm Mike. I've been building for the web since I was 12.</h1>
+              <p class="pc-lede">I'm a self-taught developer with more than 20 years of building websites, online stores, business software and now AI. I run the web and marketing for a real estate brokerage, and I built my own eCommerce business to $750,000 a year. Business Runs Better puts all of it to work for local businesses.</p>
+              <div class="pc-actions">
+                <a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>
+                <a class="pc-link" href="tel:+19105240056">Or call 910-524-0056</a>
+              </div>
+            </div>
+            <figure class="pc-portrait"><img src="/assets/img/mike-cavallo.webp" alt="Mike Cavallo" width="400" height="400"></figure>
+          </section>
 
-  <section>
-    <div class="wrap cols-2">
-      <div class="reveal">
-        <p class="eyebrow">Why I do this</p>
-        <h2>I've run the business, not just built the software</h2>
-      </div>
-      <div class="reveal">
-        <p class="lede" style="margin-bottom:18px">Running my own e-commerce business taught me where the hours actually go in a small company. It's rarely the big strategic stuff. It's the inbox, the phone, the quotes, and the follow-ups that slip when you're busy doing the actual work.</p>
-        <p style="color:var(--muted)">That's what I build for now. Not AI for the sake of AI, but practical systems that give real hours back in a real week, explained without jargon and handed over so your team can run them. I work with businesses in Leland, Wilmington and the Cape Fear region in person, and anywhere else remotely.</p>
-      </div>
-    </div>
-  </section>
+          <section class="pc-proof" aria-label="At a glance">
+            <div><b>20+</b><span>years building websites and software</span></div>
+            <div><b>80+</b><span>websites I run for a real estate brokerage</span></div>
+            <div><b>$750K</b><span>in sales in 2023 from the eCommerce business I built</span></div>
+          </section>
 
-  <section>
-    <div class="wrap">
-      <div class="center reveal">
-        <p class="eyebrow">Toolbox</p>
-        <h2>What I work with</h2>
-        <p class="lede">I pick tools for the job and for what your team already uses, not to show off.</p>
-      </div>
-      <div class="skill-groups"><div class="card skill-group"><h3><em>01</em>AI &amp; agents</h3><div class="chips"><span>Claude</span><span>OpenAI</span><span>Gemini</span><span>Claude Code</span><span>MCP servers</span><span>Tool-calling agents</span><span>RAG</span><span>ChromaDB</span><span>Prompt design</span></div></div><div class="card skill-group"><h3><em>02</em>Voice</h3><div class="chips"><span>Vapi</span><span>Retell AI</span><span>Twilio</span><span>ElevenLabs</span><span>Kokoro TTS</span><span>Whisper</span><span>faster-whisper</span><span>Call analytics</span></div></div><div class="card skill-group"><h3><em>03</em>Automation</h3><div class="chips"><span>n8n</span><span>Webhooks</span><span>Stripe</span><span>Airtable</span><span>Google Workspace APIs</span><span>Email &amp; SMS flows</span><span>Lead routing</span></div></div><div class="card skill-group"><h3><em>04</em>Web &amp; apps</h3><div class="chips"><span>TypeScript</span><span>JavaScript</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Express</span><span>Fastify</span><span>Python</span><span>FastAPI</span><span>PHP</span><span>Tailwind</span></div></div><div class="card skill-group"><h3><em>05</em>Data &amp; infrastructure</h3><div class="chips"><span>PostgreSQL</span><span>SQLite</span><span>Docker</span><span>Linux</span><span>WHM / cPanel</span><span>Vercel</span><span>Fly.io</span><span>Railway</span><span>GitHub Actions</span><span>SEO</span></div></div></div>
-    </div>
-    <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Voice agents</span><span>Lead follow-up</span><span>AI receptionists</span><span>Estimates</span><span>Scheduling</span><span>MCP servers</span><span>Automations</span><span>Custom AI tools</span><span>Reporting</span><span>Web apps</span><span>Integrations</span><span>Websites</span><span>Voice agents</span><span>Lead follow-up</span><span>AI receptionists</span><span>Estimates</span><span>Scheduling</span><span>MCP servers</span><span>Automations</span><span>Custom AI tools</span><span>Reporting</span><span>Web apps</span><span>Integrations</span><span>Websites</span></div></div>
-  </section>
+          <section class="pc-split">
+            <div>
+              <p class="pc-eyebrow">Why I do this</p>
+              <h2>I've run the business, not just built the software</h2>
+            </div>
+            <div>
+              <p>Running my own store taught me where the hours actually go in a small company. It's rarely the big strategy. It's the inbox, the phone, the quotes and the follow-ups that slip when you're busy doing the real work.</p>
+              <p>So that's what I fix: websites that bring in customers, marketing you can measure, and software and AI that give hours back. I explain it without jargon and hand it over so your team can run it. I work in person around Leland, Wilmington and the Cape Fear region, and anywhere else over video calls.</p>
+            </div>
+          </section>
 
-  <section>
-    <div class="wrap">
-      <div class="center reveal">
-        <p class="eyebrow">The road here</p>
-        <h2>How I got here</h2>
-      </div>
-      <div class="timeline">
-        <div class="tl-item"><p class="when">The start</p><h3>Full-stack development</h3><p>Two decades of building websites and web apps, running servers, and wiring systems together with custom integrations.</p></div>
-        <div class="tl-item"><p class="when">Real estate</p><h3>Websites for a real estate brokerage</h3><p>Ran the brokerage's agent websites, with live IDX listing integrations, SEO and hosting.</p></div>
-        <div class="tl-item"><p class="when">2020 to now</p><h3>Built my own e-commerce business</h3><p>Started and grew an online store, which is where I learned firsthand how much of a small business is repetitive admin.</p></div>
-        <div class="tl-item"><p class="when">Now</p><h3>Business Runs Better</h3><p>AI voice agents, automation and custom AI tools for local businesses, built on everything above.</p></div>
-      </div>
-    </div>
-  </section>
+          <section>
+            <h2>How I got here</h2>
+            <ol class="pc-timeline">
+              <li><span class="when">Age 12</span><div><h3>Taught myself to code</h3><p>Started building websites as a kid and never stopped.</p></div></li>
+              <li><span class="when">20+ years</span><div><h3>Websites for local businesses</h3><p>Designed, built and looked after sites for small businesses in all kinds of industries, with a 95% client satisfaction rate.</p></div></li>
+              <li><span class="when">Real estate</span><div><h3>In-house at a brokerage</h3><p>Became the web developer and digital marketer for a real estate brokerage: more than 80 websites with live IDX listings, SEO that put 75% of their priority keywords on page one, six social platforms, a local blog with 10,000+ monthly visitors, and their print and digital ads. I still do.</p></div></li>
+              <li><span class="when">2020</span><div><h3>Built an eCommerce business</h3><p>Started an online store from my house. Within two years it filled a 2,500 sq ft warehouse with a full-time team, and in 2023 it did $750,000 in sales across ten marketplaces. I wrote the Python automations that kept it running.</p></div></li>
+              <li><span class="when">Now</span><div><h3>Business Runs Better</h3><p>Websites, marketing, custom software and AI for local businesses, built on everything above.</p></div></li>
+            </ol>
+          </section>
 
-  <section>
-    <div class="wrap">
-      <div class="center reveal">
-        <p class="eyebrow">Recent work</p>
-        <h2>Things I've built</h2>
-      </div>
-      <div class="cols-3" style="margin-top:32px">
-        <a class="card reveal" href="work.html" style="text-decoration:none"><p class="status">In development</p><h3 style="margin-top:8px;color:var(--ink)">AI phone agent analytics</h3><p>See where your AI receptionist loses leads, call by call.</p></a>
-        <a class="card reveal" href="work.html" style="text-decoration:none"><p class="status">Working prototype</p><h3 style="margin-top:8px;color:var(--ink)">VirtueStage</h3><p>AI virtual staging for real estate listing photos.</p></a>
-        <a class="card reveal" href="work.html" style="text-decoration:none"><p class="status">Personal project</p><h3 style="margin-top:8px;color:var(--ink)">Jarvis</h3><p>A voice assistant with its own GPU speech server.</p></a>
-      </div>
-      <div class="btn-row" style="justify-content:center"><a class="btn" href="work.html">All projects</a></div>
-    </div>
-  </section>
+          <section>
+            <h2>What I work with</h2>
+            <p>I pick tools for the job and for what your team already uses, not to show off.</p>
+            <div class="pc-grid" style="margin-top:20px">
+              <div class="pc-card"><h3>Web</h3><ul class="pc-tags"><li>HTML &amp; CSS</li><li>JavaScript</li><li>PHP</li><li>WordPress</li><li>React</li><li>Next.js</li><li>Node.js</li><li>IDX / MLS</li></ul></div>
+              <div class="pc-card"><h3>Commerce</h3><ul class="pc-tags"><li>Shopify</li><li>WooCommerce</li><li>Amazon</li><li>eBay</li><li>Stripe</li><li>Inventory systems</li></ul></div>
+              <div class="pc-card"><h3>Marketing</h3><ul class="pc-tags"><li>SEO</li><li>Google Business Profile</li><li>Email</li><li>Social media</li><li>Adobe Creative Suite</li><li>Analytics</li></ul></div>
+              <div class="pc-card"><h3>AI</h3><ul class="pc-tags"><li>Claude</li><li>OpenAI</li><li>Gemini</li><li>Voice agents</li><li>Vapi</li><li>Retell</li><li>Whisper</li><li>Local models</li></ul></div>
+              <div class="pc-card"><h3>Automation &amp; data</h3><ul class="pc-tags"><li>Python</li><li>n8n</li><li>Webhooks</li><li>SQL</li><li>PostgreSQL</li><li>Airtable</li><li>Google Workspace</li></ul></div>
+              <div class="pc-card"><h3>Servers</h3><ul class="pc-tags"><li>Linux</li><li>WHM / cPanel</li><li>Docker</li><li>Hosting</li><li>Backups</li><li>Monitoring</li></ul></div>
+            </div>
+          </section>
 
-  <section id="testimonials" hidden>
-    <div class="wrap">
-      <div class="center"><p class="eyebrow">Clients</p><h2>What clients say</h2></div>
-      <div class="quotes"></div>
-    </div>
-  </section>
+          <section data-testimonials hidden>
+            <h2>What clients say</h2>
+            <div class="pc-quotes"></div>
+          </section>
 
-  <section class="center">
-    <div class="wrap reveal">
-      <h2>Let's find your wasted hours</h2>
-      <p class="lede">20 minutes, no pitch deck. I'll tell you honestly whether AI is worth it for your business yet.</p>
-      <div class="btn-row">
-        <a class="btn primary" href="pricing.html#contact" data-book-call>Book a free 20-minute call</a>
-        <a class="btn" href="pricing.html">See pricing</a>
+          <section class="pc-cta" id="contact">
+            <h2>Let's talk about your business</h2>
+            <p>20 minutes, no pitch deck. Tell me what you're working on and I'll tell you honestly what I'd do first.</p>
+            <div class="pc-actions">
+              <a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>
+              <a class="pc-link" href="tel:+19105240056">Or call 910-524-0056</a>
+            </div>
+            <div data-standalone-only>
+              <form id="contactForm" class="pc-form" action="/contact.php" method="POST" novalidate>
+                <input type="text" name="website" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <input type="hidden" name="started" value="">
+                <div><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required></div>
+                <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+                <div><label for="company">Business name</label><input id="company" name="company" autocomplete="organization"></div>
+                <div><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional"></div>
+                <div class="full"><label for="interest">What do you need?</label>
+                  <select id="interest" name="interest" required>
+                    <option selected>Free 20-minute call</option>
+                    <option>Website</option>
+                    <option>Marketing or SEO</option>
+                    <option>Custom software</option>
+                    <option>AI or automation</option>
+                    <option>Not sure yet</option>
+                  </select></div>
+                <div class="full"><label for="message">What are you working on?</label><textarea id="message" name="message" required placeholder="Your business, what you need, and anything you've already tried."></textarea></div>
+                <p class="form-status full" id="formStatus" role="status" aria-live="polite"></p>
+                <div class="form-foot full"><p>Only used to reply to you.</p><button class="pc-btn" type="submit">Send</button></div>
+              </form>
+              <div class="form-done" id="formDone" hidden><h3>Got it. Thanks.</h3><p>I'll reply within one business day.</p></div>
+            </div>
+          </section>
+
+          <section>
+            <p class="pc-eyebrow">Keep going</p>
+            <div class="pc-related" style="margin-top:14px">
+              <a href="/work.html"><h3>Work</h3><small>Sites, stores and AI tools I&rsquo;ve built, and where each one stands.</small></a>
+              <a href="/services/web-design/"><h3>Web Design &amp; Development</h3><small>Fast, mobile-first websites built to rank and to turn visitors into calls.</small></a>
+              <a href="/services/ai-consulting/"><h3>AI Consulting &amp; Strategy</h3><small>Find out where AI actually pays off in your business, and what to skip.</small></a>
+            </div>
+          </section>
+
+          <footer class="pc-foot">
+            <span>&copy; <span data-year>2026</span> Business Runs Better</span>
+            <a href="tel:+19105240056">910-524-0056</a>
+            <a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a>
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+          </footer>
+
+        </article>
       </div>
     </div>
-  </section>
+  </div>
 </main>
 
-<footer class="site-foot">
-  <div class="wrap">
-    <p>&copy; <span data-year></span> Business Runs Better</p>
-    <nav aria-label="Footer"><a href="/">Home</a><a href="work.html">Work</a><a href="about.html">About</a><a href="pricing.html">Pricing</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="tel:+19105240056">910-524-0056</a><a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a></nav>
-  </div>
-</footer>
-
-<script src="assets/site-config.js?v=202610091841"></script>
-<script src="assets/site.js?v=202610091841"></script>
-<script src="assets/about.js?v=202610091732"></script>
+<script src="/assets/site-config.js?v=202610091841"></script>
+<script src="/assets/site.js?v=202610091841"></script>
+<script src="/assets/panel.js?v=2"></script>
 </body>
 </html>

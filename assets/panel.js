@@ -1,7 +1,7 @@
 /* The page window's scrollbar (theme-coloured, with up and down arrows).
-   On standalone pages it also draws the starfield, offers the theme swatches,
-   and remembers that the visitor has been inside the site (so closing the window
-   lands them straight on the landing page instead of replaying the intro). */
+   On standalone pages it also draws the starfield and remembers that the visitor
+   has been inside the site (so closing the window lands them straight on the
+   landing page instead of replaying the intro). */
 (function () {
   var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ICON = {
@@ -81,31 +81,33 @@
     setTimeout(update, 300);   // after web fonts settle
   }
 
-  window.BRBPanel = { enhance: enhance };
+  // Fills in the live bits of a page's content: the year, and client quotes from
+  // site-config.js (the About page's quotes section stays hidden while that list is empty).
+  // Runs on standalone pages, and on the window's content each time a page opens in it.
+  function decorate(root) {
+    root = root || document;
+    Array.prototype.forEach.call(root.querySelectorAll('[data-year]'), function (el) { el.textContent = new Date().getFullYear(); });
+    var box = root.querySelector('[data-testimonials]');
+    var quotes = ((window.BRB_CONFIG || {}).testimonials || []).filter(function (q) { return q && q.quote && q.name; });
+    if (!box || !quotes.length) return;
+    var list = box.querySelector('.pc-quotes');
+    list.textContent = '';
+    quotes.forEach(function (q) {
+      var fig = document.createElement('figure'), bq = document.createElement('blockquote'), cap = document.createElement('figcaption');
+      bq.textContent = q.quote;
+      cap.textContent = q.name + (q.business ? ', ' + q.business : '');
+      fig.appendChild(bq); fig.appendChild(cap); list.appendChild(fig);
+    });
+    box.hidden = false;
+  }
+
+  window.BRBPanel = { enhance: enhance, decorate: decorate };
 
   // ---------------------------------------------------------------- standalone pages
   if (!document.body.classList.contains('pg')) return;
   try { sessionStorage.setItem('brb-entered', '1'); } catch (e) {}
   Array.prototype.forEach.call(document.querySelectorAll('.panel'), enhance);
-  var year = document.querySelector('[data-year]');
-  if (year) year.textContent = new Date().getFullYear();
-
-  // theme swatches
-  var sw = document.querySelector('.pc-themes');
-  if (sw && window.BRB_THEMES) {
-    Object.keys(window.BRB_THEMES).forEach(function (k) {
-      var t = window.BRB_THEMES[k];
-      var b = document.createElement('button');
-      b.type = 'button'; b.dataset.k = k; b.style.setProperty('--sw', t.brand);
-      b.setAttribute('aria-label', t.name + ' colour theme');
-      b.setAttribute('aria-pressed', String(k === window.BRB_THEME));
-      b.addEventListener('click', function () {
-        window.BRB_applyTheme(k, true);
-        Array.prototype.forEach.call(sw.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', String(x.dataset.k === k)); });
-      });
-      sw.appendChild(b);
-    });
-  }
+  decorate(document);
 
   // the starfield: stars and sparkles that drift, twinkle and shy away from the cursor
   var cv = document.getElementById('pgStars');
