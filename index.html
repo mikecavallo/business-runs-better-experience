@@ -7,8 +7,9 @@
 <meta name="description" content="I find the repetitive work costing your business time and money, then build practical AI into the way you already operate. AI implementation, consulting, and MVP development for local business.">
 <meta name="theme-color" content="#16191d">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/panel.css?v=1">
 <link rel="canonical" href="https://businessrunsbetter.com/">
 
 <meta property="og:type" content="website">
@@ -18,19 +19,19 @@
 <meta property="og:url" content="https://businessrunsbetter.com/">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="preload" href="assets/fonts/michroma-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/manrope-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/michroma-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
 /* ============ FONTS (self-hosted) ============ */
-@font-face{font-family:'Michroma';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/michroma-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'Michroma';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/michroma-400-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
-@font-face{font-family:'Manrope';font-style:normal;font-weight:400 700;font-display:swap;src:url('assets/fonts/manrope-var-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'Manrope';font-style:normal;font-weight:400 700;font-display:swap;src:url('assets/fonts/manrope-var-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
-@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/dmmono-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/dmmono-400-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
-@font-face{font-family:'DM Mono';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/dmmono-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'DM Mono';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/dmmono-500-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Michroma';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/michroma-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Michroma';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/michroma-400-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400 700;font-display:swap;src:url('/assets/fonts/manrope-var-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400 700;font-display:swap;src:url('/assets/fonts/manrope-var-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/dmmono-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/dmmono-400-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/dmmono-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'DM Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/dmmono-500-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -935,6 +936,23 @@ body.at-landing #progress, body.at-landing .nav-pips { opacity: 0; pointer-event
 @keyframes lpFade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes lpRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
+/* the page window over the landing page */
+.svc-overlay {
+  position: fixed; inset: 0; z-index: 600;
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(70px, 9vh, 96px) clamp(12px, 3vw, 40px) clamp(62px, 8vh, 84px);
+}
+.svc-overlay[hidden] { display: none; }
+.svc-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, .5); backdrop-filter: blur(6px); opacity: 0; transition: opacity .35s ease; }
+.svc-overlay .panel { height: 100%; max-height: 920px; opacity: 0; transform: translateY(16px) scale(.97); transition: opacity .35s ease, transform .5s var(--ease-out); }
+.svc-overlay.open .svc-backdrop { opacity: 1; }
+.svc-overlay.open .panel { opacity: 1; transform: none; }
+.svc-overlay .pc-foot .pc-themes { display: none; }
+@media (max-width: 640px) {
+  .svc-overlay { padding: 8px; }
+  .svc-overlay .panel { max-height: none; }
+}
+
 /* ---- 9 services ---- */
 .services-section .section-inner { max-width: min(1440px, 100%); }
 .services-section h2 {
@@ -1259,7 +1277,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       <p><strong style="color:#f3f6fb">What I do:</strong> AI implementation · Automated lead generation · Web development · AI consulting &amp; strategy · MVP development · Customer service &amp; support · Scheduling, estimates &amp; admin · Reviews, reporting &amp; team knowledge</p>
       <p>The interactive version of this site needs JavaScript. Either way, the fastest way to start is to email me directly.</p>
       <p style="margin-top:26px"><a class="final-email" href="tel:+19105240056">910-524-0056</a> &nbsp; <a class="final-email" href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a></p>
-      <p><a href="about.html">About</a> · <a href="pricing.html">Pricing</a> · <a href="work.html">Work</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+      <p><a href="/about.html">About</a> · <a href="/pricing.html">Pricing</a> · <a href="/work.html">Work</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></p>
     </div>
   </div>
 </noscript>
@@ -1551,19 +1569,33 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
             <div class="lm-group" data-key="mike" data-need="to know who it&rsquo;s hiring.">
               <h3>Mike</h3>
               <ul>
-                <li><a href="about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. Twenty years of websites, stores, software and AI.</small></a></li>
-                <li><a href="work.html" data-code="WORK" data-need="to see real work first.">Work<small>Sites and AI tools I&rsquo;ve built, and where each one stands.</small></a></li>
+                <li><a href="/about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. Twenty years of websites, stores, software and AI.</small></a></li>
+                <li><a href="/work.html" data-code="WORK" data-need="to see real work first.">Work<small>Sites and AI tools I&rsquo;ve built, and where each one stands.</small></a></li>
                 <li><a href="#pricing" data-code="$" data-need="to know what it costs." data-jump="6">Pricing<small>$500 Time Audit, builds from $2,500, support from $300 a month.</small></a></li>
                 <li><a href="#contact" data-code="CALL" data-need="a straight answer." data-call>Book a free 20-minute call<small>No pitch deck. I&rsquo;ll tell you honestly what I&rsquo;d do first.</small></a></li>
               </ul>
             </div>
           </nav>
         </div>
-        <p class="landing-foot">&copy; <span id="year"></span> Business Runs Better &middot; <a href="tel:+19105240056">910-524-0056</a> &middot; <a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></p>
+        <p class="landing-foot">&copy; <span id="year"></span> Business Runs Better &middot; <a href="tel:+19105240056">910-524-0056</a> &middot; <a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a> &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></p>
       </div>
     </section>
 
   </main>
+</div>
+
+<!-- Service pages open here, over the landing page. Each is also a real page at its own address. -->
+<div class="svc-overlay" id="svcOverlay" hidden>
+  <div class="svc-backdrop" data-close></div>
+  <div class="panel" id="svcPanel" role="dialog" aria-modal="true" aria-label="Page">
+    <div class="panel-bar">
+      <span class="panel-crumb" id="svcCrumb"></span>
+      <button class="pbtn" type="button" data-close aria-label="Close"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3l6 6M9 3 3 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="panel-well">
+      <div class="panel-scroll" tabindex="0" id="svcScroll"><article class="panel-content" id="svcBody"></article></div>
+    </div>
+  </div>
 </div>
 
 <!-- ============ CONTACT DIALOG ============ -->
@@ -1576,7 +1608,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <button class="dialog-close" id="dialogClose" aria-label="Close">&times;</button>
   </div>
   <div class="dialog-body">
-    <form id="contactForm" action="contact.php" method="POST" novalidate>
+    <form id="contactForm" action="/contact.php" method="POST" novalidate>
       <input type="hidden" name="_subject" value="New Business Runs Better inquiry">
       <input type="text" name="website" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
       <input type="hidden" name="started" id="formStarted" value="">
@@ -1638,7 +1670,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   </div>
 </dialog>
 
-<script src="assets/site-config.js?v=202610091841"></script>
+<script src="/assets/site-config.js?v=202610091841"></script>
+<script src="/assets/panel.js?v=1"></script>
 <script>
 // ============================================
 // CONFIG
@@ -1993,6 +2026,7 @@ const patterns = [
 function enterSite(animated) {
   if (entered) return;
   entered = true;
+  try { sessionStorage.setItem('brb-entered', '1'); } catch (e) {}
 
   const splash = document.getElementById('splash');
   const cells = document.querySelectorAll('.splash-cell');
@@ -2061,6 +2095,10 @@ function enterSite(animated) {
 
 document.getElementById('enterBtn').addEventListener('click', () => enterSite(true));
 document.getElementById('skipBtn').addEventListener('click', () => enterSite(false));
+// Back from a page (its close button goes to /#explore): skip the splash, go straight there.
+try {
+  if (sessionStorage.getItem('brb-entered') && SLUGS.indexOf((location.hash || '').slice(1)) > 0) enterSite(false);
+} catch (e) {}
 
 // ============================================
 // LETTER-BY-LETTER TEXT
@@ -2163,7 +2201,7 @@ let bgLayer = 0;
 function setBackdrop(index) {
   const layers = document.querySelectorAll('.section-bg i');
   if (!layers.length) return;
-  const url = `assets/img/${SECTION_BG[index]}.webp`;
+  const url = `/assets/img/${SECTION_BG[index]}.webp`;
   const showing = layers[bgLayer];
   if (showing.dataset.src === url) return;   // same image — don't re-crossfade
   const next = layers[bgLayer ^ 1];
@@ -2377,7 +2415,7 @@ function drawWarp(c, w, h, p, time) {
 // ============================================
 const dialog = document.getElementById('contactDialog');
 function uiBlocked() {
-  return dialog.open || document.getElementById('mobileMenu').classList.contains('open');
+  return dialog.open || document.getElementById('mobileMenu').classList.contains('open') || !document.getElementById('svcOverlay').hidden;
 }
 
 /* If the active section is taller than the viewport it scrolls internally.
@@ -2538,7 +2576,7 @@ contactForm.addEventListener('submit', async (e) => {
     formSubmit.disabled = false;
   }
 });
-// Free call: booking calendar when configured (assets/site-config.js), else the form.
+// Free call: booking calendar when configured (/assets/site-config.js), else the form.
 function bookCall() {
   const url = (window.BRB_CONFIG || {}).calendarUrl;
   if (url) window.open(url, '_blank', 'noopener');
@@ -2660,14 +2698,14 @@ function speakSection(index) {
   if (!soundEnabled) return;
   stopNarration();
   narrationTimer = setTimeout(() => {
-    const a = new Audio(`assets/audio/s${String(index).padStart(2, '0')}.mp3`);
+    const a = new Audio(`/assets/audio/s${String(index).padStart(2, '0')}.mp3`);
     a.volume = 0.92;
     narrationAudio = a;
     a.play().then(() => {
       // warm the next clip so the following section starts instantly
       const nxt = index + 1;
       if (nxt < TOTAL_SECTIONS) {
-        new Audio(`assets/audio/s${String(nxt).padStart(2, '0')}.mp3`).preload = 'auto';
+        new Audio(`/assets/audio/s${String(nxt).padStart(2, '0')}.mp3`).preload = 'auto';
       }
     }).catch(() => { narrationAudio = null; speakSectionFallback(index); });
   }, 420);
@@ -2867,6 +2905,106 @@ function initBackground() {
 }
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// ============================================
+// PAGE WINDOW
+// Service pages (and later About and Work) are real pages at their own addresses,
+// which is what Google indexes and what a refresh or a shared link loads. From the
+// landing page they open in this window instead, and the address bar follows.
+// ============================================
+(function () {
+  const overlay = document.getElementById('svcOverlay');
+  const panel = document.getElementById('svcPanel');
+  const body = document.getElementById('svcBody');
+  const crumb = document.getElementById('svcCrumb');
+  const scroller = document.getElementById('svcScroll');
+  if (!overlay || !window.BRBPanel) return;
+  window.BRBPanel.enhance(panel);
+  const baseTitle = document.title;
+  let pushed = false, returnFocus = null, closeTimer = null;
+  const isPage = href => /^\/services\/[a-z0-9-]+\/?$/.test(href || '');
+
+  function comingSoon(href) {
+    const a = document.querySelector('#landingMap a[href="' + href + '"]');
+    const name = a ? a.firstChild.textContent.trim() : 'This page';
+    const desc = a && a.querySelector('small') ? a.querySelector('small').textContent.trim() : '';
+    const code = a ? a.dataset.code : '';
+    const group = a ? a.closest('.lm-group').querySelector('h3').textContent.trim() : '';
+    return {
+      title: name + ' | Business Runs Better',
+      crumb: (code ? '<span class="panel-code">' + code + '</span>' : '') + '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span><span>' + name + '</span>',
+      html: '<section><p class="pc-eyebrow">' + group + ' &middot; coming soon</p><h1>' + name + '</h1>' +
+        '<p class="pc-lede">' + desc + '</p><p>This page is still being written. If it’s what you need, let’s talk now.</p>' +
+        '<div class="pc-actions"><a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>' +
+        '<a class="pc-link" href="tel:+19105240056">Or call 910-524-0056</a></div></section>'
+    };
+  }
+
+  async function load(href) {
+    const url = (window.BRB_PREVIEW ? href.replace(/^\//, '') : href) + (href.endsWith('/') ? 'index.html' : '');
+    try {
+      const r = await fetch(url, { credentials: 'same-origin' });
+      if (!r.ok) throw new Error(r.status);
+      const doc = new DOMParser().parseFromString(await r.text(), 'text/html');
+      const content = doc.getElementById('pageContent');
+      if (!content) throw new Error('no content');
+      content.querySelectorAll('[data-standalone-only]').forEach(n => n.remove());
+      const c = doc.querySelector('.panel-crumb');
+      return { title: doc.title, crumb: c ? c.innerHTML : '', html: content.innerHTML };
+    } catch (e) {
+      return comingSoon(href);
+    }
+  }
+
+  async function openPage(href, push) {
+    clearTimeout(closeTimer);
+    if (overlay.hidden) returnFocus = document.activeElement;
+    const page = await load(href);
+    body.innerHTML = page.html;
+    crumb.innerHTML = page.crumb;
+    scroller.scrollTop = 0;
+    document.title = page.title || baseTitle;
+    overlay.hidden = false;
+    requestAnimationFrame(() => overlay.classList.add('open'));
+    if (push && !window.BRB_PREVIEW) { history.pushState({ brbPage: href }, '', href); pushed = true; }
+    panel.querySelector('.panel-bar [data-close]').focus({ preventScroll: true });
+  }
+
+  function hide() {
+    overlay.classList.remove('open');
+    document.title = baseTitle;
+    closeTimer = setTimeout(() => { overlay.hidden = true; body.innerHTML = ''; }, 380);
+    if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
+  }
+  function closePage() {
+    if (overlay.hidden) return;
+    if (pushed) { pushed = false; history.back(); return; }   // popstate hides it
+    hide();
+  }
+  window.addEventListener('popstate', e => {
+    if (e.state && e.state.brbPage) { pushed = true; openPage(e.state.brbPage, false); }
+    else if (!overlay.hidden) { pushed = false; hide(); }
+  });
+
+  // links on the landing page and inside the window
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+    const href = a.getAttribute('href');
+    const inWindow = overlay.contains(a);
+    if (isPage(href) && (inWindow || a.closest('#landing'))) {
+      e.preventDefault();
+      if (inWindow && pushed && !window.BRB_PREVIEW) { history.replaceState({ brbPage: href }, '', href); openPage(href, false); }
+      else openPage(href, true);
+      return;
+    }
+    if (!inWindow) return;
+    if (a.hasAttribute('data-book-call')) { e.preventDefault(); bookCall(); return; }
+    if (href === '/#explore' || href === '/') { e.preventDefault(); closePage(); }
+  });
+  overlay.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closePage));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden && !dialog.open) closePage(); });
+})();
 
 // ============================================
 // LANDING: where to next
@@ -3077,7 +3215,7 @@ let landingActivated = () => {};
   morph.querySelector('.lp-back').addEventListener('click', () => { morph.classList.remove('open'); say(null); });
 
   document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape' || !isOn()) return;
+    if (e.key !== 'Escape' || !isOn() || !document.getElementById('svcOverlay').hidden) return;
     if (open) { open = null; layout(); }
     morph.classList.remove('open');
   });
