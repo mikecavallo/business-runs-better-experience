@@ -311,6 +311,8 @@
   .pc-prose li { font-size: 15px; }
   .pc-quotes { grid-template-columns: minmax(0, 1fr); }
   .panel-content p { font-size: 15px; }
+  /* the call button with the phone number under it, centred */
+  .pc-actions { flex-direction: column; align-items: center; gap: 16px; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pbtn, .pc-related a { transition: none; }
