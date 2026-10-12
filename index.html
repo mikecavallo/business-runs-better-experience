@@ -119,6 +119,7 @@ body { min-width: 320px; }
 }
 #splash.morphing { background: transparent; }
 #splash.hidden { opacity: 0; visibility: hidden; }
+#splash.quick { transition: opacity .5s ease, visibility 0s .5s; }
 
 .splash-grid {
   position: absolute; inset: 0;
@@ -916,6 +917,8 @@ nav.visible { opacity: 1; transform: translateY(0); }
 /* arriving on the landing page */
 #progress, .nav-pips { transition: opacity .6s ease; }
 body.at-landing #progress, body.at-landing .nav-pips { opacity: 0; pointer-events: none; }
+/* from the landing page on, sound is off and the theme is set, so the bottom bar retires */
+body.past-intro .bottom-nav { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .5s ease, visibility 0s linear .5s; }
 .landing.lp-arrive .landing-need { animation: lpRise .8s var(--ease-out) .05s both; }
 .landing.lp-arrive .landing-foot { animation: lpRise .8s var(--ease-out) 1.6s both; }
 .landing.lp-arrive .lp-orb.top::before { animation: lpIgnite 1s var(--ease-out) both; }
@@ -2023,13 +2026,20 @@ const patterns = [
   }
 })();
 
-function enterSite(animated) {
+function enterSite(animated, skip) {
   if (entered) return;
   entered = true;
   try { sessionStorage.setItem('brb-entered', '1'); } catch (e) {}
 
   const splash = document.getElementById('splash');
   const cells = document.querySelectorAll('.splash-cell');
+  if (skip) {
+    // straight to the warp: the first intro screen never shows
+    splash.classList.add('quick');
+    const first = document.getElementById('section-0');
+    first.classList.remove('active');
+    first.inert = true;
+  }
   document.querySelector('.splash-inner').style.opacity = '0';
   document.querySelector('.splash-inner').style.pointerEvents = 'none';
 
@@ -2078,7 +2088,7 @@ function enterSite(animated) {
     document.getElementById('nav').classList.add('visible');
     document.getElementById('bottomNav').classList.add('visible');
     document.getElementById('progress').classList.add('visible');
-    if (!RM) document.getElementById('scrollHint').classList.add('visible');
+    if (!RM && !skip) document.getElementById('scrollHint').classList.add('visible');
     buildAnimatedTitles();
     fitScenes();
     buildNavPips();
@@ -2086,15 +2096,17 @@ function enterSite(animated) {
     buildThemePicker();
 
     const fromHash = SLUGS.indexOf((location.hash || '').replace('#', ''));
-    const start = fromHash > 0 ? fromHash : 0;
+    const start = skip ? LANDING_INDEX : fromHash > 0 ? fromHash : 0;
     setTimeout(() => {
-      if (start > 0) { forceSection(start); } else { activateSection(0); }
+      if (skip && !RM) warpTo(LANDING_INDEX);
+      else if (start > 0) forceSection(start);
+      else activateSection(0);
     }, 100);
   }, runMorph ? 2200 : 400);
 }
 
 document.getElementById('enterBtn').addEventListener('click', () => enterSite(true));
-document.getElementById('skipBtn').addEventListener('click', () => enterSite(false));
+document.getElementById('skipBtn').addEventListener('click', () => enterSite(false, true));
 // Back from a page (its close button goes to /#explore): skip the splash, go straight there.
 try {
   if (sessionStorage.getItem('brb-entered') && SLUGS.indexOf((location.hash || '').slice(1)) > 0) enterSite(false);
@@ -2226,11 +2238,14 @@ function setSectionState(index) {
   document.getElementById('liveRegion').textContent =
     `Section ${index + 1} of ${TOTAL_SECTIONS}: ${SECTION_NAMES[index]}`;
   if (history.replaceState) history.replaceState(null, '', '#' + SLUGS[index]);
-  // past the intro: its progress bar and dots step aside, and 'Back to start' becomes 'Replay intro'
+  // past the intro: its progress bar and dots step aside. From here on the sound is off and the
+  // colour theme is settled, so the bottom bar (back, theme, sound) retires for the rest of the visit.
   document.body.classList.toggle('at-landing', index === LANDING_INDEX);
-  const backLabel = document.querySelector('.back-to-top span:not(.chip-icon)');
-  if (backLabel) backLabel.textContent = index === LANDING_INDEX ? 'Replay intro' : 'Back to start';
-  if (index === LANDING_INDEX) landingActivated();
+  if (index === LANDING_INDEX) {
+    document.body.classList.add('past-intro');
+    if (soundEnabled) setSound(false, 1.6);
+    landingActivated();
+  }
   if (soundEnabled) speakSection(index);
   runCounters(index);
 }
@@ -2621,6 +2636,7 @@ function startAmbient() {
   const master = audioCtx.createGain();
   master.gain.setValueAtTime(0, t);
   master.gain.linearRampToValueAtTime(0.04, t + 2);
+  master.__master = true;
   const reverb = audioCtx.createConvolver();
   const len = audioCtx.sampleRate * 3;
   const impulse = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
@@ -2673,9 +2689,18 @@ function startAmbient() {
   noise.start(t);
   ambientNodes.push(noise, nLfo, nFilt, nGain, master, reverb);
 }
-function stopAmbient() {
-  ambientNodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch(e){} });
+function stopAmbient(fade) {
+  const nodes = ambientNodes;
   ambientNodes = [];
+  const kill = () => nodes.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch(e){} });
+  const master = nodes.find(n => n.__master);
+  if (fade && master && audioCtx) {
+    const t = audioCtx.currentTime;
+    master.gain.cancelScheduledValues(t);
+    master.gain.setValueAtTime(master.gain.value, t);
+    master.gain.linearRampToValueAtTime(0, t + fade);
+    setTimeout(kill, fade * 1000 + 100);
+  } else kill();
 }
 
 /* Narration is PRE-RENDERED (Kokoro, see render-narration.py) and ships as
@@ -2735,21 +2760,23 @@ if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
 
-document.getElementById('soundToggle').addEventListener('click', function() {
-  soundEnabled = !soundEnabled;
-  this.querySelector('.label').textContent = soundEnabled ? 'Sound on' : 'Sound off';
-  this.classList.toggle('active', soundEnabled);
-  this.setAttribute('aria-pressed', soundEnabled ? 'true' : 'false');
-  if (soundEnabled) {
+function setSound(on, fade) {
+  soundEnabled = on;
+  const btn = document.getElementById('soundToggle');
+  btn.querySelector('.label').textContent = on ? 'Sound on' : 'Sound off';
+  btn.classList.toggle('active', on);
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  if (on) {
     if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
     startAmbient();
     playTransitionSound(400, 0.06, 'sine');
     speakSection(currentSection);
   } else {
-    stopAmbient();
+    stopAmbient(fade);
     stopNarration();
   }
-});
+}
+document.getElementById('soundToggle').addEventListener('click', () => setSound(!soundEnabled));
 
 // ============================================
 // BACKGROUND CANVAS
