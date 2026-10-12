@@ -158,6 +158,7 @@ assets/page.css         the standalone page shell: starfield, header, one window
 assets/panel.css|js     the window itself (beveled frame, themed scrollbar) and its content styles
 assets/theme.js         the visitor's colour theme, shared by every page
 assets/splash.js        the Enter screen: one of four, picked at random each visit (add ?splash=gate|sweep|night|power to pick one)
+                        visitors seen in the last 30 days skip it and the intro (?splash still shows it)
 assets/site.js          contact form and booking buttons on the standalone pages
 assets/site-config.js   Stripe Payment Links and booking links (public)
 contact.php             contact form handler (lead tracker + email + CSV backup)
