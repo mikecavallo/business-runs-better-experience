@@ -6,12 +6,14 @@
      power  Power On          hold the ring to charge it; the grid lights up cell by cell
    It lives in a shadow root on #splash, so its class names can't collide with the intro's.
    index.html starts it (BRBSplash.start) once it knows the visitor isn't skipping the splash,
-   and hands it what Enter and Skip should do. Add ?splash=gate|sweep|night|power to the
-   address to see one on purpose. */
+   and hands it what Enter and Skip should do. Returning visitors never see it (index.html
+   sends them to the landing page). Add ?splash=gate|sweep|night|power to the address to see
+   one on purpose, or just ?splash for a random one. */
 (function () {
   'use strict';
   var host = document.getElementById('splash');
-  if (!host || !host.attachShadow || !window.requestAnimationFrame) return;   // the plain fallback in #splash stays
+  if (!host || document.documentElement.classList.contains('returning')) return;
+  if (!host.attachShadow || !window.requestAnimationFrame) return;   // the plain fallback in #splash stays
 
   var KEYS = ['gate', 'sweep', 'night', 'power'];
   function stored(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -62,7 +64,7 @@ button { font: inherit; color: inherit; }
 .brand-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
 .wordmark { margin: 0; font: 400 12px/1.4 var(--font-display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); }
 .tag { margin: 0; font: 400 11px/1.65 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); text-wrap: balance; }
-.actions { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 
 .btn {
   appearance: none; cursor: pointer;
@@ -79,14 +81,19 @@ button { font: inherit; color: inherit; }
 .btn:active { transform: translateY(1px); }
 .btn[aria-disabled="true"] { cursor: default; filter: saturate(.7); }
 
+/* the way out: a real button, second only to the main one */
 .skip {
-  appearance: none; background: none; border: 0; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 8px; padding: 12px 8px;
-  font: 400 11px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase;
-  color: var(--dim); transition: color .25s ease;
+  appearance: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 44px; padding: 0 20px; border-radius: 12px;
+  font: 400 13px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(var(--brand-rgb), .07);
+  border: 1px solid rgba(var(--brand-rgb), .5);
+  transition: border-color .25s ease, background .25s ease;
 }
-.skip svg { width: 11px; height: 11px; transition: transform .35s var(--ease-out); }
-.skip:hover { color: var(--brand-lift); }
+.skip svg { width: 12px; height: 12px; color: var(--brand-lift); transition: transform .35s var(--ease-out); }
+.skip:hover { border-color: var(--brand-lift); background: rgba(var(--brand-rgb), .15); }
 .skip:hover svg { transform: translateX(3px); }
 
 /* ============ 1. HYPERSPACE GATE ============ */
@@ -435,7 +442,7 @@ button { font: inherit; color: inherit; }
   .n-time { font-size: clamp(26px, 7.6vw, 34px); }
   .n-line { font-size: clamp(17px, 5vw, 21px); }
   .n-q { font-size: clamp(21px, 6.2vw, 27px); }
-  .n-actions { gap: 4px 10px; }
+  .n-actions { gap: 10px; }
   .n-actions .btn { min-height: 46px; padding: 0 22px; }
   .p-ring { --rs: 156px; }
 }
