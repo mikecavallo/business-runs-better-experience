@@ -13,7 +13,7 @@ import argparse, json, os, subprocess, sys, urllib.request
 KOKORO = "http://127.0.0.1:8880/v1/audio/speech"
 
 LINES = [
- "Your business. Running better. Practical A.I. for local business.",
+ "Your business. Running better. Websites, marketing, and A.I. for local business.",
  "I find the repetitive work costing you time, then build A.I. into the way your business already runs.",
  "Find the waste. Build the fix. Put it to work. No A.I. theater, and no six month roadmap.",
  "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
