@@ -799,6 +799,119 @@ nav.visible { opacity: 1; transform: translateY(0); }
 }
 .areas-detail.show { opacity: 1; transform: none; }
 
+/* ---- 8 landing: where to next ----
+   Desktop: a constellation of Build / Grow / Run / Mike that sways like cat's cradle.
+   Phones and tablets: four tiles that morph open into their pages. */
+.landing-section .section-inner.landing { height: 100%; max-width: min(1600px, 100%); display: flex; flex-direction: column; text-align: left; }
+.landing-need {
+  margin: 0; flex: none; min-height: calc(2 * 1.16em);
+  font-family: var(--font-display); font-weight: 400; color: var(--ink);
+  font-size: clamp(22px, 3.1vw, 46px); line-height: 1.16; letter-spacing: -.045em; text-wrap: balance;
+}
+.landing-need .need { color: var(--cobalt-lift); }
+.landing-need .ch { display: inline-block; white-space: pre; transition: opacity .4s ease, transform .6s var(--ease); }
+.landing-need .ch.out { opacity: 0; transform: translateY(70%) skewX(-16deg); }
+.landing-need .caret { display: inline-block; width: .08em; height: .9em; margin-left: .06em; background: var(--cobalt-lift); vertical-align: -.06em; animation: lpBlink 1.1s steps(1) infinite; }
+@keyframes lpBlink { 50% { opacity: 0; } }
+.landing-stage { position: relative; flex: 1; min-height: 0; margin-top: clamp(8px, 1.6vh, 20px); }
+.landing-foot { flex: none; margin: 10px 0 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--dim); }
+.landing-foot a { color: var(--muted); text-underline-offset: 3px; }
+.landing-foot a:hover { color: var(--cobalt-lift); }
+
+/* the plain list (shown only if the script doesn't run) */
+.landing-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+.landing-map h3 { font-family: var(--font-display); font-weight: 400; font-size: 20px; color: var(--cobalt-lift); margin-bottom: 10px; }
+.landing-map ul { list-style: none; display: grid; gap: 8px; }
+.landing-map a { color: var(--ink); text-decoration: none; font-size: 15px; }
+.landing-map small { display: block; color: var(--muted); font-size: 13px; }
+
+/* constellation */
+.lp-orbs { position: absolute; inset: 0; }
+.lp-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.lp-wires line { stroke: rgba(var(--brand-rgb), .42); stroke-width: 1; }
+.lp-wires line.faint { stroke: rgba(var(--brand-rgb), .18); }
+.lp-orb {
+  all: unset; box-sizing: border-box; position: absolute; left: 0; top: 0; display: block; cursor: pointer;
+  color: var(--ink); text-decoration: none;
+  transition: width .8s var(--ease), height .8s var(--ease), left .8s var(--ease), top .8s var(--ease), opacity .5s ease;
+}
+.lp-orb.gone { opacity: 0; pointer-events: none; }
+.lp-orb::before {
+  content: ''; position: absolute; left: 50%; top: 50%; width: var(--dot, 14px); height: var(--dot, 14px);
+  transform: translate(-50%, -50%); border-radius: 50%; background: var(--cobalt-lift);
+  box-shadow: 0 0 0 6px rgba(var(--brand-rgb), .12), 0 0 30px rgba(var(--brand-rgb), .6);
+  transition: width .5s var(--ease), height .5s var(--ease), box-shadow .4s ease;
+}
+.lp-orb:hover::before, .lp-orb:focus-visible::before { box-shadow: 0 0 0 12px rgba(var(--brand-rgb), .16), 0 0 44px rgba(var(--brand-rgb), .8); }
+.lp-orb:focus-visible { outline: none; }
+.lp-orb .in { position: absolute; top: calc(50% + var(--dot, 14px) / 2 + 12px); left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; white-space: nowrap; text-align: center; }
+.lp-orb.right .in { top: 50%; left: calc(50% + var(--dot, 14px) / 2 + 16px); transform: translateY(-50%); align-items: flex-start; text-align: left; white-space: normal; width: max-content; max-width: 32ch; }
+.lp-orb.top b { font-family: var(--font-display); font-weight: 400; font-size: var(--fs, 30px); letter-spacing: -.05em; line-height: 1; transition: color .3s ease; }
+.lp-orb.top small { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.lp-orb.top.sel b { color: var(--cobalt-lift); }
+.lp-orb.top.mini b { font-size: 15px !important; color: var(--muted); }
+.lp-orb.top.mini small { display: none; }
+.lp-orb.top.mini:hover b, .lp-orb.top.mini:focus-visible b { color: var(--cobalt-lift); }
+.lp-orb.kid b { font-family: var(--font-display); font-weight: 400; font-size: 15px; letter-spacing: -.02em; line-height: 1.3; transition: color .3s ease; }
+.lp-orb.kid small { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.lp-orbs.compact .lp-orb.kid small { display: none; }
+.lp-orb.kid:hover b, .lp-orb.kid:focus-visible b, .lp-orb.kid.cta b { color: var(--cobalt-lift); }
+.lp-hint { position: absolute; right: 0; top: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+
+/* morphing tiles (phones and tablets) */
+.lp-morph { display: none; flex-direction: column; gap: 10px; }
+.landing.is-mobile { height: auto; min-height: 100%; }
+.landing.is-mobile .landing-need { min-height: calc(3 * 1.16em); }
+.landing.is-mobile .landing-stage { flex: none; }
+.landing.is-mobile .lp-orbs { display: none; }
+.landing.is-mobile .lp-morph { display: flex; }
+.lp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.lp-tile {
+  all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;
+  aspect-ratio: 1 / 1; padding: 16px; border-radius: 8px;
+  border: 1px solid rgba(var(--brand-rgb), .3); background: rgba(var(--brand-rgb), .045);
+  transition: border-color .3s ease, background .3s ease;
+}
+.lp-tile:hover, .lp-tile:focus-visible { border-color: var(--cobalt-lift); background: rgba(var(--brand-rgb), .1); }
+.lp-tile:focus-visible { outline: 2px solid var(--cobalt-lift); outline-offset: 3px; }
+.lp-tile .lp-num { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .18em; color: var(--cobalt-lift); }
+.lp-tile b { font-family: var(--font-display); font-weight: 400; font-size: clamp(24px, 7.4vw, 44px); letter-spacing: -.05em; line-height: 1; color: var(--ink); }
+.lp-tile small { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.lp-tile small::after { content: ' \2192'; color: var(--cobalt-lift); }
+.lp-open { display: none; flex-direction: column; gap: 10px; }
+.lp-morph.open .lp-grid { display: none; }
+.lp-morph.open .lp-open { display: flex; }
+.lp-bar { display: flex; align-items: center; gap: 14px; }
+.lp-back { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.lp-back span { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 3px; display: grid; place-items: center; color: var(--cobalt-lift); }
+.lp-back:focus-visible { outline: 2px solid var(--cobalt-lift); outline-offset: 3px; }
+.lp-bar h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 15px; color: var(--cobalt-lift); }
+.lp-kids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.lp-kid {
+  display: flex; flex-direction: column; justify-content: space-between; gap: 8px; min-height: 84px; padding: 12px;
+  border-radius: 8px; border: 1px solid rgba(var(--brand-rgb), .3); background: rgba(var(--brand-rgb), .05);
+  color: var(--ink); text-decoration: none; animation: lpPop .5s var(--ease-out) both; animation-delay: var(--d, 0s);
+}
+.lp-kid:hover, .lp-kid:focus-visible { border-color: var(--cobalt-lift); background: rgba(var(--brand-rgb), .11); }
+.lp-kid .lp-code { align-self: flex-start; font-family: var(--font-display); font-size: 9px; letter-spacing: .08em; color: var(--cobalt-lift); border: 1px solid rgba(var(--brand-rgb), .34); border-radius: 5px; padding: 4px 6px; }
+.lp-kid b { font-family: var(--font-display); font-weight: 400; font-size: 13px; letter-spacing: -.02em; line-height: 1.3; }
+.lp-kid small { display: none; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.lp-kid.cta { background: var(--cobalt); border-color: var(--cobalt); color: var(--on-brand); }
+.lp-kid.cta .lp-code { color: var(--on-brand); border-color: rgba(255, 255, 255, .45); }
+@keyframes lpPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+.lp-other { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 2px; }
+.lp-other > span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
+.lp-other button { all: unset; cursor: pointer; font-family: var(--font-display); font-size: 12.5px; color: var(--ink); padding: 10px 16px; border-radius: 999px; border: 1px solid rgba(var(--brand-rgb), .38); background: rgba(var(--brand-rgb), .05); }
+.lp-other button:hover, .lp-other button:focus-visible { border-color: var(--cobalt-lift); background: rgba(var(--brand-rgb), .12); }
+.lp-other button:focus-visible { outline: 2px solid var(--cobalt-lift); outline-offset: 3px; }
+.lp-ghost { position: fixed; z-index: 50; border: 1px solid var(--cobalt-lift); border-radius: 8px; background: rgba(var(--brand-rgb), .09); pointer-events: none; transition: all .7s var(--ease); }
+@media (min-width: 761px) {
+  /* tablets: room for three across and the one-line description */
+  .lp-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lp-kids { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lp-kid small { display: block; }
+}
+
 /* ---- 9 services ---- */
 .services-section .section-inner { max-width: min(1440px, 100%); }
 .services-section h2 {
@@ -1162,7 +1275,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     </button>
     <div class="nav-links">
       <button onclick="goToSection(3)">Where it helps</button>
-      <button onclick="goToSection(7)">Pricing</button>
+      <button onclick="goToSection(6)">Pricing</button>
       <a class="nav-phone" href="tel:+19105240056"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg>910-524-0056</a>
       <button class="nav-cta" onclick="bookCall()">Book a free call</button>
     </div>
@@ -1318,25 +1431,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 6: Services -->
-    <section class="section services-section" id="section-6" data-section="6" tabindex="-1" aria-label="Services">
-      <div class="section-inner">
-        <h2 class="animated-title" data-text="What I do">What I do</h2>
-        <div class="services-list">
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">AI implementation</span></div>
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Automated lead generation</span></div>
-          <div class="service-row active"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Web development</span></div>
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">AI consulting &amp; strategy</span></div>
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">MVP development</span></div>
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Customer service &amp; support</span></div>
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Scheduling, estimates &amp; admin</span></div>
-          <div class="service-row"><span class="svc-chip" aria-hidden="true">AI</span><span class="svc-name">Reviews, reporting &amp; team knowledge</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7: Pricing -->
-    <section class="section pricing-section" id="section-7" data-section="7" tabindex="-1" aria-label="Pricing">
+    <!-- 6: Pricing -->
+    <section class="section pricing-section" id="section-6" data-section="6" tabindex="-1" aria-label="Pricing">
       <div class="section-inner">
         <h2 class="animated-title" data-text="Simple pricing">Simple pricing</h2>
         <p class="section-desc pricing-lede">Fixed prices, agreed before work starts. No hourly meter, no surprise invoices.</p>
@@ -1382,8 +1478,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 8: Rule -->
-    <section class="section rule-section" id="section-8" data-section="8" tabindex="-1" aria-label="The rule">
+    <!-- 7: Rule -->
+    <section class="section rule-section" id="section-7" data-section="7" tabindex="-1" aria-label="The rule">
       <div class="section-inner">
         <p class="rule-desc"><span class="accent">Every build gets judged the same way.</span> Not by how clever it is, or how much of it is AI — but by whether it gives back real hours in a real week.</p>
         <div class="rule-formula animated-title" data-text="USEFUL &gt; IMPRESSIVE">USEFUL &gt; IMPRESSIVE</div>
@@ -1391,17 +1487,56 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 9: Final -->
-    <section class="section final-section" id="section-9" data-section="9" tabindex="-1" aria-label="Contact">
-      <div class="section-inner">
-        <div class="final-title animated-title" data-text="If you can imagine it,|we can build it" data-multiline="true" data-accent-line="1">If you can imagine it, we can build it</div>
-        <p class="section-desc" style="margin-inline:auto">Tell me where your business loses time, or what you've been picturing. I'll reply within one business day with a practical next step, not a proposal deck.</p>
-        <div class="final-actions">
-          <button class="btn-primary" onclick="bookCall()">Book a free 20-minute call</button>
-          <a href="tel:+19105240056" class="final-email">910-524-0056</a>
-          <a href="mailto:info@businessrunsbetter.com" class="final-email">info@businessrunsbetter.com</a>
+    <!-- 8: Landing -->
+    <section class="section landing-section" id="section-8" data-section="8" tabindex="-1" aria-label="Where to next">
+      <div class="section-inner landing" id="landing">
+        <h2 class="landing-need">My business needs <span class="need" id="landingNeed" aria-live="polite">more leads.</span></h2>
+        <div class="landing-stage" id="landingStage">
+          <!-- The plain list every visitor and search engine gets; script turns it into the
+               constellation (desktop) or the morphing tiles (phones and tablets). -->
+          <nav class="landing-map" id="landingMap" aria-label="Pages">
+            <div class="lm-group" data-key="build" data-need="something built right.">
+              <h3>Build</h3>
+              <ul>
+                <li><a href="/services/web-design/" data-code="WEB" data-need="a website that works.">Web Design &amp; Development<small>Fast, mobile-first websites built to rank and to turn visitors into calls.</small></a></li>
+                <li><a href="/services/real-estate-websites/" data-code="IDX" data-need="buyers to find its listings.">Real Estate Websites &amp; IDX<small>Agent and brokerage sites with live MLS listings, from an IDX certified developer.</small></a></li>
+                <li><a href="/services/ecommerce/" data-code="SHOP" data-need="an online store that sells.">eCommerce<small>Shopify, WooCommerce, Amazon and eBay, from someone who ran a $750K store.</small></a></li>
+                <li><a href="/services/custom-software/" data-code="APP" data-need="software that actually fits.">Custom Business Software<small>Internal tools, portals and integrations built around how you work.</small></a></li>
+                <li><a href="/services/product-development/" data-code="PDM" data-need="its next product launched.">Product Development<small>From idea to launched product: plan it, build it, ship it, improve it.</small></a></li>
+              </ul>
+            </div>
+            <div class="lm-group" data-key="grow" data-need="more customers.">
+              <h3>Grow</h3>
+              <ul>
+                <li><a href="/services/seo/" data-code="SEO" data-need="to show up on Google.">SEO &amp; AI Search<small>Show up on Google, in the map results, and when people ask ChatGPT.</small></a></li>
+                <li><a href="/services/marketing/" data-code="MKT" data-need="more leads.">Marketing &amp; Lead Generation<small>Landing pages, email, reviews and ads, tracked back to real leads.</small></a></li>
+                <li><a href="/services/creative/" data-code="CRV" data-need="words and video that sell.">Creative, Copy &amp; Video<small>Words, graphics and video that make the right customer stop and call.</small></a></li>
+                <li><a href="/services/branding/" data-code="BRD" data-need="a brand people trust.">Branding<small>Logo, identity and voice that make a small business look established.</small></a></li>
+              </ul>
+            </div>
+            <div class="lm-group" data-key="run" data-need="its hours back.">
+              <h3>Run</h3>
+              <ul>
+                <li><a href="/services/ai-consulting/" data-code="PLAN" data-need="a straight answer on AI.">AI Consulting &amp; Strategy<small>Find out where AI actually pays off in your business, and what to skip. Starts with a $500 Time Audit.</small></a></li>
+                <li><a href="/services/workflow-automation/" data-code="FLOW" data-need="less busywork.">Workflow Automation<small>Estimates, forms, data entry and the tools that never talk to each other, connected and running on their own.</small></a></li>
+                <li><a href="/services/ai-receptionist/" data-code="VOICE" data-need="every call answered.">AI Receptionists &amp; Voice Agents<small>A phone agent that answers every call, books appointments and hands off the tricky ones with notes.</small></a></li>
+                <li><a href="/services/lead-follow-up/" data-code="LEAD" data-need="leads answered in seconds.">Lead Follow-up<small>New inquiries answered in seconds by text, email or chat, qualified and booked onto your calendar.</small></a></li>
+                <li><a href="/services/ai-assistants/" data-code="KNOW" data-need="answers without asking me.">AI Assistants for Your Team<small>An assistant trained on your own docs, prices and policies, so your team stops asking the same questions.</small></a></li>
+                <li><a href="/services/private-ai/" data-code="LOCAL" data-need="AI that keeps its data private.">Private &amp; Local AI<small>AI models running on your own hardware. Your data never leaves the building and there are no per-use fees.</small></a></li>
+              </ul>
+            </div>
+            <div class="lm-group" data-key="mike" data-need="to know who it&rsquo;s hiring.">
+              <h3>Mike</h3>
+              <ul>
+                <li><a href="about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. Twenty years of websites, stores, software and AI.</small></a></li>
+                <li><a href="work.html" data-code="WORK" data-need="to see real work first.">Work<small>Sites and AI tools I&rsquo;ve built, and where each one stands.</small></a></li>
+                <li><a href="#pricing" data-code="$" data-need="to know what it costs." data-jump="6">Pricing<small>$500 Time Audit, builds from $2,500, support from $300 a month.</small></a></li>
+                <li><a href="#contact" data-code="CALL" data-need="a straight answer." data-call>Book a free 20-minute call<small>No pitch deck. I&rsquo;ll tell you honestly what I&rsquo;d do first.</small></a></li>
+              </ul>
+            </div>
+          </nav>
         </div>
-        <p class="final-footer">&copy; <span id="year"></span> Business Runs Better · <a href="about.html">About</a> · <a href="work.html">Work</a> · <a href="pricing.html">Pricing</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+        <p class="landing-foot">&copy; <span id="year"></span> Business Runs Better &middot; <a href="tel:+19105240056">910-524-0056</a> &middot; <a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></p>
       </div>
     </section>
 
@@ -1485,11 +1620,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 // ============================================
 // CONFIG
 // ============================================
-const TOTAL_SECTIONS = 10;
+const TOTAL_SECTIONS = 9;
 const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MORPH_DURATION = RM ? 450 : 1800;
 let PC = '76, 125, 255';              // canvas pattern colour — driven by the active theme
-const A  = 2.2;                       // global brightness multiplier
+const A  = 2.2;
+const starCursor = { x: -9999, y: -9999 };   // the landing's stars move away from this
+addEventListener('pointermove', e => { starCursor.x = e.clientX; starCursor.y = e.clientY; }, { passive: true });
+document.addEventListener('pointerleave', () => { starCursor.x = starCursor.y = -9999; });                       // global brightness multiplier
 
 let currentSection = 0;
 let isTransitioning = false;
@@ -1501,14 +1639,14 @@ let morphParticles = [], morphShockwave = 0, morphDirection = 1;
 let entered = false;
 
 const SECTION_NAMES = [
-  'Introduction', 'What I do', 'Find, build, put to work', 'Automate the follow-up', 'Accelerate every reply', 'Where AI pays off', 'Services', 'Pricing', 'The rule', 'Contact'
+  'Introduction', 'What I do', 'Find, build, put to work', 'Automate the follow-up', 'Accelerate every reply', 'Where AI pays off', 'Pricing', 'The rule', 'Where to next'
 ];
 const SLUGS = [
-  'start', 'about', 'approach', 'automate', 'accelerate', 'where-it-helps', 'services', 'pricing', 'the-rule', 'contact'
+  'start', 'about', 'approach', 'automate', 'accelerate', 'where-it-helps', 'pricing', 'the-rule', 'explore'
 ];
 // Photographic backdrop per section (files in assets/img/)
 const SECTION_BG = [
-  'hero', 'void', 'void', 'flow', 'flow', 'void', 'structure', 'depth', 'structure', 'hero'
+  'hero', 'void', 'void', 'flow', 'flow', 'void', 'depth', 'structure', 'void'
 ];
 
 // ============================================
@@ -1601,14 +1739,13 @@ const sectionNarration = [
   "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
   "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
   "Nine places A I can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
-  "What I do. A I implementation. Automated lead generation. Web development. A I consulting and strategy. M V P development. Customer service and support. Scheduling and admin. Reporting and team knowledge.",
   "Simple pricing. Start with a five hundred dollar time audit, credited to your first build. Builds start at twenty five hundred dollars, fixed price. Ongoing support starts at three hundred a month.",
   "Every build gets judged the same way. Useful, is greater than, impressive.",
   "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step."
 ];
 
 // ============================================
-// 10 GEOMETRIC PATTERNS
+// 9 BACKGROUND PATTERNS
 // ============================================
 const patterns = [
   // 0: Perspective Grid Floor
@@ -1726,22 +1863,7 @@ const patterns = [
       c.fillStyle=`rgba(${PC},${a*0.4})`; c.beginPath(); c.arc(s.x,s.y,8,0,Math.PI*2); c.fill();
     });
   },
-  // 6: Rising Bars
-  function(c, w, h, t, d) {
-    const n=40, bW=w/n;
-    for(let i=0;i<n;i++){
-      const maxH=(0.2+Math.sin(i*0.4+1)*0.35)*h;
-      const bH=maxH*(0.5+Math.sin(t*1.5+i*0.3)*0.5);
-      const x=i*bW+d*Math.sin(t+i)*30, y=h-bH+d*Math.cos(t+i)*60;
-      const a=(0.08+Math.sin(t+i*0.7)*0.04)*A*(1-d*0.6);
-      c.fillStyle=`rgba(${PC},${a*0.5})`; c.fillRect(x+3,y,bW-6,bH*(1-d*0.3));
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.2; c.strokeRect(x+3,y,bW-6,bH*(1-d*0.3));
-    }
-    for(let i=1;i<=5;i++){const y=h-h*(i/6);
-      c.strokeStyle=`rgba(${PC},${0.06*A*(1-d)})`; c.setLineDash([6,10]); c.lineWidth=0.8;
-      c.beginPath(); c.moveTo(0,y); c.lineTo(w,y); c.stroke(); c.setLineDash([]);}
-  },
-  // 7: Layered Cards
+  // 6: Layered Cards
   function(c, w, h, t, d) {
     for(let i=0;i<10;i++){
       const cx=w*0.5+(i-5)*50+Math.sin(t+i)*30;
@@ -1755,7 +1877,7 @@ const patterns = [
       c.strokeStyle=`rgba(${PC},${0.026*A*(1-d*0.5)})`; c.lineWidth=0.5;
       c.beginPath(); c.moveTo(w*0.15+d*40,y+d*Math.sin(t+i)*25); c.lineTo(w*0.85-d*40,y+d*Math.sin(t+i)*25); c.stroke();}
   },
-  // 8: Circuit Board
+  // 7: Circuit Board
   function(c, w, h, t, d) {
     const g=100, cols=Math.ceil(w/g)+1, rows=Math.ceil(h/g)+1;
     for(let r=0;r<rows;r++) for(let cl=0;cl<cols;cl++){
@@ -1774,25 +1896,56 @@ const patterns = [
         c.beginPath(); c.arc(dir?x+g*pulse/0.3:x, dir?y:y+g*pulse/0.3, 4,0,Math.PI*2); c.fill();}
     }
   },
-  // 9: Expanding Rings
-  function(c, w, h, t, d) {
-    const cx=w*0.5,cy=h*0.5;
-    for(let i=0;i<15;i++){
-      const baseR=(i*70+t*50)%600;
-      const a=Math.max(0,(0.12-baseR/5000))*A*(1-d*0.6);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.8+Math.sin(t+i)*0.8;
-      c.beginPath();
-      const r=baseR+d*i*20, round=0.3+Math.sin(t*0.5+i)*0.2;
-      for(let a2=0;a2<=64;a2++){const ang=(a2/64)*Math.PI*2;
-        const cos=Math.cos(ang),sin=Math.sin(ang), sq=Math.max(Math.abs(cos),Math.abs(sin));
-        const f=1/((1-round)*sq+round), px=cx+cos*r*f, py=cy+sin*r*f;
-        a2===0?c.moveTo(px,py):c.lineTo(px,py);}
-      c.closePath(); c.stroke();
+  // 8: Starfield (the landing). Stars and sparkles drift, twinkle, and shy away from the cursor.
+  (function () {
+    let stars = [], sw = 0, sh = 0;
+    function seed(w, h) {
+      const dpr = w / Math.max(1, innerWidth);
+      const n = Math.max(120, Math.round(innerWidth * innerHeight / 5200));
+      stars = Array.from({ length: n }, (_, i) => {
+        const sprite = i % 17 === 0;
+        return { hx: Math.random() * w, hy: Math.random() * h, x: 0, y: 0, vx: 0, vy: 0,
+          r: (sprite ? 2.6 + Math.random() * 3.2 : 0.35 + Math.pow(Math.random(), 2.4) * 2.2) * dpr,
+          sprite, tw: Math.random() * 6.28, sp: 0.6 + Math.random() * 1.6, dr: 6 + Math.random() * 18 };
+      });
+      stars.forEach(st => { st.x = st.hx; st.y = st.hy; });
+      sw = w; sh = h;
     }
-    const grad=c.createRadialGradient(cx,cy,0,cx,cy,120);
-    grad.addColorStop(0,`rgba(${PC},${0.12*A*(1-d)})`); grad.addColorStop(1,`rgba(${PC},0)`);
-    c.fillStyle=grad; c.fillRect(cx-120,cy-120,240,240);
-  }
+    return function (c, w, h, t, d) {
+      // a phone's address bar showing or hiding only nudges the height; keep the same sky
+      if (w !== sw || Math.abs(h - sh) > 180) seed(w, h);
+      const dpr = w / Math.max(1, innerWidth), R = 170 * dpr, T = t * 2;
+      const px = starCursor.x * dpr, py = starCursor.y * dpr, fade = 1 - d;
+      stars.forEach(st => {
+        const hx = st.hx + Math.sin(T * 0.05 * st.sp + st.tw) * st.dr * dpr;
+        const hy = st.hy + Math.cos(T * 0.04 * st.sp + st.tw) * st.dr * dpr;
+        const dx = st.x - px, dy = st.y - py, d2 = dx * dx + dy * dy;
+        if (d2 < R * R && !RM) {
+          const dist = Math.sqrt(d2) || 1, f = (1 - dist / R) * 2.4 * dpr * (1.4 - Math.min(st.r / dpr, 4) * 0.12);
+          st.vx += dx / dist * f; st.vy += dy / dist * f;
+        }
+        st.vx += (hx - st.x) * 0.012; st.vy += (hy - st.y) * 0.012;
+        st.vx *= 0.88; st.vy *= 0.88;
+        st.x += st.vx; st.y += st.vy;
+        const a = (st.sprite ? 0.75 + Math.sin(T * st.sp + st.tw) * 0.25 : 0.25 + (0.5 + Math.sin(T * st.sp + st.tw) * 0.5) * 0.55) * fade;
+        if (a <= 0.01) return;
+        if (st.sprite) {
+          const r = st.r * (0.85 + Math.sin(T * st.sp * 1.3 + st.tw) * 0.15);
+          const g = c.createRadialGradient(st.x, st.y, 0, st.x, st.y, r * 4);
+          g.addColorStop(0, `rgba(${PC},${0.35 * a})`); g.addColorStop(1, `rgba(${PC},0)`);
+          c.fillStyle = g; c.beginPath(); c.arc(st.x, st.y, r * 4, 0, 6.283); c.fill();
+          c.fillStyle = `rgba(255,255,255,${a})`;
+          c.beginPath();
+          c.moveTo(st.x, st.y - r * 2.2); c.quadraticCurveTo(st.x, st.y, st.x + r * 2.2, st.y);
+          c.quadraticCurveTo(st.x, st.y, st.x, st.y + r * 2.2); c.quadraticCurveTo(st.x, st.y, st.x - r * 2.2, st.y);
+          c.quadraticCurveTo(st.x, st.y, st.x, st.y - r * 2.2); c.fill();
+        } else {
+          c.fillStyle = st.r > 1.4 * dpr ? `rgba(${PC},${a})` : `rgba(255,255,255,${a})`;
+          c.beginPath(); c.arc(st.x, st.y, st.r, 0, 6.283); c.fill();
+        }
+      });
+    };
+  })()
 ];
 
 // ============================================
@@ -2009,7 +2162,7 @@ function setSectionState(index) {
   document.getElementById('liveRegion').textContent =
     `Section ${index + 1} of ${TOTAL_SECTIONS}: ${SECTION_NAMES[index]}`;
   if (history.replaceState) history.replaceState(null, '', '#' + SLUGS[index]);
-  if (index === 6) startServiceCycle(); else stopServiceCycle();
+  if (index === LANDING_INDEX) landingActivated();
   if (soundEnabled) speakSection(index);
   runCounters(index);
 }
@@ -2613,6 +2766,231 @@ function initBackground() {
 }
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// ============================================
+// LANDING: where to next
+// Desktop gets the constellation, phones and tablets get the morphing tiles.
+// Both are built from the plain list of links in the HTML.
+// ============================================
+const LANDING_INDEX = 8;
+let landingActivated = () => {};
+(function () {
+  const landing = document.getElementById('landing');
+  const map = document.getElementById('landingMap');
+  const stage = document.getElementById('landingStage');
+  const needEl = document.getElementById('landingNeed');
+  const section = document.getElementById('section-' + LANDING_INDEX);
+  if (!landing || !map || !stage || !needEl) return;
+
+  const GROUPS = [...map.querySelectorAll('.lm-group')].map(g => ({
+    k: g.dataset.key, n: g.querySelector('h3').textContent.trim(), need: g.dataset.need,
+    kids: [...g.querySelectorAll('a')].map(a => ({
+      code: a.dataset.code, n: a.firstChild.textContent.trim(), d: a.querySelector('small').textContent.trim(),
+      u: a.getAttribute('href'), need: a.dataset.need, jump: a.dataset.jump, call: a.hasAttribute('data-call')
+    }))
+  }));
+  map.hidden = true;
+  const ALL = GROUPS.flatMap(g => g.kids);
+  const isOn = () => section.classList.contains('active');
+  const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+  // ---- the "My business needs ___" line ----
+  let ci = Math.max(0, ALL.findIndex(k => k.code === 'MKT')), hovering = null;
+  function render(text, instant) {
+    needEl.innerHTML = '';
+    let i = 0;
+    text.split(' ').forEach((word, wi, arr) => {
+      const w = document.createElement('span'); w.style.whiteSpace = 'nowrap'; w.style.display = 'inline-block';
+      [...word].forEach(ch => {
+        const sp = document.createElement('span'); sp.className = 'ch' + (instant ? '' : ' out'); sp.textContent = ch; w.appendChild(sp);
+        if (!instant) setTimeout(() => sp.classList.remove('out'), 16 * (i++) + 20);
+      });
+      needEl.appendChild(w);
+      if (wi < arr.length - 1) needEl.appendChild(document.createTextNode(' '));
+    });
+    const caret = document.createElement('span'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true'); needEl.appendChild(caret);
+  }
+  function say(item) { if (hovering === item) return; hovering = item; render(item ? item.need : ALL[ci].need, RM); }
+  function hoverable(el, item) { el.addEventListener('pointerenter', () => say(item)); el.addEventListener('focus', () => say(item)); }
+  stage.addEventListener('pointerleave', () => say(null));
+  render(ALL[ci].need, true);
+  if (!RM) setInterval(() => {
+    if (hovering || !isOn()) return;
+    const chars = needEl.querySelectorAll('.ch');
+    chars.forEach((c, i) => setTimeout(() => c.classList.add('out'), 9 * i));
+    setTimeout(() => { if (hovering) return; ci = (ci + 1) % ALL.length; render(ALL[ci].need); }, 9 * chars.length + 360);
+  }, 3200);
+
+  // a page link: Pricing jumps to the pricing screen, the call button opens the booking form
+  function wire(a, k) {
+    a.href = k.u;
+    if (k.jump) a.addEventListener('click', e => { e.preventDefault(); goToSection(+k.jump); });
+    if (k.call) a.addEventListener('click', e => { e.preventDefault(); bookCall(); });
+    hoverable(a, k);
+    return a;
+  }
+
+  // ---- desktop: the constellation ----
+  const orbs = document.createElement('div'); orbs.className = 'lp-orbs';
+  const wires = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); wires.setAttribute('class', 'lp-wires'); wires.setAttribute('aria-hidden', 'true');
+  orbs.appendChild(wires);
+  const hint = document.createElement('span'); hint.className = 'lp-hint'; orbs.appendChild(hint);
+  stage.appendChild(orbs);
+  let open = null;
+  const items = [];
+  GROUPS.forEach((g, gi) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'lp-orb top';
+    b.innerHTML = '<span class="in"><b>' + g.n + '</b><small>' + g.kids.length + ' pages</small></span>';
+    b.setAttribute('aria-expanded', 'false');
+    b.addEventListener('click', () => { open = open === g ? null : g; layout(); });
+    hoverable(b, g);
+    orbs.appendChild(b);
+    items.push({ el: b, g, top: true, ph: gi * 1.7 });
+    g.kids.forEach((k, ki) => {
+      const a = wire(document.createElement('a'), k);
+      a.className = 'lp-orb kid gone' + (k.call ? ' cta' : ''); a.tabIndex = -1;
+      a.innerHTML = '<span class="in"><b>' + esc(k.n) + '</b><small>' + esc(k.d) + '</small></span>';
+      orbs.appendChild(a);
+      items.push({ el: a, g, k, top: false, ph: gi * 1.7 + ki * 0.9 + 0.5 });
+    });
+  });
+  function place(it, cx, cy, d) {
+    it.el.style.width = d + 'px'; it.el.style.height = d + 'px';
+    it.el.style.left = (cx - d / 2) + 'px'; it.el.style.top = (cy - d / 2) + 'px';
+  }
+  function layout() {
+    if (landing.classList.contains('is-mobile')) return;
+    const W = orbs.clientWidth, H = orbs.clientHeight; if (!W || !H) return;
+    const tops = items.filter(i => i.top);
+    items.forEach(i => i.el.classList.remove('sel', 'mini', 'right'));
+    if (!open) {
+      hint.textContent = '';
+      items.filter(i => !i.top).forEach(i => { i.el.classList.add('gone'); i.el.tabIndex = -1; });
+      const P = [[0.14, 0.32], [0.4, 0.72], [0.62, 0.26], [0.86, 0.64]];
+      tops.forEach((t, i) => {
+        t.el.setAttribute('aria-expanded', 'false');
+        t.el.style.setProperty('--dot', '18px'); t.el.style.setProperty('--fs', Math.max(24, Math.min(34, W * 0.024)) + 'px');
+        place(t, W * P[i][0], H * P[i][1], 60);
+      });
+    } else {
+      hint.textContent = 'Click ' + open.n + ' again to see all four';
+      const sel = tops.find(t => t.g === open), others = tops.filter(t => t.g !== open);
+      sel.el.classList.add('sel'); sel.el.setAttribute('aria-expanded', 'true');
+      items.filter(i => !i.top && i.g !== open).forEach(i => { i.el.classList.add('gone'); i.el.tabIndex = -1; });
+      const scx = W * 0.21, scy = H * 0.5;
+      sel.el.style.setProperty('--dot', '26px'); sel.el.style.setProperty('--fs', Math.max(28, Math.min(40, W * 0.028)) + 'px');
+      place(sel, scx, scy, 60);
+      // the other three wait above, behind and below the chosen one
+      const TRI = [[W * 0.02, -H * 0.31], [-W * 0.12, H * 0.02], [W * 0.02, H * 0.31]];
+      others.forEach((o, i) => { o.el.classList.add('mini'); o.el.style.setProperty('--dot', '12px'); place(o, scx + TRI[i][0], scy + TRI[i][1], 40); });
+      const kids = items.filter(i => !i.top && i.g === open), n = kids.length;
+      // not enough height for every description: show names only
+      orbs.classList.toggle('compact', (H - 100) / Math.max(1, n - 1) < 84);
+      kids.forEach((k, idx) => {
+        k.el.classList.remove('gone'); k.el.tabIndex = 0; k.el.classList.add('right'); k.el.style.setProperty('--dot', '12px');
+        const f = n === 1 ? 0.5 : idx / (n - 1), cy = 48 + f * (H - 100), dy = (cy - scy) / (H * 0.5);
+        place(k, W * 0.4 + (1 - dy * dy) * W * 0.14, cy, 24);
+      });
+    }
+    drawWires();
+  }
+  function centerOf(it) {
+    const r = it.el.getBoundingClientRect(), R = orbs.getBoundingClientRect();
+    return [r.left - R.left + r.width / 2, r.top - R.top + r.height / 2];
+  }
+  function drawWires() {
+    const W = orbs.clientWidth, H = orbs.clientHeight;
+    wires.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    const tops = items.filter(i => i.top), pairs = [];
+    if (!open) { for (let i = 0; i < tops.length; i++) for (let j = i + 1; j < tops.length; j++) pairs.push([tops[i], tops[j]]); }
+    else {
+      const sel = tops.find(x => x.g === open);
+      items.filter(i => !i.top && i.g === open).forEach(k => pairs.push([sel, k]));
+      tops.filter(x => x !== sel).forEach(o => pairs.push([sel, o, 'faint']));
+    }
+    wires.innerHTML = pairs.map(([p, q, c]) => { const A1 = centerOf(p), B1 = centerOf(q); return '<line' + (c ? ' class="' + c + '"' : '') + ' x1="' + A1[0].toFixed(1) + '" y1="' + A1[1].toFixed(1) + '" x2="' + B1[0].toFixed(1) + '" y2="' + B1[1].toFixed(1) + '"/>'; }).join('');
+  }
+  // sway like cat's cradle; a node holds still while the cursor is on it
+  if (!RM) {
+    (function drift(now) {
+      requestAnimationFrame(drift);
+      const dt = Math.min(0.1, (now - (drift.last || now)) / 1000); drift.last = now;
+      if (!isOn() || landing.classList.contains('is-mobile')) return;
+      items.forEach(i => {
+        if (i.el.classList.contains('gone')) return;
+        if (!i.el.matches(':hover')) i.lt = (i.lt || 0) + dt;
+        const t = i.lt || 0;
+        let ax, ay;
+        if (!open) { ax = 80; ay = 56; } else if (i.top && i.g === open) { ax = 20; ay = 14; } else if (i.top) { ax = 12; ay = 9; } else { ax = 14; ay = 10; }
+        i.ax = i.ax == null ? ax : i.ax + (ax - i.ax) * 0.04; i.ay = i.ay == null ? ay : i.ay + (ay - i.ay) * 0.04;
+        i.el.style.transform = 'translate(' + (Math.sin(t * 0.42 + i.ph) * i.ax).toFixed(1) + 'px,' + (Math.cos(t * 0.33 + i.ph * 1.3) * i.ay).toFixed(1) + 'px)';
+      });
+      drawWires();
+    })(0);
+  }
+
+  // ---- phones and tablets: tiles that morph open ----
+  const morph = document.createElement('div'); morph.className = 'lp-morph';
+  morph.innerHTML = '<div class="lp-grid"></div><div class="lp-open"><div class="lp-bar"><button class="lp-back" type="button"><span>&#8592;</span>All four</button><h3></h3></div><div class="lp-kids"></div><div class="lp-other"></div></div>';
+  stage.appendChild(morph);
+  const grid = morph.querySelector('.lp-grid'), kidsBox = morph.querySelector('.lp-kids'), other = morph.querySelector('.lp-other');
+  GROUPS.forEach((g, gi) => {
+    const t = document.createElement('button'); t.type = 'button'; t.className = 'lp-tile';
+    t.innerHTML = '<span class="lp-num">0' + (gi + 1) + '</span><b>' + g.n + '</b><small>' + g.kids.length + ' pages</small>';
+    t.addEventListener('click', () => openMorph(g, t));
+    hoverable(t, g);
+    grid.appendChild(t);
+  });
+  function openMorph(g, from) {
+    const fill = () => {
+      morph.querySelector('.lp-bar h3').textContent = '0' + (GROUPS.indexOf(g) + 1) + '  ' + g.n;
+      kidsBox.innerHTML = '';
+      g.kids.forEach((k, i) => {
+        const a = wire(document.createElement('a'), k);
+        a.className = 'lp-kid' + (k.call ? ' cta' : '');
+        a.style.setProperty('--d', (RM ? 0 : i * 0.06) + 's');
+        a.innerHTML = '<span class="lp-code">' + esc(k.code) + '</span><b>' + esc(k.n) + '</b><small>' + esc(k.d) + '</small>';
+        kidsBox.appendChild(a);
+      });
+      other.innerHTML = '<span>Or open</span>';
+      GROUPS.filter(x => x !== g).forEach(o => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = o.n;
+        b.addEventListener('click', () => openMorph(o, b)); hoverable(b, o); other.appendChild(b);
+      });
+      morph.classList.add('open');
+      say(g);
+      morph.querySelector('.lp-back').focus({ preventScroll: true });
+    };
+    if (RM || !from) return fill();
+    const r1 = from.getBoundingClientRect(), r2 = (morph.classList.contains('open') ? kidsBox : grid).getBoundingClientRect();
+    const gh = document.createElement('div'); gh.className = 'lp-ghost';
+    Object.assign(gh.style, { left: r1.left + 'px', top: r1.top + 'px', width: r1.width + 'px', height: r1.height + 'px' });
+    document.body.appendChild(gh);
+    requestAnimationFrame(() => requestAnimationFrame(() => Object.assign(gh.style, { left: r2.left + 'px', top: r2.top + 'px', width: r2.width + 'px', height: r2.height + 'px', opacity: '0' })));
+    setTimeout(fill, 380);
+    setTimeout(() => gh.remove(), 760);
+  }
+  morph.querySelector('.lp-back').addEventListener('click', () => { morph.classList.remove('open'); say(null); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape' || !isOn()) return;
+    if (open) { open = null; layout(); }
+    morph.classList.remove('open');
+  });
+
+  // ---- which version ----
+  const PHONE = matchMedia('(max-width: 760px), (pointer: coarse)');
+  function setMode() {
+    landing.classList.toggle('is-mobile', PHONE.matches);
+    requestAnimationFrame(layout);
+  }
+  PHONE.addEventListener('change', setMode);
+  let rt;
+  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 150); });
+  setMode();
+  landingActivated = () => { requestAnimationFrame(layout); };
+})();
+
 
 // ============================================
 // AREAS: short description under the hovered item

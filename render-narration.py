@@ -19,7 +19,6 @@ LINES = [
  "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
  "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
  "Nine places A.I. can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
- "What I do. A.I. implementation. Automated lead generation. Web development. A.I. consulting and strategy. M.V.P. development. Customer service and support. Scheduling and admin. Reporting and team knowledge.",
  "Simple pricing. Start with a five hundred dollar time audit, credited to your first build. Builds start at twenty five hundred dollars, fixed price. Ongoing support starts at three hundred a month.",
  "Every build gets judged the same way. Useful, is greater than, impressive.",
  "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step.",
