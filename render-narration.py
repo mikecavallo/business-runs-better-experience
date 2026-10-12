@@ -18,7 +18,6 @@ LINES = [
  "Find the waste. Build the fix. Put it to work. No A.I. theater, and no six month roadmap.",
  "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
  "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
- "Eliminate the busywork. Forms and documents read, records updated, calls summarized, and estimates drafted from job notes.",
  "Useful beats impressive. I don't sell A.I. I find the hours your business is losing, and give them back.",
  "How it works. First, find the wasted time. Second, choose the best return. Third, put it to work.",
  "Nine places A.I. can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
