@@ -9,6 +9,7 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<script src="/assets/theme.js?v=1"></script>
 <link rel="stylesheet" href="/assets/panel.css?v=2">
 <link rel="canonical" href="https://businessrunsbetter.com/">
 
@@ -73,7 +74,6 @@
   --z-chrome: 100;
   --z-hint: 101;
   --z-splash: 1000;
-  --z-splash-cell: 1001;
   --z-noise: 9998;
 }
 
@@ -111,47 +111,16 @@ body { min-width: 320px; }
 .skip-link:focus { transform: translateY(0); }
 
 /* ============ PRELOADER / SPLASH ============ */
+/* #splash hosts one of four random splash screens (assets/splash.js, in a shadow root).
+   What sits inside it here is only the plain fallback for when that script can't run. */
 #splash {
   position: fixed; inset: 0; z-index: var(--z-splash);
-  background: var(--bg);
+  background: var(--bg-dark);
   display: flex; align-items: center; justify-content: center;
   transition: opacity 1.2s var(--ease), visibility 0s 1.2s;
 }
-#splash.morphing { background: transparent; }
 #splash.hidden { opacity: 0; visibility: hidden; }
 #splash.quick { transition: opacity .5s ease, visibility 0s .5s; }
-
-.splash-grid {
-  position: absolute; inset: 0;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 10px; padding: 10px;
-}
-.splash-cell {
-  border: 1px solid rgba(var(--brand-rgb), 0.12);
-  border-radius: 8px;
-  background: rgba(var(--brand-rgb), 0.015);
-  transition: all 0.5s ease;
-}
-.splash-cell.pulse { animation: cellPulse 3s ease-in-out infinite; }
-@keyframes cellPulse {
-  0%, 100% { border-color: rgba(var(--brand-rgb), 0.12); }
-  50%      { border-color: rgba(var(--brand-rgb), 0.30); }
-}
-.splash-cell.morphing {
-  position: fixed !important;
-  transition: all 1.8s var(--ease) !important;
-  z-index: var(--z-splash-cell);
-  border-color: rgba(var(--brand-rgb), 0.45);
-  background: rgba(var(--brand-rgb), 0.06);
-}
-.splash-cell.morphing.phase2 {
-  opacity: 0;
-  transform: scale(0.3) rotate(720deg);
-  border-color: rgba(var(--brand-rgb), 0.65);
-  background: rgba(var(--brand-rgb), 0.10);
-}
 
 .splash-inner {
   position: relative; z-index: 10;
@@ -160,6 +129,9 @@ body { min-width: 320px; }
 }
 .splash-logo { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .splash-logo svg { width: 46px; height: 46px; }
+/* shows only if the splash screen script hasn't replaced it by then */
+.splash-inner { opacity: 0; animation: splashFallback .5s ease 1.5s forwards; }
+@keyframes splashFallback { to { opacity: 1; } }
 .splash-wordmark {
   font-family: var(--font-display);
   font-size: clamp(11px, 1.5vw, 15px);
@@ -200,14 +172,6 @@ body { min-width: 320px; }
 }
 .splash-skip:hover { color: var(--cobalt-lift); }
 
-.scanline {
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cobalt-glow), transparent);
-  animation: scanDown 5s linear infinite;
-  opacity: 0.25; z-index: 5; pointer-events: none;
-}
-@keyframes scanDown { 0% { top: -2px; } 100% { top: 100%; } }
 
 /* ============ MAIN CONTAINER ============ */
 #app {
@@ -1250,7 +1214,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .section { transform: none; }
   .section.leaving { transform: none; }
   .animated-title .char { opacity: 1 !important; transform: none !important; transition: none !important; }
-  .scanline, .scroll-hint .scroll-wheel { display: none; }
+  .scroll-hint .scroll-wheel { display: none; }
   #bg-canvas { transform: none; }
   .section-bg i, .section-bg i.on { transform: none !important; }
   .enter-btn:hover, .enter-btn:focus-visible { transform: none; }
@@ -1299,23 +1263,18 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 
 <!-- ============ SPLASH ============ -->
 <div id="splash">
-  <div class="splash-grid" id="splashGrid" aria-hidden="true"></div>
-  <div class="scanline" aria-hidden="true"></div>
   <div class="splash-inner">
     <div class="splash-logo">
-      <svg viewBox="0 0 40 40" aria-hidden="true">
-        <rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="#dce3ef" stroke-opacity=".22" stroke-width="1.5"/>
-        <path d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".5" stroke-width="3" stroke-linecap="square"/>
-        <path d="M9 22 L29 11.5" stroke="var(--brand-lift)" stroke-width="3" stroke-linecap="square"/>
-        <circle cx="30.25" cy="10.75" r="3.25" fill="var(--brand-lift)"/>
-      </svg>
+      <svg viewBox="0 0 300 300" aria-hidden="true"><rect width="300" height="300" rx="66" fill="var(--brand)"/><g transform="translate(-9 -3)"><rect x="78" y="52" width="38" height="196" rx="19" fill="var(--on-brand)"/><circle cx="165" cy="180" r="56" fill="none" stroke="var(--on-brand)" stroke-width="38"/><circle cx="165" cy="180" r="15" fill="var(--bg)"/></g></svg>
       <div class="splash-wordmark">BUSINESS RUNS BETTER</div>
-      <div class="splash-tag">Practical AI for local business</div>
+      <div class="splash-tag">Websites, marketing &amp; AI for local business</div>
     </div>
     <button class="enter-btn" id="enterBtn">Enter</button>
     <button class="splash-skip" id="skipBtn">Skip the intro</button>
   </div>
 </div>
+<!-- One of four splash screens, picked at random each visit -->
+<script src="/assets/splash.js?v=1"></script>
 
 <!-- ============ MAIN APP ============ -->
 <div id="app">
@@ -2032,75 +1991,29 @@ const patterns = [
 // ============================================
 // SPLASH
 // ============================================
-(function buildSplashGrid() {
-  const grid = document.getElementById('splashGrid');
-  for (let i = 0; i < 24; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'splash-cell';
-    if (Math.random() > 0.55) {
-      cell.classList.add('pulse');
-      cell.style.animationDelay = (Math.random() * 4) + 's';
-    }
-    grid.appendChild(cell);
-  }
-})();
-
-function enterSite(animated, skip) {
+// skip: straight into the warp that lands on the landing page
+function enterSite(skip) {
   if (entered) return;
   entered = true;
   try { sessionStorage.setItem('brb-entered', '1'); } catch (e) {}
 
   const splash = document.getElementById('splash');
-  const cells = document.querySelectorAll('.splash-cell');
+  splash.classList.add('quick');
   if (skip) {
-    // straight to the warp: the first intro screen never shows
-    splash.classList.add('quick');
+    // the first intro screen never shows
     const first = document.getElementById('section-0');
     first.classList.remove('active');
     first.inert = true;
   }
-  document.querySelector('.splash-inner').style.opacity = '0';
-  document.querySelector('.splash-inner').style.pointerEvents = 'none';
+  const fallback = document.querySelector('.splash-inner');
+  if (fallback) { fallback.style.opacity = '0'; fallback.style.pointerEvents = 'none'; }
 
-  try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    playTransitionSound(700, 0.06, 'sine');
-  } catch (e) { /* audio unavailable — non-fatal */ }
+  unlockAudio();
+  playTransitionSound(700, 0.06, 'sine');
 
   initBackground();
   document.getElementById('bg-canvas').classList.add('loaded');
   document.getElementById('app').classList.add('visible');
-
-  const runMorph = animated && !RM;
-
-  if (runMorph) {
-    splash.classList.add('morphing');
-    cells.forEach((cell) => {
-      const rect = cell.getBoundingClientRect();
-      cell.style.position = 'fixed';
-      cell.style.left = rect.left + 'px';
-      cell.style.top = rect.top + 'px';
-      cell.style.width = rect.width + 'px';
-      cell.style.height = rect.height + 'px';
-      cell.style.margin = '0';
-      cell.classList.add('morphing');
-
-      const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
-      const dx = cx - window.innerWidth/2, dy = cy - window.innerHeight/2;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const maxDist = Math.sqrt(window.innerWidth**2 + window.innerHeight**2)/2;
-      const delay = (1 - dist/maxDist) * 400;
-
-      setTimeout(() => {
-        cell.style.left = (window.innerWidth/2 + dx*0.3 - rect.width/2) + 'px';
-        cell.style.top  = (window.innerHeight/2 + dy*0.3 - rect.height/2) + 'px';
-        cell.style.transform = `rotate(${360 + Math.random()*360}deg) scale(0.3)`;
-        cell.style.borderColor = 'rgba(76,125,255,0.55)';
-        cell.style.background = 'rgba(76,125,255,0.08)';
-      }, delay);
-      setTimeout(() => cell.classList.add('phase2'), delay + 800);
-    });
-  }
 
   setTimeout(() => {
     splash.classList.add('hidden');
@@ -2121,15 +2034,28 @@ function enterSite(animated, skip) {
       else if (start > 0) forceSection(start);
       else activateSection(0);
     }, 100);
-  }, runMorph ? 2200 : 400);
+  }, skip ? 400 : 150);
+  // once it has faded out, the splash screen stops drawing
+  setTimeout(() => { if (window.BRBSplash) window.BRBSplash.stop(); }, 1300);
+}
+// The audio context has to be created during a click or tap, so the splash screens call this
+// the moment the visitor acts (their exit animation plays before the site is entered).
+function unlockAudio() {
+  if (audioCtx) return;
+  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { /* audio unavailable: non-fatal */ }
 }
 
-document.getElementById('enterBtn').addEventListener('click', () => enterSite(true));
-document.getElementById('skipBtn').addEventListener('click', () => enterSite(false, true));
+// the plain fallback splash (only shows if assets/splash.js didn't run)
+document.getElementById('enterBtn').addEventListener('click', () => enterSite(false));
+document.getElementById('skipBtn').addEventListener('click', () => enterSite(true));
 // Back from a page (its close button goes to /#explore): skip the splash, go straight there.
 try {
   if (sessionStorage.getItem('brb-entered') && SLUGS.indexOf((location.hash || '').slice(1)) > 0) enterSite(false);
 } catch (e) {}
+// Otherwise the splash screen comes to life and hands over to the intro, or skips to the landing page.
+if (!entered && window.BRBSplash) {
+  window.BRBSplash.start({ enter: () => enterSite(false), skip: () => enterSite(true), unlock: unlockAudio });
+}
 
 // ============================================
 // LETTER-BY-LETTER TEXT
