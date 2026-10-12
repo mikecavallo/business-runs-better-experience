@@ -567,6 +567,148 @@ nav.visible { opacity: 1; transform: translateY(0); }
 .action-subtitle { font-size: clamp(22px, 3.4vw, 54px); color: var(--ink); letter-spacing: -.04em; margin-top: 6px; }
 .action-desc { text-align: left; margin-top: 32px; }
 
+/* ---- scenes: show it, don't describe it ----
+   Everything inside .scene animates in when its section becomes .active, so it
+   replays every time you arrive on the screen. Reduced motion jumps to the end state. */
+.bignum { margin-top: clamp(22px, 3.6vh, 40px); display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.bignum b {
+  font-family: var(--font-display); font-weight: 400; color: var(--ink);
+  font-size: clamp(44px, 6vw, 100px); line-height: .95; letter-spacing: -.05em;
+  font-variant-numeric: tabular-nums;
+}
+.bignum span { font-size: clamp(14px, 1.15vw, 17px); color: var(--muted); max-width: 34ch; line-height: 1.55; }
+.with-scene { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: clamp(28px, 5vw, 96px); align-items: center; }
+.scene { position: relative; width: min(100%, 470px); justify-self: center; text-align: left; }
+.scene .step { opacity: 0; }
+.section.active .scene .step { animation: stepIn .6s var(--ease-out) both; animation-delay: var(--at, 0s); }
+@keyframes stepIn { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+
+/* text-message scene */
+.phone {
+  width: min(100%, 340px); padding: 16px 14px 18px; border-radius: 30px;
+  border: 1px solid rgba(var(--brand-rgb), .3);
+  background: color-mix(in srgb, var(--bg-dark) 86%, transparent);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(var(--brand-rgb), .12);
+  backdrop-filter: blur(6px);
+}
+.phone-top { display: flex; flex-direction: column; align-items: center; gap: 2px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--line); }
+.phone-top b { font-size: 14px; font-weight: 600; color: var(--ink); }
+.phone-top small, .mail-top small, .cal-card small, .reply-card small { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.thread { display: flex; flex-direction: column; gap: 10px; min-height: 292px; }
+.msg { display: flex; flex-direction: column; max-width: 84%; margin: 0; }
+.msg span { padding: 9px 12px; border-radius: 16px; font-size: 13.5px; line-height: 1.42; }
+.msg time { font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em; color: var(--dim); margin-top: 4px; }
+.msg.in { align-self: flex-start; }
+.msg.in span { background: rgba(var(--brand-rgb), .1); border: 1px solid rgba(var(--brand-rgb), .2); color: var(--ink); border-bottom-left-radius: 5px; }
+.msg.out { align-self: flex-end; align-items: flex-end; }
+.msg.out span { background: var(--cobalt); color: var(--on-brand); border-bottom-right-radius: 5px; }
+.typing { align-self: flex-end; display: flex; gap: 4px; margin: 0; padding: 0 12px; border-radius: 16px; background: rgba(var(--brand-rgb), .16); max-height: 0; opacity: 0; overflow: hidden; }
+.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--cobalt-lift); animation: typingDot 1s ease-in-out infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes typingDot { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
+.section.active .typing { animation: typingShow 1s ease both; animation-delay: 1.4s; }
+@keyframes typingShow {
+  0% { opacity: 0; max-height: 0; padding-block: 0; }
+  15%, 85% { opacity: 1; max-height: 34px; padding-block: 11px; }
+  100% { opacity: 0; max-height: 0; padding-block: 0; margin-top: -10px; }
+}
+.cal-card, .reply-card {
+  position: relative; z-index: 1; margin: -18px -4% 0 auto; width: min(66%, 260px);
+  display: flex; flex-direction: column; gap: 5px; padding: 14px 16px; border-radius: 12px;
+  background: color-mix(in srgb, var(--bg-lift) 92%, transparent);
+  border: 1px solid var(--cobalt-lift);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .4), 0 0 0 4px rgba(var(--brand-rgb), .12);
+}
+.cal-card b { font-size: 14px; font-weight: 600; color: var(--ink); }
+.cal-card span, .reply-card span { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.section.active .cal-card { animation: landIn .8s var(--ease-out) both; animation-delay: var(--at); }
+@keyframes landIn { 0% { opacity: 0; transform: translate(18px, 26px) scale(.9); } 70% { opacity: 1; transform: translate(0, -3px) scale(1.02); } 100% { opacity: 1; transform: none; } }
+
+/* inbox scene */
+.mail {
+  width: min(100%, 430px); padding: 16px; border-radius: 16px;
+  border: 1px solid rgba(var(--brand-rgb), .3);
+  background: color-mix(in srgb, var(--bg-dark) 86%, transparent);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .35); backdrop-filter: blur(6px);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.mail-top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px 10px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+.mail-top b { font-size: 14px; font-weight: 600; color: var(--ink); }
+.mail-row { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 4px 10px; align-items: start; padding: 12px; border-radius: 10px; background: rgba(var(--brand-rgb), .05); border: 1px solid rgba(var(--brand-rgb), .12); }
+.mail-row .dot { width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: var(--cobalt-lift); }
+.section.active .mail-row .dot { animation: readDot .4s ease both; animation-delay: calc(var(--at) + 1.1s); }
+@keyframes readDot { to { opacity: .15; } }
+.mail-row b { display: block; font-size: 13px; font-weight: 600; color: var(--ink); }
+.mail-row span { display: block; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.mail-row .tag { grid-column: 2; justify-self: start; font-style: normal; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; }
+.tag.ok { color: var(--on-brand); background: var(--cobalt); }
+.tag.hand { color: var(--cobalt-lift); border: 1px dashed var(--cobalt-lift); }
+.reply-card { margin-top: -12px; }
+.section.active .reply-card { animation: landIn .8s var(--ease-out) both; animation-delay: var(--at); }
+
+/* owner's week scene */
+.stance-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px) clamp(28px, 5vw, 96px); align-items: center; }
+.stance-grid .stance-title { font-size: clamp(30px, 4.1vw, 68px); grid-row: span 2; }
+.stance-grid .stance-desc { grid-column: 2; text-align: left; margin: 0; max-width: 46ch; }
+.week { width: 100%; }
+.week-head { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 16px; }
+.week-key { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.week-key i { width: 18px; height: 8px; border-radius: 2px; }
+.k-work, .bar .work { background: color-mix(in srgb, var(--muted) 42%, transparent); }
+.k-busy, .bar .busy { background: repeating-linear-gradient(135deg, var(--cobalt-lift) 0 5px, rgba(var(--brand-rgb), .45) 5px 10px); }
+.k-free, .bar .free { background: transparent; border: 1px dashed var(--cobalt-lift); box-sizing: border-box; }
+.week-bars { display: flex; flex-direction: column; gap: 10px; }
+.day { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 12px; }
+.day span { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.bar { display: flex; height: 22px; border-radius: 4px; overflow: hidden; transform-origin: left center; }
+.bar b { display: block; height: 100%; }
+.bar .work { width: calc(var(--w) * 1%); }
+.bar .busy { width: calc(var(--b) * .2%); }
+.bar .free { width: calc(var(--b) * .8%); }
+.section.active .bar { animation: barGrow .8s var(--ease-out) both; }
+.section.active .day:nth-child(2) .bar { animation-delay: .08s; } .section.active .day:nth-child(3) .bar { animation-delay: .16s; }
+.section.active .day:nth-child(4) .bar { animation-delay: .24s; } .section.active .day:nth-child(5) .bar { animation-delay: .32s; }
+@keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.section.active .bar .busy { animation: busyFind 1.2s ease 1.5s both, busyShrink 1s var(--ease-out) 3s both; }
+@keyframes busyFind { 0%, 100% { box-shadow: none; } 30%, 70% { box-shadow: inset 0 0 0 2px var(--ink); } }
+@keyframes busyShrink { from { width: calc(var(--b) * 1%); } to { width: calc(var(--b) * .2%); } }
+.section.active .bar .free { animation: freeOpen 1s var(--ease-out) 3s both; }
+@keyframes freeOpen { from { width: 0; opacity: 0; } to { width: calc(var(--b) * .8%); opacity: 1; } }
+.week-stage { position: relative; height: 18px; margin: 16px 0 0 50px; }
+.week-stage span { position: absolute; left: 0; top: 0; opacity: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--cobalt-lift); }
+.section.active .week-stage span:nth-child(1) { animation: stageOn .8s ease 1.5s both; }
+.section.active .week-stage span:nth-child(2) { animation: stageOn .8s ease 2.3s both; }
+.section.active .week-stage span:nth-child(3) { animation: stageStay .6s ease 3.1s both; }
+@keyframes stageOn { 0% { opacity: 0; transform: translateY(6px); } 25%, 75% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes stageStay { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.week .bignum { margin-top: 22px; }
+.week .bignum b { font-size: clamp(40px, 4.6vw, 76px); }
+
+@media (max-width: 1024px) {
+  .with-scene, .stance-grid { grid-template-columns: minmax(0, 1fr); }
+  .stance-grid .stance-title { grid-row: auto; }
+  .stance-grid .stance-desc { grid-column: auto; }
+  .scene { justify-self: start; }
+}
+@media (max-width: 760px) and (max-height: 620px) {
+  .with-scene .action-label { display: none; }
+}
+@media (max-width: 760px) {
+  .with-scene { gap: 22px; }
+  .bignum { margin-top: 14px; flex-direction: row; align-items: center; gap: 14px; }
+  .bignum b { font-size: clamp(34px, 10vw, 46px); flex-shrink: 0; }
+  .bignum span { font-size: 12.5px; line-height: 1.45; max-width: 24ch; }
+  .phone { width: min(100%, 300px); padding: 12px 11px 14px; border-radius: 24px; }
+  .thread { min-height: 0; gap: 8px; }
+  .msg span { font-size: 12.5px; padding: 8px 11px; }
+  .msg:nth-of-type(4), .msg:nth-of-type(5) { display: none; }
+  .cal-card, .reply-card { width: min(70%, 230px); margin-right: 0; }
+  .mail { padding: 12px; }
+  .mail-row { padding: 10px; }
+  .week-stage { margin-left: 50px; }
+  .week .bignum b { font-size: clamp(32px, 9.4vw, 44px); }
+}
+
 /* ---- 6 philosophy ---- */
 .philosophy-section .section-inner { display: flex; flex-direction: column; align-items: center; }
 .chip-icon-lg {
@@ -1080,29 +1222,79 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 
     <!-- 2: Stance -->
     <section class="section stance-section" id="section-2" data-section="2" tabindex="-1" aria-label="Approach">
-      <div class="section-inner">
+      <div class="section-inner stance-grid">
         <div class="stance-title animated-title" data-text="Find the waste|Build the fix|Put it to work" data-multiline="true">Find the waste Build the fix Put it to work</div>
+        <div class="scene week" role="img" aria-label="An owner's week shown as five daily bars. The busywork in each day is found, fixed, and shrinks to a sliver, and the hours come back. In my own business, automation gave back more than 20 hours a week.">
+          <div class="week-head">
+            <span class="week-key"><i class="k-work"></i>The actual work</span>
+            <span class="week-key"><i class="k-busy"></i>Busywork</span>
+            <span class="week-key"><i class="k-free"></i>Hours back</span>
+          </div>
+          <div class="week-bars">
+            <div class="day" style="--w:54;--b:30"><span>Mon</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:58;--b:26"><span>Tue</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:50;--b:34"><span>Wed</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:56;--b:28"><span>Thu</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:48;--b:32"><span>Fri</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+          </div>
+          <div class="week-stage" aria-hidden="true"><span>01 &nbsp;Find the waste</span><span>02 &nbsp;Build the fix</span><span>03 &nbsp;Put it to work</span></div>
+          <div class="bignum"><b data-count="20" data-suffix="+ hrs" data-delay="3500" data-dur="900">20+ hrs</b><span>a week back in my own business, from automation alone.</span></div>
+        </div>
         <p class="section-desc stance-desc">No AI theater and no six-month roadmap. A clear plan, a working system, and a team that can actually run it after I leave.</p>
       </div>
     </section>
 
     <!-- 3: Automate -->
     <section class="section action-section" id="section-3" data-section="3" tabindex="-1" aria-label="Automate follow-up">
-      <div class="section-inner">
-        <p class="action-label">For the leads that go cold while everyone is busy doing the actual work —</p>
-        <div class="action-title animated-title" data-text="Automate">Automate</div>
-        <div class="action-subtitle animated-title" data-text="the follow-up">the follow-up</div>
-        <p class="section-desc action-desc">New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar, and nothing left sitting in an inbox all weekend.</p>
+      <div class="section-inner with-scene">
+        <div class="action-copy">
+          <p class="action-label">For the leads that go cold while everyone is busy doing the actual work —</p>
+          <div class="action-title animated-title" data-text="Automate">Automate</div>
+          <div class="action-subtitle animated-title" data-text="the follow-up">the follow-up</div>
+          <div class="bignum"><b data-count="4" data-suffix=" sec" data-delay="1400" data-dur="1000">4 sec</b><span>from their text to your reply, even at 9:47 at night.</span></div>
+          <p class="sr-only">New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar, and nothing left sitting in an inbox all weekend.</p>
+        </div>
+        <div class="scene sms" role="img" aria-label="A new lead texts at 9:47 PM about a roof leak. A reply arrives 4 seconds later, offers a time, and books an inspection for 10:30 AM tomorrow, which lands on the calendar.">
+          <div class="phone">
+            <div class="phone-top"><b>Sarah M.</b><small>New lead &middot; text message</small></div>
+            <div class="thread">
+              <p class="msg in step" style="--at:.7s"><span>Hi! Do you fix roof leaks? Water is coming in over the kitchen.</span><time>9:47 PM</time></p>
+              <p class="typing" aria-hidden="true"><i></i><i></i><i></i></p>
+              <p class="msg out step" style="--at:2.4s"><span>Hi Sarah, sorry about the leak! We can come out tomorrow. Does 10:30 AM work?</span><time>9:47 PM</time></p>
+              <p class="msg in step" style="--at:3.5s"><span>Yes please, that works.</span><time>9:48 PM</time></p>
+              <p class="msg out step" style="--at:4.4s"><span>You're booked for 10:30 AM tomorrow. We'll text when we're on the way.</span><time>9:48 PM</time></p>
+            </div>
+          </div>
+          <div class="cal-card step" style="--at:5.2s">
+            <small>Calendar &middot; Tomorrow</small>
+            <b>10:30 AM &middot; Roof leak inspection</b>
+            <span>Sarah M. &middot; booked by text at 9:48 PM</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- 4: Accelerate -->
     <section class="section action-section" id="section-4" data-section="4" tabindex="-1" aria-label="Accelerate customer replies">
-      <div class="section-inner">
-        <p class="action-label">For the same twelve questions your team answers every single day —</p>
-        <div class="action-title animated-title" data-text="Accelerate">Accelerate</div>
-        <div class="action-subtitle animated-title" data-text="every reply">every reply</div>
-        <p class="section-desc action-desc">Common questions answered instantly, email drafts ready to send, details collected up front, and the complicated ones handed to the right person with context attached.</p>
+      <div class="section-inner with-scene">
+        <div class="action-copy">
+          <p class="action-label">For the same twelve questions your team answers every single day —</p>
+          <div class="action-title animated-title" data-text="Accelerate">Accelerate</div>
+          <div class="action-subtitle animated-title" data-text="every reply">every reply</div>
+          <p class="sr-only">Common questions answered instantly, email drafts ready to send, details collected up front, and the complicated ones handed to the right person with context attached.</p>
+        </div>
+        <div class="scene inbox" role="img" aria-label="Three customer emails arrive. Two common questions are answered automatically within seconds. The third, about a billing problem, is handed to the owner with a summary attached.">
+          <div class="mail">
+            <div class="mail-top"><b>Inbox</b><small>Today</small></div>
+            <div class="mail-row step" style="--at:.6s"><i class="dot"></i><div><b>Dana P.</b><span>What time are you open on Saturday?</span></div><em class="tag ok step" style="--at:1.7s">Answered in 2 sec</em></div>
+            <div class="mail-row step" style="--at:1.1s"><i class="dot"></i><div><b>Marcus L.</b><span>Do you take Amex? Is there parking out front?</span></div><em class="tag ok step" style="--at:2.4s">Answered in 3 sec</em></div>
+            <div class="mail-row step" style="--at:1.6s"><i class="dot"></i><div><b>Priya S.</b><span>My last invoice looks wrong. Can someone call me?</span></div><em class="tag hand step" style="--at:3.2s">Sent to you with a summary</em></div>
+          </div>
+          <div class="reply-card step" style="--at:4.1s">
+            <small>Sent automatically &middot; to Dana</small>
+            <span>We're open 8 AM to 2 PM on Saturday. Want me to save you a spot?</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1672,6 +1864,7 @@ function enterSite(animated) {
     document.getElementById('progress').classList.add('visible');
     if (!RM) document.getElementById('scrollHint').classList.add('visible');
     buildAnimatedTitles();
+    fitScenes();
     buildNavPips();
     buildMobileMenu();
     buildThemePicker();
@@ -1815,9 +2008,48 @@ function setSectionState(index) {
   if (history.replaceState) history.replaceState(null, '', '#' + SLUGS[index]);
   if (index === 6) startServiceCycle(); else stopServiceCycle();
   if (soundEnabled) speakSection(index);
+  runCounters(index);
+}
+
+// Big numbers count up each time their screen comes on, timed to the scene around them.
+const counterTimers = new WeakMap();
+function runCounters(index) {
+  const sec = document.querySelectorAll('.section')[index];
+  if (!sec) return;
+  sec.querySelectorAll('[data-count]').forEach(el => {
+    const to = parseFloat(el.dataset.count), suf = el.dataset.suffix || '';
+    const delay = +el.dataset.delay || 0, dur = +el.dataset.dur || 900;
+    clearTimeout(counterTimers.get(el));
+    if (RM) { el.textContent = to + suf; return; }
+    el.textContent = '0' + suf;
+    counterTimers.set(el, setTimeout(() => {
+      const start = performance.now();
+      (function tick(now) {
+        const p = Math.min(1, (now - start) / dur);
+        el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+    }, delay));
+  });
 }
 
 function activateSection(index) { setSectionState(index); }
+
+// Scenes shrink just enough that their screen fits without scrolling (phones, short laptop screens).
+function fitScenes() {
+  document.querySelectorAll('.section').forEach(sec => {
+    const scene = sec.querySelector('.scene');
+    if (!scene) return;
+    scene.style.zoom = '';
+    const over = sec.scrollHeight - sec.clientHeight;
+    if (over <= 0) return;
+    const h = scene.offsetHeight;
+    scene.style.zoom = Math.max(0.5, (h - over - 8) / h).toFixed(3);
+  });
+}
+let fitTimer = null;
+addEventListener('resize', () => { clearTimeout(fitTimer); fitTimer = setTimeout(fitScenes, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitScenes);
 
 function forceSection(index) {
   currentSection = index;
