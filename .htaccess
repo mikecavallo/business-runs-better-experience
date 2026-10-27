@@ -12,10 +12,13 @@ RewriteRule ^ https://businessrunsbetter.com%{REQUEST_URI} [L,R=301]
 # /services on its own has no page: the services live on the landing page
 RewriteRule ^services/?$ /#explore [R=302,NE,L]
 
-# Clean URLs: /pricing serves pricing.html
+# Short URLs (/pricing, /about) redirect to the real page, so each page has one address
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^([a-z-]+)/?$ $1.html [L]
+RewriteRule ^([a-z-]+)/?$ /$1.html [R=301,L]
+
+# Missing pages get the site's own 404 page, with the full site map
+ErrorDocument 404 /404.html
 
 # Never serve source/dev files, includes or config templates
 <FilesMatch "\.(py|md|csv|log|sh|sqlite)$|^\.git|^brb-lib\.php$|^config\.sample\.php$">
@@ -23,7 +26,7 @@ RewriteRule ^([a-z-]+)/?$ $1.html [L]
 </FilesMatch>
 
 # The lead tracker and webhook must never be cached or indexed
-<FilesMatch "^(leads|stripe-webhook|contact)\.php$">
+<FilesMatch "^(leads|stripe-webhook|contact|checkout)\.php$">
   <IfModule mod_headers.c>
     Header always set Cache-Control "no-store"
     Header always set X-Robots-Tag "noindex, nofollow"
@@ -39,6 +42,14 @@ AddType audio/mpeg .mp3
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/x-icon "access plus 30 days"
+  # CSS and JS links carry a ?v= number, so a change always gets a fresh copy
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType application/javascript "access plus 30 days"
+  ExpiresByType text/javascript "access plus 30 days"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType audio/mpeg "access plus 30 days"
   ExpiresByType text/html "access plus 0 seconds"
