@@ -1,0 +1,124 @@
+/* Portfolio: a page of its own on the starfield, with no window around it.
+   Each project is a small window instead, like the ones the other pages open in.
+   Every color comes from the theme, so all five themes work. */
+
+body.pg.pg-full { overflow-x: hidden; overflow-y: auto; height: auto; min-height: 100%; }
+.pg-full .pg-head {
+  position: sticky; top: 0; z-index: 5;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+.pf-main { position: relative; z-index: 1; max-width: 1300px; margin: 0 auto; padding: 0 clamp(4px, 1.6vw, 18px) 24px; }
+.panel-content.pf { padding-top: clamp(18px, 4vh, 48px); }
+
+/* ---- the opening ---- */
+.pf-hero h1 { max-width: 18ch; }
+.pf-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+.pf-filters button {
+  all: unset; box-sizing: border-box; cursor: pointer;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); background: rgba(var(--brand-rgb), .05); border: 1px solid rgba(var(--brand-rgb), .3);
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.pf-filters button:hover { color: var(--ink); border-color: var(--brand-lift); }
+.pf-filters button[aria-pressed="true"] {
+  color: var(--on-brand); border-color: transparent;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-lift) 30%, var(--brand)), var(--brand));
+}
+.pf-filters button:focus-visible { outline: 2px solid var(--brand-lift); outline-offset: 3px; }
+
+/* ---- a group: Websites, Marketing, Software & AI ---- */
+.pf-group[hidden], .pf-card[hidden] { display: none; }
+.pf-group > header { max-width: 720px; }
+.pf-group > header h2 { margin: 12px 0 10px; }
+.pf-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 18px; margin-top: 26px; align-items: stretch;
+}
+
+/* ---- the small window ---- */
+.pf-card {
+  display: flex; flex-direction: column; padding: 6px; border-radius: 16px;
+  background: linear-gradient(180deg, rgba(var(--brand-rgb), .2), rgba(var(--brand-rgb), .07));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), inset 0 0 0 1px rgba(var(--brand-rgb), .32), 0 26px 60px -32px rgba(0, 0, 0, .9);
+  transition: transform .45s var(--ease-out), box-shadow .45s ease;
+}
+.pf-card:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), inset 0 0 0 1px rgba(var(--brand-rgb), .55), 0 30px 70px -30px rgba(var(--brand-rgb), .45);
+}
+.pf-bar { display: flex; align-items: center; gap: 10px; min-height: 30px; padding: 2px 8px 8px; }
+.pf-dots { display: inline-flex; gap: 5px; flex: none; }
+.pf-dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(var(--brand-rgb), .38); }
+.pf-dots i:first-child { background: var(--brand-lift); }
+.pf-url {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; color: var(--muted);
+}
+.pf-well {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden; border-radius: 11px;
+  background: var(--bg-dark); box-shadow: inset 0 0 0 1px rgba(var(--brand-rgb), .16);
+}
+
+/* ---- the picture: a screenshot, a big number, or the GitHub repo ---- */
+.pf-shot, .pf-stat, .pf-repo { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid rgba(var(--brand-rgb), .16); }
+.pf-shot { display: block; background: var(--bg); }
+.pf-shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .8s var(--ease-out); }
+.pf-card:hover .pf-shot img { transform: scale(1.03); }
+.pf-stat {
+  display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 26px;
+  background: radial-gradient(120% 90% at 0% 0%, rgba(var(--brand-rgb), .24), transparent 62%), var(--bg-dark);
+}
+.pf-stat { container-type: inline-size; }
+.pf-stat b { font-family: var(--font-display); font-weight: 400; font-size: min(74px, calc(100cqi / (var(--chars, 4) * .95))); line-height: 1; letter-spacing: -.05em; color: var(--brand-lift); white-space: nowrap; }
+.pf-stat span { max-width: 26ch; color: var(--muted); font-size: 15px; line-height: 1.5; }
+.pf-repo {
+  display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 26px;
+  font-family: var(--font-mono);
+  background:
+    linear-gradient(90deg, rgba(var(--brand-rgb), .07) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(0deg, rgba(var(--brand-rgb), .07) 1px, transparent 1px) 0 0 / 28px 28px,
+    radial-gradient(120% 90% at 100% 0%, rgba(var(--brand-rgb), .2), transparent 60%),
+    var(--bg-dark);
+}
+.pf-owner { color: var(--dim); font-size: 14px; letter-spacing: .04em; }
+.pf-repo b { color: var(--ink); font-weight: 400; font-size: clamp(20px, 2.1vw, 28px); line-height: 1.25; overflow-wrap: anywhere; }
+.pf-langs { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; color: var(--muted); font-size: 12.5px; letter-spacing: .04em; }
+.pf-langs span::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 50%; background: var(--brand-lift); vertical-align: -1px; }
+.pf-langs span:nth-child(2)::before { background: color-mix(in srgb, var(--brand-lift) 50%, var(--ink)); }
+.pf-langs span:nth-child(3)::before { background: var(--dim); }
+
+/* ---- the words ---- */
+.pf-body { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 18px 8px; }
+.pf-body h3 { margin: 4px 0 0; font-size: 17px; }
+.pf-body p { margin: 0; font-size: 15px; line-height: 1.6; }
+.pf-body .pc-tags { margin-top: 2px; }
+.pf-links { display: flex; flex-wrap: wrap; gap: 0 22px; margin-top: auto !important; padding-top: 2px; }
+.pf-links a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
+  text-decoration: none; color: var(--ink) !important;
+}
+.pf-links a:hover { color: var(--brand-lift) !important; }
+.pf-links a span { margin-left: 3px; color: var(--brand-lift); }
+
+/* ---- everything else on GitHub ---- */
+.pf-more {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px;
+  padding: 22px 24px; border-radius: 14px;
+  background: rgba(var(--brand-rgb), .06); box-shadow: inset 0 0 0 1px rgba(var(--brand-rgb), .25);
+}
+.panel-content .pf-more p { margin: 0; color: var(--ink); font-size: 17px; }
+
+@media (max-width: 640px) {
+  .pf-main { padding: 0 4px 16px; }
+  .pf-grid { gap: 14px; }
+  .pf-filters button { padding: 0 13px; }
+  .pf-more { flex-direction: column; align-items: stretch; text-align: center; }
+  .pf-more .pc-btn { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-card, .pf-shot img { transition: none; }
+  .pf-card:hover, .pf-card:hover .pf-shot img { transform: none; }
+}
