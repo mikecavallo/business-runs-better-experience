@@ -12,6 +12,9 @@ RewriteRule ^ https://businessrunsbetter.com%{REQUEST_URI} [L,R=301]
 # /services on its own has no page: the services live on the landing page
 RewriteRule ^services/?$ /#explore [R=302,NE,L]
 
+# The Work page became the Portfolio
+RewriteRule ^work(\.html)?/?$ /portfolio.html [R=301,L]
+
 # Short URLs (/pricing, /about) redirect to the real page, so each page has one address
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.html -f

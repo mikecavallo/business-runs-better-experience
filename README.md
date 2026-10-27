@@ -96,7 +96,7 @@ the form falls back to opening a pre-filled email.
 Upload these to `public_html/`:
 
 ```
-index.html  about.html  pricing.html  work.html  thanks.html  privacy.html  terms.html
+index.html  about.html  pricing.html  portfolio.html  thanks.html  privacy.html  terms.html
 contact.php  leads.php  stripe-webhook.php  brb-lib.php
 .htaccess  robots.txt  sitemap.xml  assets/
 ```
@@ -154,7 +154,8 @@ Any of Kokoro's 67 voices works. Takes a few seconds for all seven lines. Bump `
 ```
 index.html              everything — markup, styles, canvas engine, theme system
 services/<name>/        one page per service (web design, SEO, AI receptionists ...)
-about.html, work.html, pricing.html   plus thanks/privacy/terms: same window layout as the services
+about.html, pricing.html   plus thanks/privacy/terms: same window layout as the services
+portfolio.html          a page of its own (no window), styled by assets/portfolio.css; /work.html redirects here
 assets/page.css         the standalone page shell: starfield, header, one window filling the screen
 assets/panel.css|js     the window itself (beveled frame, themed scrollbar) and its content styles
 assets/theme.js         the visitor's colour theme, shared by every page
