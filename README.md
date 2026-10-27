@@ -1,8 +1,8 @@
 # Business Runs Better — interactive experience
 
-A single-page, full-screen scroll experience for an AI consultancy. Thirteen sections,
-each with its own procedurally generated canvas background, morphing between states as
-you navigate.
+The site for Business Runs Better: websites, marketing and AI for local business. A
+full-screen intro (seven screens, each with its own procedurally generated canvas background,
+morphing between states as you navigate) ends on a landing page that links to every page.
 
 **[Live demo →](https://mikecavallo.github.io/business-runs-better-experience/)**
 
@@ -32,10 +32,10 @@ Adding a theme is one object entry. The photographic backdrops are lit with a si
 hue, so each theme rotates them with a CSS `hue-rotate` to match rather than shipping
 five sets of images.
 
-**Pre-rendered neural narration.** Optional voice-over for all thirteen sections,
-generated offline with [Kokoro](https://github.com/hexgrad/kokoro) and shipped as 619 KB
-of static mp3. There is no TTS service in production and no inference latency — it's
-just `<audio>`. Browser `speechSynthesis` remains as a fallback. Re-render with
+**Pre-rendered neural narration.** Optional voice-over for the seven intro screens,
+generated offline with [Kokoro](https://github.com/hexgrad/kokoro) and shipped as about 400 KB
+of static mp3. There is no TTS service in production and no inference latency: it's
+just `<audio>`. The sound cuts when you reach the landing page. Browser `speechSynthesis` remains as a fallback. Re-render with
 `render-narration.py`.
 
 **Gesture-accurate navigation.** One scroll gesture advances exactly one section: the
@@ -125,7 +125,7 @@ loads. Setup steps are in the comment at the top of that file.
    Under *After payment*, choose "Don't show confirmation page" and redirect to
    `https://businessrunsbetter.com/thanks.html`. Paste the link URL into `stripe.timeAudit` in
    `assets/site-config.js`.
-2. **(Optional) Run & Improve.** A recurring $300/month Payment Link to send to clients after a
+2. **(Optional) Monthly support.** A recurring $300/month Payment Link to send to clients after a
    build; paste it into `stripe.runAndImprove` if you want it on the site.
 3. **Builds.** Send Stripe Invoices from the dashboard (50% deposit, 50% on handoff).
 4. **Webhook.** Stripe → Developers → Webhooks → Add endpoint
@@ -144,7 +144,8 @@ Development only — the deployed site never touches it.
 python3 render-narration.py --voice bm_george
 ```
 
-Any of Kokoro's 67 voices works. Takes about 3 seconds for all thirteen lines.
+Any of Kokoro's 67 voices works. Takes a few seconds for all seven lines. Bump `AUDIO_V` in
+`index.html` afterwards so browsers drop their cached copies.
 
 ---
 

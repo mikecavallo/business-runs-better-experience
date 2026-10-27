@@ -37,12 +37,13 @@ body.pg { overflow: hidden; background: var(--bg); color: var(--ink); font-famil
 .pg-phone { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); text-decoration: none; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .08em; }
 .pg-phone svg { width: 14px; height: 14px; color: var(--brand-lift); }
 .pg-cta {
-  color: var(--ink); text-decoration: none; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .11em; text-transform: uppercase;
-  padding: 11px 18px; border-radius: 9px; border: 1px solid rgba(var(--brand-rgb), .5);
-  background: linear-gradient(180deg, rgba(var(--brand-rgb), .22), rgba(var(--brand-rgb), .06));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15);
+  color: var(--on-brand); text-decoration: none; font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .11em; text-transform: uppercase;
+  padding: 11px 18px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .12);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-lift) 30%, var(--brand)), var(--brand));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 6px 18px -8px rgba(var(--brand-rgb), .7);
 }
-.pg-cta:hover { border-color: var(--brand-lift); background: rgba(var(--brand-rgb), .25); }
+.pg-cta:hover { filter: brightness(1.08); }
+.pg-nav .menu-btn { margin-left: 2px; }
 
 .pg-main {
   position: relative; z-index: 1; height: calc(100% - 72px);

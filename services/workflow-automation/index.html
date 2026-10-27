@@ -4,20 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Workflow Automation for Small Businesses | Business Runs Better</title>
-<meta name="description" content="Automate estimates, forms, data entry and follow-ups, and connect the apps that never talk to each other. Fixed-price automation from someone who cut 20+ hours a week of manual work in his own business.">
+<meta name="description" content="Automate estimates, forms, data entry and follow-ups, and connect the apps that don't talk to each other. Fixed prices, from Leland, NC.">
 <link rel="canonical" href="https://businessrunsbetter.com/services/workflow-automation/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Workflow Automation | Business Runs Better">
 <meta property="og:description" content="Estimates, forms, data entry and the tools that never talk to each other, connected and running on their own.">
-<meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.webp">
+<meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.jpg">
+<meta property="og:image:width" content="1216">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:url" content="https://businessrunsbetter.com/services/workflow-automation/">
 <meta name="theme-color" content="#16191d">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <script src="/assets/theme.js?v=1"></script>
-<link rel="stylesheet" href="/assets/page.css?v=2">
-<link rel="stylesheet" href="/assets/panel.css?v=3">
+<link rel="stylesheet" href="/assets/page.css?v=4">
+<link rel="stylesheet" href="/assets/panel.css?v=6">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +39,14 @@
         "email": "info@businessrunsbetter.com",
         "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"}
       },
-      "areaServed": {"@type": "Country", "name": "United States"}
+      "areaServed": [
+        {"@type": "City", "name": "Leland, NC"},
+        {"@type": "City", "name": "Wilmington, NC"},
+        {"@type": "AdministrativeArea", "name": "Brunswick County, NC"},
+        {"@type": "AdministrativeArea", "name": "New Hanover County, NC"},
+        {"@type": "AdministrativeArea", "name": "Pender County, NC"},
+        {"@type": "Country", "name": "United States"}
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -49,8 +59,8 @@
       "@type": "FAQPage",
       "mainEntity": [
         {"@type": "Question", "name": "What can be automated?", "acceptedAnswer": {"@type": "Answer", "text": "Anything repetitive with clear rules: moving data between apps, sending reminders, creating documents, routing requests and building reports. If a person does it the same way every time, it's a candidate."}},
-        {"@type": "Question", "name": "What tools do you use?", "acceptedAnswer": {"@type": "Answer", "text": "n8n, Python, webhooks and the APIs of the tools you already use, like Google Workspace, Stripe, Airtable or your CRM. I pick what fits, not what's trendy."}},
-        {"@type": "Question", "name": "What happens when something breaks?", "acceptedAnswer": {"@type": "Answer", "text": "Every build includes 30 days of fixes. After that, Run & Improve support starts at $300 a month and includes monitoring, so problems get fixed before you notice them."}},
+        {"@type": "Question", "name": "What tools do you use?", "acceptedAnswer": {"@type": "Answer", "text": "Mostly n8n (an automation platform), Python and the built-in connections of the tools you already use, like Google Workspace, Stripe, Airtable or your CRM. I pick what fits, not what's trendy."}},
+        {"@type": "Question", "name": "What happens when something breaks?", "acceptedAnswer": {"@type": "Answer", "text": "Every build includes 30 days of fixes. After that, monthly support starts at $300 a month and includes monitoring, so problems get fixed before you notice them."}},
         {"@type": "Question", "name": "Will my team need to learn new software?", "acceptedAnswer": {"@type": "Answer", "text": "As little as possible. Most automations run in the background of the tools your team already uses."}},
         {"@type": "Question", "name": "How much does it cost?", "acceptedAnswer": {"@type": "Answer", "text": "Builds start at $2,500 per system, at a fixed price agreed before work starts. Half to start, half when it’s live and your team is trained."}}
       ]
@@ -70,13 +80,14 @@
   <nav class="pg-nav" aria-label="Contact">
     <a class="pg-phone" href="tel:+19105240056"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg><span>910-524-0056</span></a>
     <a class="pg-cta" href="#contact" data-book-call>Book a free call</a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false"><span></span></button>
   </nav>
 </header>
 
 <main class="pg-main">
   <div class="panel">
     <div class="panel-bar">
-      <span class="panel-crumb"><span class="panel-code">FLOW</span><a href="/#explore">Run</a><span aria-hidden="true">/</span><span>Workflow Automation</span></span>
+      <span class="panel-crumb"><a href="/#explore">Run</a><span aria-hidden="true">/</span><span>Workflow Automation</span></span>
       <a class="pbtn" href="/#explore" aria-label="Close" data-close><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3l6 6M9 3 3 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></a>
     </div>
     <div class="panel-well">
@@ -84,9 +95,8 @@
         <article class="panel-content" id="pageContent">
 
           <section>
-            <p class="pc-eyebrow">Run &middot; Workflow automation</p>
             <h1>Stop copying and pasting between apps</h1>
-            <p class="pc-lede">Every small business has jobs a computer should be doing: retyping form entries, chasing paperwork, building the same estimate again, moving data from one app to another. I connect your tools and automate that work so it runs on its own, reliably.</p>
+            <p class="pc-lede">Every small business has jobs a computer should be doing: retyping form entries, chasing paperwork, building the same estimate again, moving data from one app to another. I connect the apps you already have and automate that work so it runs on its own, reliably, with no new software to learn. If you need a brand-new tool instead, that&rsquo;s <a href="/services/custom-software/">custom software</a>.</p>
             <div class="pc-actions">
               <a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>
               <a class="pc-link" href="tel:+19105240056">Or call 910-524-0056</a>
@@ -103,7 +113,7 @@
             <h2>What you get</h2>
             <div class="pc-grid">
               <div class="pc-card"><h3>Estimates and quotes</h3><p>Quotes built from your prices and templates in minutes, then sent, tracked and followed up automatically.</p></div>
-              <div class="pc-card"><h3>Forms to the right place</h3><p>Website forms, intake forms and job requests routed into your CRM, calendar or job board, with no retyping.</p></div>
+              <div class="pc-card"><h3>Forms to the right place</h3><p>Website forms, intake forms and job requests routed into your customer list (CRM), calendar or job board, with no retyping.</p></div>
               <div class="pc-card"><h3>Apps that talk to each other</h3><p>Your CRM, accounting, email, calendar and spreadsheets connected, so data gets entered once.</p></div>
               <div class="pc-card"><h3>Paperwork on autopilot</h3><p>Contracts, invoices, reminders and follow-ups sent at the right time, without anyone having to remember.</p></div>
               <div class="pc-card"><h3>Reports that build themselves</h3><p>Your weekly numbers pulled together automatically and sent to your inbox.</p></div>
@@ -118,7 +128,7 @@
             </div>
             <div>
               <p>When my eCommerce business was moving more than 10,000 pounds of product a week, the paperwork was drowning us. I wrote Python scripts and automations that took over 20 hours of manual work a week off the team, and rebuilt our process to cut processing time by 35%.</p>
-              <p>Now I do the same for other businesses, with n8n, Python and the APIs behind the software you already pay for. I build things your team can understand, and I document them.</p>
+              <p>Now I do the same for other businesses, using automation tools, a little code and the connections already built into the software you pay for. I build things your team can understand, and I document them.</p>
             </div>
           </section>
 
@@ -135,8 +145,8 @@
             <h2>Questions people ask</h2>
             <div class="pc-faq">
               <details><summary>What can be automated?</summary><p>Anything repetitive with clear rules: moving data between apps, sending reminders, creating documents, routing requests and building reports. If a person does it the same way every time, it's a candidate.</p></details>
-              <details><summary>What tools do you use?</summary><p>n8n, Python, webhooks and the APIs of the tools you already use, like Google Workspace, Stripe, Airtable or your CRM. I pick what fits, not what's trendy.</p></details>
-              <details><summary>What happens when something breaks?</summary><p>Every build includes 30 days of fixes. After that, Run &amp; Improve support starts at $300 a month and includes monitoring, so problems get fixed before you notice them.</p></details>
+              <details><summary>What tools do you use?</summary><p>Mostly n8n (an automation platform), Python and the built-in connections of the tools you already use, like Google Workspace, Stripe, Airtable or your CRM. I pick what fits, not what's trendy.</p></details>
+              <details><summary>What happens when something breaks?</summary><p>Every build includes 30 days of fixes. After that, monthly support starts at $300 a month and includes monitoring, so problems get fixed before you notice them.</p></details>
               <details><summary>Will my team need to learn new software?</summary><p>As little as possible. Most automations run in the background of the tools your team already uses.</p></details>
               <details><summary>How much does it cost?</summary><p>Builds start at $2,500 per system, at a fixed price agreed before work starts. Half to start, half when it&rsquo;s live and your team is trained.</p></details>
             </div>
@@ -167,7 +177,7 @@
                     <option>Free 20-minute call</option>
                     <option>Not sure yet</option>
                   </select></div>
-                <div class="full"><label for="message">What work would you like gone?</label><textarea id="message" name="message" required placeholder="The repetitive jobs, the tools involved, and roughly how long they take each week."></textarea></div>
+                <div class="full"><label for="message">What work would you like gone?</label><textarea id="message" name="message" rows="3" required placeholder="The repetitive jobs, the tools involved, and roughly how long they take each week."></textarea></div>
                 <p class="form-status full" id="formStatus" role="status" aria-live="polite"></p>
                 <div class="form-foot full"><p>Only used to reply to you.</p><button class="pc-btn" type="submit">Send</button></div>
               </form>
@@ -179,17 +189,61 @@
             <p class="pc-eyebrow">Works well with</p>
             <div class="pc-related" style="margin-top:14px">
               <a href="/services/ai-consulting/"><h3>AI Consulting &amp; Strategy</h3><small>Find out where AI actually pays off in your business, and what to skip.</small></a>
-              <a href="/services/custom-software/"><h3>Custom Business Software</h3><small>Internal tools, portals and integrations built around how you work.</small></a>
+              <a href="/services/custom-software/"><h3>Custom Business Software</h3><small>New tools your team or customers log into, built around how you work.</small></a>
               <a href="/services/lead-follow-up/"><h3>Lead Follow-up</h3><small>New inquiries answered in seconds by text, email or chat, and booked onto your calendar.</small></a>
             </div>
           </section>
 
           <footer class="pc-foot">
-            <span>&copy; <span data-year>2026</span> Business Runs Better</span>
-            <a href="tel:+19105240056">910-524-0056</a>
-            <a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a>
-            <a href="/privacy.html">Privacy</a>
-            <a href="/terms.html">Terms</a>
+            <nav class="pc-sitemap" aria-label="All pages">
+              <div class="sm-group">
+                <p class="sm-head">Build</p>
+                <ul>
+                  <li><a href="/services/web-design/">Web Design &amp; Development</a></li>
+                  <li><a href="/services/real-estate-websites/">Real Estate Websites &amp; IDX</a></li>
+                  <li><a href="/services/ecommerce/">eCommerce</a></li>
+                  <li><a href="/services/custom-software/">Custom Business Software</a></li>
+                  <li><a href="/services/product-development/">Product Development</a></li>
+                </ul>
+              </div>
+              <div class="sm-group">
+                <p class="sm-head">Grow</p>
+                <ul>
+                  <li><a href="/services/seo/">SEO &amp; AI Search</a></li>
+                  <li><a href="/services/marketing/">Marketing &amp; Lead Generation</a></li>
+                  <li><a href="/services/data-driven-decisions/">Data-Driven Decisions</a></li>
+                  <li><a href="/services/creative/">Creative, Copy &amp; Video</a></li>
+                  <li><a href="/services/branding/">Branding</a></li>
+                </ul>
+              </div>
+              <div class="sm-group">
+                <p class="sm-head">Run</p>
+                <ul>
+                  <li><a href="/services/ai-consulting/">AI Consulting &amp; Strategy</a></li>
+                  <li><a href="/services/workflow-automation/" aria-current="page">Workflow Automation</a></li>
+                  <li><a href="/services/ai-receptionist/">AI Receptionists &amp; Voice Agents</a></li>
+                  <li><a href="/services/lead-follow-up/">Lead Follow-up</a></li>
+                  <li><a href="/services/ai-assistants/">AI Assistants for Your Team</a></li>
+                  <li><a href="/services/private-ai/">Private &amp; Local AI</a></li>
+                </ul>
+              </div>
+              <div class="sm-group">
+                <p class="sm-head">Mike</p>
+                <ul>
+                  <li><a href="/about.html">About Mike</a></li>
+                  <li><a href="/work.html">Work</a></li>
+                  <li><a href="/pricing.html">Pricing</a></li>
+                </ul>
+              </div>
+            </nav>
+            <p class="pc-where">Based in Leland, NC. I work with businesses across Wilmington and Brunswick, New Hanover and Pender counties, in person or by video.</p>
+            <div class="pc-legal">
+              <span>&copy; <span data-year>2026</span> Business Runs Better</span>
+              <a href="tel:+19105240056">910-524-0056</a>
+              <a href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a>
+              <a href="/privacy.html">Privacy</a>
+              <a href="/terms.html">Terms</a>
+            </div>
           </footer>
 
         </article>
@@ -198,8 +252,8 @@
   </div>
 </main>
 
-<script src="/assets/site-config.js?v=202610091841"></script>
-<script src="/assets/site.js?v=202610091841"></script>
+<script src="/assets/site-config.js?v=202610271"></script>
+<script src="/assets/site.js?v=202610271"></script>
 <script src="/assets/panel.js?v=2"></script>
 </body>
 </html>

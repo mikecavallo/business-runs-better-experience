@@ -3,8 +3,9 @@
 Pre-render the Business Runs Better narration with Kokoro (local, port 8880).
 
 Run this ONLY when the narration copy or the chosen voice changes.
-The output is 13 static audio files that ship with the site — the production
-server needs no TTS, no Python, and no GPU. Playback is just <audio>.
+The output is one static audio file per intro screen (the landing page has none).
+They ship with the site, so the server needs no TTS, no Python and no GPU. Playback is just <audio>.
+After re-rendering, bump AUDIO_V in index.html so browsers drop their cached copies.
 
   python3 render-narration.py --voice bm_george
 """
@@ -20,7 +21,6 @@ LINES = [
  "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
  "Nine places A.I. can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
  "Every build gets judged the same way. Useful, is greater than, impressive.",
- "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step.",
 ]
 
 def main():

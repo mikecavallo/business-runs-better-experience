@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business Runs Better | Websites, Marketing &amp; AI for Local Business</title>
-<meta name="description" content="Websites, SEO, marketing, custom software and practical AI for local businesses, from Mike Cavallo in Leland, NC. IDX certified real estate websites, AI receptionists and automation, at fixed prices.">
+<title>Websites, Marketing &amp; AI in Wilmington, NC | Business Runs Better</title>
+<meta name="description" content="Websites, SEO, marketing and practical AI for local businesses in Wilmington, Leland and Brunswick County, NC. One person, fixed prices, start to finish.">
 <meta name="theme-color" content="#16191d">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
@@ -20,13 +20,15 @@
   } catch (e) { /* storage blocked: everyone gets the full intro */ }
 })();
 </script>
-<link rel="stylesheet" href="/assets/panel.css?v=3">
+<link rel="stylesheet" href="/assets/panel.css?v=6">
 <link rel="canonical" href="https://businessrunsbetter.com/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Business Runs Better | Websites, Marketing &amp; AI for Local Business">
-<meta property="og:description" content="Less busywork, more business. Websites, marketing, custom software and practical AI for local businesses, at fixed prices.">
-<meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.webp">
+<meta property="og:title" content="Websites, Marketing &amp; AI in Wilmington, NC | Business Runs Better">
+<meta property="og:description" content="Less busywork, more business. Websites, marketing and AI for local businesses in the Wilmington area, at fixed prices.">
+<meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.jpg">
+<meta property="og:image:width" content="1216">
+<meta property="og:image:height" content="640">
 <meta property="og:url" content="https://businessrunsbetter.com/">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -268,7 +270,7 @@ nav.visible { opacity: 1; transform: translateY(0); }
 .logo .rise { transition: transform .6s var(--ease-out); transform-origin: 9px 22px; }
 .logo:hover .rise { transform: translateY(-2px); }
 
-.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-links { display: flex; gap: 36px; align-items: center; margin-left: auto; }
 .nav-links button, .nav-links a {
   color: var(--dim);
   text-decoration: none; background: none; border: none; cursor: pointer;
@@ -279,13 +281,14 @@ nav.visible { opacity: 1; transform: translateY(0); }
 }
 .nav-links button:hover, .nav-links a:hover { color: var(--cobalt-lift); }
 .nav-links button, .nav-links a { white-space: nowrap; }
-/* Mid-width screens: drop the in-page jump links first; phone and call button stay. */
-@media (max-width: 1100px) { .nav-links > :nth-child(-n+2) { display: none; } }
+/* Mid-width screens: Pricing goes first (it's in the menu), then the wordmark beside the logo. */
+@media (max-width: 1100px) { .nav-links .nl-pricing { display: none; } .nav-links { gap: 28px; } }
+@media (max-width: 1020px) { .logo span { display: none; } }
 .nav-phone { display: inline-flex; align-items: center; gap: 9px; color: var(--ink) !important; letter-spacing: .08em !important; }
 .nav-phone svg, .nav-phone-m svg { width: 14px; height: 14px; color: var(--cobalt-lift); flex-shrink: 0; }
 .nav-phone-m {
   display: none; align-items: center; gap: 8px; margin-left: auto;
-  height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 3px;
+  height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px;
   color: var(--ink); text-decoration: none; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
 }
 .nav-phone-m:hover { border-color: var(--cobalt-lift); }
@@ -295,71 +298,18 @@ nav.visible { opacity: 1; transform: translateY(0); }
   transition: width 0.4s var(--ease2);
 }
 .nav-links button:hover::after, .nav-links a:hover::after { width: 100%; }
-.nav-cta {
-  padding: 12px 24px !important;
-  border: 1px solid rgba(var(--brand-rgb), 0.4) !important;
-  border-radius: 2px;
-  color: var(--ink) !important;
+.nav-links .nav-cta {
+  padding: 12px 20px !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  border-radius: 10px;
+  color: var(--on-brand) !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-lift) 30%, var(--brand)), var(--brand));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 6px 18px -8px rgba(var(--brand-rgb), .7);
 }
-.nav-cta:hover { border-color: var(--cobalt-lift) !important; background: rgba(var(--brand-rgb),.10); }
+.nav-links .nav-cta:hover { color: var(--on-brand) !important; filter: brightness(1.08); }
 .nav-cta::after { display: none; }
 
-.menu-btn {
-  display: none;
-  width: 42px; height: 42px;
-  align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--line); border-radius: 3px;
-  cursor: pointer; color: var(--ink);
-}
-.menu-btn span { display: block; width: 16px; height: 1.5px; background: currentColor; position: relative; }
-.menu-btn span::before, .menu-btn span::after {
-  content: ''; position: absolute; left: 0; width: 16px; height: 1.5px; background: currentColor;
-}
-.menu-btn span::before { top: -5px; } .menu-btn span::after { top: 5px; }
-
-.mobile-menu {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(16, 19, 23, .97);
-  backdrop-filter: blur(14px);
-  display: none; flex-direction: column;
-  padding: 90px 28px 40px;
-  overflow-y: auto; overscroll-behavior: contain;
-}
-.mobile-menu.open { display: flex; }
-/* every page, in the landing page's groups */
-.mm-groups { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 40px; }
-@media (min-width: 600px) { .mm-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.mm-group { padding: 16px 0 8px; border-bottom: 1px solid var(--line); }
-.mm-head {
-  margin-bottom: 2px; font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--cobalt-lift);
-}
-.mobile-menu a.menu-page {
-  display: flex; align-items: center; min-height: 44px; padding: 6px 0;
-  color: var(--ink); font-family: var(--font-body); font-size: 16.5px; font-weight: 500;
-  line-height: 1.3; text-decoration: none;
-}
-.mobile-menu a.menu-page:hover, .mobile-menu a.menu-page:focus-visible { color: var(--cobalt-lift); }
-/* the call button and the phone number, centred under the list */
-.mm-cta { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 28px; text-align: center; }
-.mm-book {
-  display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px;
-  border: 1px solid rgba(255, 255, 255, .12); border-radius: 10px; cursor: pointer;
-  font-family: var(--font-body); font-size: 15.5px; font-weight: 600;
-  color: var(--on-brand); background: linear-gradient(180deg, var(--cobalt-lift), var(--brand));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 8px 22px -6px rgba(var(--brand-rgb), .6);
-}
-.mm-phone {
-  font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; color: var(--ink);
-  text-decoration: none; border-bottom: 1px solid rgba(var(--brand-rgb), .5); padding-bottom: 3px;
-}
-.mobile-menu .close {
-  position: absolute; top: 24px; right: 24px;
-  display: flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; padding: 0; cursor: pointer;
-  background: none; border: 1px solid var(--line); border-radius: 3px;
-  color: var(--ink); font-size: 20px;
-}
+/* the menu button and the site menu itself are styled in assets/panel.css (shared with the pages) */
 
 /* ============ SCROLL HINT ============ */
 /* the first slide tells people how to move on; tapping it does the same */
@@ -371,7 +321,7 @@ nav.visible { opacity: 1; transform: translateY(0); }
 .scroll-hint.visible { opacity: 1; pointer-events: auto; }
 .scroll-hint.hidden { opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
 .scroll-hint .scroll-text {
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .22em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 10px; white-space: nowrap;
 }
 .scroll-hint .sh-touch, .scroll-hint .scroll-swipe { display: none; }
@@ -418,7 +368,8 @@ nav.visible { opacity: 1; transform: translateY(0); }
   cursor: pointer; border: none; background: none;
   color: var(--dim);
   font-family: var(--font-mono);
-  font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .13em; text-transform: uppercase;
+  min-height: 44px; margin-block: -14px;   /* a 44px tap area without moving anything */
   transition: color 0.3s;
 }
 .sound-toggle:hover { color: var(--cobalt-lift); }
@@ -437,7 +388,7 @@ nav.visible { opacity: 1; transform: translateY(0); }
 .theme-picker { display: flex; align-items: center; gap: 13px; transition: opacity .4s ease, visibility 0s linear 0s; }
 body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .4s ease, visibility 0s linear .4s; }
 .theme-picker .tp-label {
-  font-family: var(--font-mono); font-size: 11.5px;
+  font-family: var(--font-mono); font-size: 12px;
   letter-spacing: .13em; text-transform: uppercase; color: var(--dim);
 }
 .theme-swatches { display: flex; align-items: center; gap: 9px; }
@@ -457,6 +408,12 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 }
 @media (max-width: 900px) { .theme-picker .tp-label { display: none; } }
 @media (max-width: 560px) { .theme-swatches { gap: 11px; } .theme-swatch { width: 15px; height: 15px; } }
+/* fingers: the dots spread out and each gets a 44px tap area */
+.theme-swatch { position: relative; }
+@media (pointer: coarse) {
+  .theme-swatches { gap: 29px; }
+  .theme-swatch::before { content: ''; position: absolute; inset: -15px; border-radius: 50%; }
+}
 
 /* ============ NAV PIPS ============ */
 .nav-pips {
@@ -464,8 +421,9 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   z-index: var(--z-chrome);
   display: flex; flex-direction: column; gap: 12px; align-items: center;
 }
+.pip::before { content: ''; position: absolute; inset: -8px; }   /* 24px to click, 8px to see */
 .pip {
-  width: 8px; height: 8px; padding: 0;
+  position: relative; width: 8px; height: 8px; padding: 0;
   border: 1px solid rgba(var(--brand-rgb), 0.3);
   transform: rotate(45deg);
   cursor: pointer; background: transparent;
@@ -544,6 +502,8 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 @media (max-width: 760px) and (orientation: portrait) {
   #section-0 { align-items: flex-start; padding-top: max(130px, 25svh); }
 }
+/* phones: the progress bar at the top does the job, and the dots would sit on top of the words */
+@media (max-width: 760px) { .nav-pips { display: none; } }
 
 /* ---- 1 about ---- */
 .about-title {
@@ -576,7 +536,8 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 /* ---- scenes: show it, don't describe it ----
    Everything inside .scene animates in when its section becomes .active, so it
    replays every time you arrive on the screen. Reduced motion jumps to the end state. */
-.bignum { margin-top: clamp(22px, 3.6vh, 40px); display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.bignum { margin-top: clamp(22px, 3.6vh, 40px); display: flex; flex-direction: column; gap: 8px; text-align: left; transition: opacity .35s ease; }
+.bignum.count-wait { opacity: 0; transition: none; }
 .bignum b {
   font-family: var(--font-display); font-weight: 400; color: var(--ink);
   font-size: clamp(44px, 6vw, 100px); line-height: .95; letter-spacing: -.05em;
@@ -690,7 +651,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 .week .bignum { margin-top: 22px; }
 .week .bignum b { font-size: clamp(40px, 4.6vw, 76px); }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px) and (max-aspect-ratio: 5/4) {
   .with-scene, .stance-grid { grid-template-columns: minmax(0, 1fr); }
   .stance-grid .stance-title { grid-row: auto; }
   .stance-grid .stance-desc { grid-column: auto; }
@@ -713,6 +674,13 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   .mail-row { padding: 10px; }
   .week-stage { margin-left: 50px; }
   .week .bignum b { font-size: clamp(32px, 9.4vw, 44px); }
+  /* phones get fewer, bigger rows: three days, two emails, the booking card tucked over the phone */
+  .week .day:nth-child(2), .week .day:nth-child(4) { display: none; }
+  .sms .cal-card { margin-top: -64px; }
+  .inbox .mail-row:nth-child(3) { display: none; }
+  .inbox .reply-card { margin-top: -26px; }
+  .phone-top small, .mail-top small, .cal-card small, .reply-card small { font-size: 11px; }
+  .msg time, .mail-row .tag { font-size: 11px; }
 }
 
 /* ---- 6 philosophy ---- */
@@ -826,13 +794,13 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
    when the tiles leave room on phones) */
 .landing-foot {
   flex: none; margin: auto 0 0; padding-top: 14px; text-align: center;
-  font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--dim);
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: var(--dim);
 }
-.landing-foot a { color: var(--muted); text-underline-offset: 3px; }
+.landing-foot a { color: var(--muted); text-underline-offset: 3px; display: inline-block; padding: 14px 2px; margin: -14px -2px; }
 .landing-foot a:hover { color: var(--cobalt-lift); }
 /* one line on phones too */
-@media (max-width: 480px) { .landing-foot { font-size: 10.5px; letter-spacing: .01em; } }
-@media (max-width: 340px) { .landing-foot { font-size: 10px; } }
+@media (max-width: 480px) { .landing-foot { font-size: 11.5px; letter-spacing: .01em; } }
+@media (max-width: 340px) { .landing-foot { font-size: 10.5px; } }
 /* under the constellation or the tiles, centred */
 .landing-replay {
   display: inline-flex; align-items: center; gap: 8px; flex: none; align-self: center;
@@ -889,7 +857,8 @@ nav.landing-map[hidden] { display: none; }
 .lp-orb.kid small { color: var(--muted); font-size: 13px; line-height: 1.4; }
 .lp-orbs.compact .lp-orb.kid small { display: none; }
 .lp-orb.kid:hover b, .lp-orb.kid:focus-visible b, .lp-orb.kid.cta b { color: var(--cobalt-lift); }
-.lp-hint { position: absolute; right: 0; top: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.lp-hint { position: absolute; left: 0; top: 0; z-index: 3; }
+.lp-hint[hidden] { display: none; }
 
 /* morphing tiles (phones and tablets) */
 .lp-morph { display: none; flex-direction: column; gap: 10px; }
@@ -915,8 +884,9 @@ nav.landing-map[hidden] { display: none; }
 .lp-morph.open .lp-grid { display: none; }
 .lp-morph.open .lp-open { display: flex; }
 .lp-bar { display: flex; align-items: center; gap: 14px; }
-.lp-back { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.lp-back span { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 3px; display: grid; place-items: center; color: var(--cobalt-lift); }
+.lp-back { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding-right: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.lp-back:hover { color: var(--ink); }
+.lp-back span { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 3px; display: grid; place-items: center; color: var(--cobalt-lift); }
 .lp-back:focus-visible { outline: 2px solid var(--cobalt-lift); outline-offset: 3px; }
 .lp-bar h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 15px; color: var(--cobalt-lift); }
 .lp-kids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -927,11 +897,9 @@ nav.landing-map[hidden] { display: none; }
   color: var(--ink); text-decoration: none; animation: lpPop .5s var(--ease-out) both; animation-delay: var(--d, 0s);
 }
 .lp-kid:hover, .lp-kid:focus-visible { border-color: var(--cobalt-lift); background: rgba(var(--brand-rgb), .11); }
-.lp-kid .lp-code { align-self: flex-start; font-family: var(--font-display); font-size: 9px; letter-spacing: .08em; color: var(--cobalt-lift); border: 1px solid rgba(var(--brand-rgb), .34); border-radius: 5px; padding: 4px 6px; }
 .lp-kid b { font-family: var(--font-display); font-weight: 400; font-size: 13px; letter-spacing: -.02em; line-height: 1.3; }
 .lp-kid small { display: none; color: var(--muted); font-size: 13px; line-height: 1.45; }
 .lp-kid.cta { background: var(--cobalt); border-color: var(--cobalt); color: var(--on-brand); }
-.lp-kid.cta .lp-code { color: var(--on-brand); border-color: rgba(255, 255, 255, .45); }
 @keyframes lpPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
 .lp-other { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 2px; }
 .lp-other > span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
@@ -1049,7 +1017,7 @@ body.past-intro .bottom-nav { opacity: 0; visibility: hidden; pointer-events: no
   display: inline-flex; align-items: center; gap: 12px;
   min-height: 54px; padding: 15px 30px;
   background: var(--cobalt); color: var(--on-brand);
-  border: 1px solid var(--cobalt); border-radius: 3px;
+  border: 1px solid var(--cobalt); border-radius: 10px;
   font-family: var(--font-body); font-size: 15.5px; font-weight: 600;
   cursor: pointer;
   transition: transform .3s var(--ease-out), background .3s ease, box-shadow .3s ease;
@@ -1087,28 +1055,28 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 .dialog-head p { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 46ch; }
 .dialog-close {
   width: 36px; height: 36px; flex-shrink: 0;
-  background: none; border: 1px solid var(--line); border-radius: 3px;
+  background: none; border: 1px solid var(--line); border-radius: 10px;
   color: var(--muted); font-size: 18px; cursor: pointer;
   transition: color .25s, border-color .25s;
 }
 .dialog-close:hover { color: var(--ink); border-color: var(--line-strong); }
 .dialog-body { padding: 24px 32px 30px; overflow-y: auto; max-height: calc(90dvh - 130px); overscroll-behavior: contain; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.field { display: grid; gap: 7px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+.field { display: grid; gap: 6px; }
 .field.full { grid-column: 1 / -1; }
 .field label {
   font-family: var(--font-mono); font-size: 12px;
   letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
 }
 .field input, .field select, .field textarea {
-  width: 100%; min-height: 50px; padding: 13px 15px;
-  font-family: var(--font-body); font-size: 15.5px;
+  width: 100%; min-height: 48px; padding: 12px 14px;
+  font-family: var(--font-body); font-size: 16px;   /* 16px or more, or iPhone Safari zooms in on tap */
   color: var(--ink); background: var(--bg-dark);
   border: 1px solid var(--line-strong); border-radius: 3px;
   outline: none;
   transition: border-color .25s, background .25s, box-shadow .25s;
 }
-.field textarea { min-height: 118px; resize: vertical; line-height: 1.6; }
+.field textarea { min-height: 88px; resize: vertical; line-height: 1.55; }
 .form-status { min-height: 1.4em; margin-top: 14px; font-size: 14px; color: var(--muted); }
 .form-status.error { color: #ff8a8a; }
 .form-foot a, .form-done a { color: var(--cobalt-lift); }
@@ -1144,7 +1112,9 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   background: var(--bg); padding: 40px; text-align: center;
 }
 .noscript-fallback div { max-width: 46ch; }
-.noscript-fallback h1 { font-family: var(--font-display); font-size: 19px; margin-bottom: 16px; }
+.noscript-fallback .ns-title { font-family: var(--font-display); font-size: 19px; color: var(--ink); margin-bottom: 16px; }
+.noscript-fallback strong { color: var(--ink); }
+.noscript-fallback a { color: var(--cobalt-lift); }
 .noscript-fallback p { color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
 
 /* ============ RESPONSIVE ============ */
@@ -1154,11 +1124,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 @media (max-width: 900px) {
   nav { padding: 16px 20px; }
   .nav-links { display: none; }
-  .menu-btn { display: flex; }
   .nav-phone-m { display: inline-flex; margin-right: 10px; }
 }
 @media (max-width: 360px) {
   .nav-phone-m span { display: none; }
+}
+/* Phones and small tablets. (This block was accidentally limited to 360px wide,
+   so most phones got the desktop type sizes and the scenes had to shrink.) */
+@media (max-width: 900px) {
   .nav-pips { display: none; }
   /* bottom padding must clear the fixed bottom bar (~58px) so the last
      item never rests behind it */
@@ -1203,6 +1176,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .areas-strip { gap: 8px; }
   .areas-strip span { font-size: 11px; padding: 7px 11px; }
 }
+@media (max-width: 760px) {
+  .areas-strip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .areas-strip span {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 44px; padding: 8px 10px; line-height: 1.35; letter-spacing: .02em;
+  }
+  .areas-strip span:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 4px); }
+}
 @media (max-width: 560px) {
   .logo span { display: none; }
   .section { padding: 84px 20px 80px; }
@@ -1245,11 +1226,11 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   "url": "https://businessrunsbetter.com/",
   "email": "info@businessrunsbetter.com",
   "telephone": "+1-910-524-0056",
-  "image": "https://businessrunsbetter.com/assets/img/social.webp",
+  "image": "https://businessrunsbetter.com/assets/img/social.jpg",
   "description": "Websites, SEO, marketing, custom software and practical AI for local businesses.",
   "founder": {"@type": "Person", "name": "Mike Cavallo", "url": "https://businessrunsbetter.com/about.html"},
   "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"},
-  "areaServed": [{"@type": "City", "name": "Leland, NC"}, {"@type": "City", "name": "Wilmington, NC"}, {"@type": "AdministrativeArea", "name": "Brunswick County, NC"}, {"@type": "AdministrativeArea", "name": "New Hanover County, NC"}],
+  "areaServed": [{"@type": "City", "name": "Leland, NC"}, {"@type": "City", "name": "Wilmington, NC"}, {"@type": "AdministrativeArea", "name": "Brunswick County, NC"}, {"@type": "AdministrativeArea", "name": "New Hanover County, NC"}, {"@type": "AdministrativeArea", "name": "Pender County, NC"}],
   "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
     {"@type": "OfferCatalog", "name": "Build", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web Design & Development", "url": "https://businessrunsbetter.com/services/web-design/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Real Estate Websites & IDX", "url": "https://businessrunsbetter.com/services/real-estate-websites/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "eCommerce", "url": "https://businessrunsbetter.com/services/ecommerce/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Custom Business Software", "url": "https://businessrunsbetter.com/services/custom-software/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Product Development", "url": "https://businessrunsbetter.com/services/product-development/"}}]},
     {"@type": "OfferCatalog", "name": "Grow", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SEO & AI Search", "url": "https://businessrunsbetter.com/services/seo/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Marketing & Lead Generation", "url": "https://businessrunsbetter.com/services/marketing/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Data-Driven Decisions", "url": "https://businessrunsbetter.com/services/data-driven-decisions/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Creative, Copy & Video", "url": "https://businessrunsbetter.com/services/creative/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Branding", "url": "https://businessrunsbetter.com/services/branding/"}}]},
@@ -1266,10 +1247,12 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 <noscript>
   <div class="noscript-fallback">
     <div>
-      <h1>Business Runs Better</h1>
-      <p>Websites, marketing &amp; AI for local business. I find the repetitive work costing you time, then build AI into the way your business already runs.</p>
-      <p><strong style="color:#f3f6fb">What I do:</strong> AI implementation · Automated lead generation · Web development · AI consulting &amp; strategy · MVP development · Customer service &amp; support · Scheduling, estimates &amp; admin · Reviews, reporting &amp; team knowledge</p>
-      <p>The interactive version of this site needs JavaScript. Either way, the fastest way to start is to email me directly.</p>
+      <p class="ns-title">Business Runs Better</p>
+      <p>Websites, marketing &amp; AI for local business, from Mike Cavallo in Leland, NC. I build your website, bring in more customers and put AI to work on the busywork. One person, start to finish.</p>
+      <p><strong>Build:</strong> <a href="/services/web-design/">Websites</a> · <a href="/services/real-estate-websites/">Real estate websites</a> · <a href="/services/ecommerce/">Online stores</a> · <a href="/services/custom-software/">Custom software</a> · <a href="/services/product-development/">Product development</a></p>
+      <p><strong>Grow:</strong> <a href="/services/seo/">SEO</a> · <a href="/services/marketing/">Marketing</a> · <a href="/services/data-driven-decisions/">Data-driven decisions</a> · <a href="/services/creative/">Creative, copy &amp; video</a> · <a href="/services/branding/">Branding</a></p>
+      <p><strong>Run:</strong> <a href="/services/ai-consulting/">AI consulting</a> · <a href="/services/workflow-automation/">Workflow automation</a> · <a href="/services/ai-receptionist/">AI receptionists</a> · <a href="/services/lead-follow-up/">Lead follow-up</a> · <a href="/services/ai-assistants/">AI assistants</a> · <a href="/services/private-ai/">Private AI</a></p>
+      <p>The interactive version of this site needs JavaScript. The fastest way to start is to call or email me.</p>
       <p style="margin-top:26px"><a class="final-email" href="tel:+19105240056">910-524-0056</a> &nbsp; <a class="final-email" href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a></p>
       <p><a href="/about.html">About</a> · <a href="/pricing.html">Pricing</a> · <a href="/work.html">Work</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></p>
     </div>
@@ -1289,7 +1272,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   </div>
 </div>
 <!-- One of four splash screens, picked at random each visit -->
-<script src="/assets/splash.js?v=2"></script>
+<script src="/assets/splash.js?v=4"></script>
 
 <!-- ============ MAIN APP ============ -->
 <div id="app">
@@ -1304,8 +1287,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       <span>BUSINESS RUNS BETTER</span>
     </button>
     <div class="nav-links">
-      <button onclick="goToSection(5)">Where it helps</button>
-      <a href="/pricing.html">Pricing</a>
+      <button onclick="goToSection(LANDING_INDEX)">Services</button>
+      <a class="nl-pricing" href="/pricing.html">Pricing</a>
       <a class="nav-phone" href="tel:+19105240056"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg>910-524-0056</a>
       <button class="nav-cta" onclick="bookCall()">Book a free call</button>
     </div>
@@ -1313,14 +1296,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
   </nav>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="site-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menu">
     <button class="close" id="menuClose" aria-label="Close menu">&times;</button>
   </div>
 
   <div class="bottom-nav" id="bottomNav">
     <div class="theme-picker">
       <span class="tp-label" aria-hidden="true">Theme</span>
-      <div class="theme-swatches" id="themeSwatches" role="group" aria-label="Colour theme"></div>
+      <div class="theme-swatches" id="themeSwatches" role="group" aria-label="Color theme"></div>
     </div>
     <button class="sound-toggle" id="soundToggle" aria-pressed="false">
       <span class="label">Sound off</span>
@@ -1479,9 +1462,9 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
               <h3>Build</h3>
               <ul>
                 <li><a href="/services/web-design/" data-code="WEB" data-need="a website that works.">Web Design &amp; Development<small>Fast, mobile-first websites built to rank and to turn visitors into calls.</small></a></li>
-                <li><a href="/services/real-estate-websites/" data-code="IDX" data-need="buyers to find its listings.">Real Estate Websites &amp; IDX<small>Agent and brokerage sites with live MLS listings, from an IDX certified developer.</small></a></li>
-                <li><a href="/services/ecommerce/" data-code="SHOP" data-need="an online store that sells.">eCommerce<small>Shopify, WooCommerce, Amazon and eBay, from someone who ran a $750K store.</small></a></li>
-                <li><a href="/services/custom-software/" data-code="APP" data-need="software that actually fits.">Custom Business Software<small>Internal tools, portals and integrations built around how you work.</small></a></li>
+                <li><a href="/services/real-estate-websites/" data-code="IDX" data-need="buyers to find its listings.">Real Estate Websites &amp; IDX<small>Agent and brokerage sites with live MLS listings, from an IDX Broker certified developer.</small></a></li>
+                <li><a href="/services/ecommerce/" data-code="SHOP" data-need="an online store that sells.">eCommerce<small>Shopify, WooCommerce, Amazon and eBay, from someone whose own store did $750K in sales in 2023.</small></a></li>
+                <li><a href="/services/custom-software/" data-code="APP" data-need="software that actually fits.">Custom Business Software<small>New tools your team or customers log into, built around how you work.</small></a></li>
                 <li><a href="/services/product-development/" data-code="PDM" data-need="its next product launched.">Product Development<small>From idea to launched product: plan it, build it, ship it, improve it.</small></a></li>
               </ul>
             </div>
@@ -1499,7 +1482,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
               <h3>Run</h3>
               <ul>
                 <li><a href="/services/ai-consulting/" data-code="PLAN" data-need="a straight answer on AI.">AI Consulting &amp; Strategy<small>Find out where AI actually pays off in your business, and what to skip. Starts with a $500 Time Audit.</small></a></li>
-                <li><a href="/services/workflow-automation/" data-code="FLOW" data-need="less busywork.">Workflow Automation<small>Estimates, forms, data entry and the tools that never talk to each other, connected and running on their own.</small></a></li>
+                <li><a href="/services/workflow-automation/" data-code="FLOW" data-need="less busywork.">Workflow Automation<small>The apps you already have, connected so the busywork runs itself.</small></a></li>
                 <li><a href="/services/ai-receptionist/" data-code="VOICE" data-need="every call answered.">AI Receptionists &amp; Voice Agents<small>A phone agent that answers every call, books appointments and hands off the tricky ones with notes.</small></a></li>
                 <li><a href="/services/lead-follow-up/" data-code="LEAD" data-need="leads answered in seconds.">Lead Follow-up<small>New inquiries answered in seconds by text, email or chat, qualified and booked onto your calendar.</small></a></li>
                 <li><a href="/services/ai-assistants/" data-code="KNOW" data-need="answers without asking me.">AI Assistants for Your Team<small>An assistant trained on your own docs, prices and policies, so your team stops asking the same questions.</small></a></li>
@@ -1509,9 +1492,9 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
             <div class="lm-group" data-key="mike" data-need="to know who it&rsquo;s hiring.">
               <h3>Mike</h3>
               <ul>
-                <li><a href="/about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. Twenty years of websites, stores, software and AI.</small></a></li>
+                <li><a href="/about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. 20+ years of websites, marketing and software. Now AI too.</small></a></li>
                 <li><a href="/work.html" data-code="WORK" data-need="to see real work first.">Work<small>Sites and AI tools I&rsquo;ve built, and where each one stands.</small></a></li>
-                <li><a href="/pricing.html" data-code="$" data-need="to know what it costs.">Pricing<small>$500 Time Audit, builds from $2,500, support from $300 a month.</small></a></li>
+                <li><a href="/pricing.html" data-code="$" data-need="to know what it costs.">Pricing<small>Websites from $499, SEO from $199 a month, AI builds from $2,500.</small></a></li>
                 <li><a href="#contact" data-code="CALL" data-need="a straight answer." data-call>Book a free 20-minute call<small>No pitch deck. I&rsquo;ll tell you honestly what I&rsquo;d do first.</small></a></li>
               </ul>
             </div>
@@ -1570,29 +1553,39 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <label for="phone">Phone</label>
           <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional, if you prefer a call">
         </div>
-        <div class="field full">
+        <div class="field">
           <label for="interest">What can I help with?</label>
           <select id="interest" name="interest" required>
             <option value="" selected disabled>Choose one</option>
             <option>Free 20-minute call</option>
-            <option>Time Audit</option>
-            <option>A specific build</option>
-            <option>Website or online store</option>
-            <option>SEO or marketing</option>
-            <option>Branding, copy or video</option>
-            <option>Custom software</option>
-            <option>AI or automation</option>
-            <option>Data and reporting</option>
-            <option>Monthly support</option>
-            <option>Building an MVP</option>
+            <optgroup label="Build">
+              <option>Landing page</option>
+              <option>Website or redesign</option>
+              <option>Real estate website</option>
+              <option>Online store</option>
+              <option>Custom software or a new app</option>
+            </optgroup>
+            <optgroup label="Grow">
+              <option>SEO</option>
+              <option>Google or Facebook ads</option>
+              <option>Email, reviews or social media</option>
+              <option>Branding, copy or video</option>
+              <option>Data and reporting</option>
+            </optgroup>
+            <optgroup label="Run">
+              <option>Time Audit</option>
+              <option>AI or automation</option>
+              <option>Monthly support</option>
+            </optgroup>
             <option>Not sure yet</option>
           </select>
         </div>
-        <div class="field full">
+        <div class="field">
           <label for="budget">Rough budget</label>
           <select id="budget" name="budget">
             <option value="" selected>Not sure yet</option>
-            <option>Under $2,500</option>
+            <option>Under $500</option>
+            <option>$500 to $2,500</option>
             <option>$2,500 to $5,000</option>
             <option>$5,000 to $10,000</option>
             <option>$10,000+</option>
@@ -1600,7 +1593,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
         </div>
         <div class="field full">
           <label for="message">What would you like to improve?</label>
-          <textarea id="message" name="message" placeholder="Tell me about the work, bottleneck, or idea you have in mind." required></textarea>
+          <textarea id="message" name="message" rows="3" placeholder="Tell me about the work, bottleneck, or idea you have in mind." required></textarea>
         </div>
       </div>
       <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
@@ -1617,7 +1610,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   </div>
 </dialog>
 
-<script src="/assets/site-config.js?v=202610091841"></script>
+<script src="/assets/site-config.js?v=202610271"></script>
 <script src="/assets/panel.js?v=2"></script>
 <script>
 // ============================================
@@ -1740,6 +1733,8 @@ function buildThemePicker() {
   if (saved && THEMES[saved]) applyTheme(saved);
 })();
 
+// what each intro screen says out loud (the mp3s are rendered from render-narration.py; this is the
+// fallback if a file won't play). The landing page has none: the sound cuts there.
 const sectionNarration = [
   "Your business. Running better. Websites, marketing, and A I for local business.",
   "I find the repetitive work costing you time, then build A I into the way your business already runs.",
@@ -1748,11 +1743,11 @@ const sectionNarration = [
   "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
   "Nine places A I can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
   "Every build gets judged the same way. Useful, is greater than, impressive.",
-  "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step."
+  ""
 ];
 
 // ============================================
-// 9 BACKGROUND PATTERNS
+// BACKGROUND PATTERNS (one per screen)
 // ============================================
 const patterns = [
   // 0: Perspective Grid Floor
@@ -2135,14 +2130,24 @@ function buildMobileMenu() {
   cta.querySelector('.mm-book').addEventListener('click', () => { closeMenu(); bookCall(); });
   menu.appendChild(cta);
 }
+// While the menu is open everything behind it is inert, so Tab can't wander off behind it.
+let menuReleased = [];
 function openMenu() {
-  document.getElementById('mobileMenu').classList.add('open');
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.add('open');
   document.getElementById('menuBtn').setAttribute('aria-expanded', 'true');
+  for (let el = menu; el && el !== document.body; el = el.parentElement) {
+    [...el.parentElement.children].forEach(sib => {
+      if (sib !== el && !sib.inert && !/^(SCRIPT|STYLE)$/.test(sib.tagName)) { sib.inert = true; menuReleased.push(sib); }
+    });
+  }
   document.getElementById('menuClose').focus();
 }
 function closeMenu() {
   document.getElementById('mobileMenu').classList.remove('open');
   document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
+  menuReleased.forEach(el => { el.inert = false; });
+  menuReleased = [];
 }
 document.getElementById('menuBtn').addEventListener('click', openMenu);
 document.getElementById('menuClose').addEventListener('click', () => {
@@ -2202,10 +2207,14 @@ function runCounters(index) {
   sec.querySelectorAll('[data-count]').forEach(el => {
     const to = parseFloat(el.dataset.count), suf = el.dataset.suffix || '';
     const delay = +el.dataset.delay || 0, dur = +el.dataset.dur || 900;
+    const box = el.closest('.bignum') || el;
     clearTimeout(counterTimers.get(el));
-    if (RM) { el.textContent = to + suf; return; }
+    if (RM) { box.classList.remove('count-wait'); el.textContent = to + suf; return; }
+    // hidden until it starts counting, so nobody reads "0+ hrs" while the scene plays
+    box.classList.add('count-wait');
     el.textContent = '0' + suf;
     counterTimers.set(el, setTimeout(() => {
+      box.classList.remove('count-wait');
       const start = performance.now();
       (function tick(now) {
         const p = Math.min(1, (now - start) / dur);
@@ -2226,8 +2235,8 @@ function fitScenes() {
     scene.style.zoom = '';
     const over = sec.scrollHeight - sec.clientHeight;
     if (over <= 0) return;
-    const h = scene.offsetHeight;
-    scene.style.zoom = Math.max(0.5, (h - over - 8) / h).toFixed(3);
+    const h = scene.offsetHeight, floor = innerWidth <= 760 ? 0.8 : 0.5;
+    scene.style.zoom = Math.max(floor, (h - over - 8) / h).toFixed(3);
   });
 }
 let fitTimer = null;
@@ -2428,7 +2437,7 @@ document.addEventListener('touchend', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (document.getElementById('mobileMenu').classList.contains('open')) { closeMenu(); return; }
+    if (document.getElementById('mobileMenu').classList.contains('open')) { closeMenu(); document.getElementById('menuBtn').focus(); return; }
   }
   if (!entered || uiBlocked()) return;
   if (e.repeat) { e.preventDefault(); return; }   // holding a key must not chain sections
@@ -2671,7 +2680,7 @@ function speakSection(index) {
     a.play().then(() => {
       // warm the next clip so the following section starts instantly
       const nxt = index + 1;
-      if (nxt < TOTAL_SECTIONS) {
+      if (nxt < LANDING_INDEX) {
         new Audio(`/assets/audio/s${String(nxt).padStart(2, '0')}.mp3?v=${AUDIO_V}`).preload = 'auto';
       }
     }).catch(() => { narrationAudio = null; speakSectionFallback(index); });
@@ -2891,22 +2900,40 @@ document.getElementById('year').textContent = new Date().getFullYear();
   window.BRBPanel.enhance(panel);
   const baseTitle = document.title;
   let pushed = false, returnFocus = null, closeTimer = null, afterClose = null;
+  // While the window is open everything behind it is inert, so Tab stays inside (the contact form can still open on top).
+  let released = [];
+  function lockBehind() {
+    if (released.length) return;
+    [...document.body.children].forEach(el => {
+      if (el === overlay || el.id === 'contactDialog' || el.inert || /^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName)) return;
+      el.inert = true; released.push(el);
+    });
+  }
+  function unlockBehind() { released.forEach(el => { el.inert = false; }); released = []; }
   const isPage = href => /^\/(services\/[a-z0-9-]+\/?|(about|work|pricing|privacy|terms)\.html)$/.test(href || '');
 
   function comingSoon(href) {
     const a = document.querySelector('#landingMap a[href="' + href + '"]');
     const name = a ? a.firstChild.textContent.trim() : 'This page';
     const desc = a && a.querySelector('small') ? a.querySelector('small').textContent.trim() : '';
-    const code = a ? a.dataset.code : '';
     const group = a && a.closest('.lm-group') ? a.closest('.lm-group').querySelector('h3').textContent.trim() : '';
     return {
       title: name + ' | Business Runs Better',
-      crumb: (code ? '<span class="panel-code">' + code + '</span>' : '') + (group ? '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span>' : '') + '<span>' + name + '</span>',
+      crumb: (group ? '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span>' : '') + '<span>' + name + '</span>',
       html: '<section><p class="pc-eyebrow">' + (group ? group + ' &middot; ' : '') + 'coming soon</p><h1>' + name + '</h1>' +
         '<p class="pc-lede">' + desc + '</p><p>This page is still being written. If it’s what you need, let’s talk now.</p>' +
         '<div class="pc-actions"><a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>' +
         '<a class="pc-link" href="tel:+19105240056">Or call 910-524-0056</a></div></section>'
     };
+  }
+
+  // Cloudflare hides email addresses in the pages it serves and decodes them with a script that only
+  // runs on a full page load, so a page shown in the window decodes them here (first byte = the key).
+  function cfDecode(hex) {
+    const key = parseInt(hex.slice(0, 2), 16);
+    let out = '';
+    for (let i = 2; i < hex.length; i += 2) out += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16) ^ key);
+    return out;
   }
 
   async function load(href) {
@@ -2918,6 +2945,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
       const content = doc.getElementById('pageContent');
       if (!content) throw new Error('no content');
       content.querySelectorAll('[data-standalone-only]').forEach(n => n.remove());
+      content.querySelectorAll('.__cf_email__[data-cfemail]').forEach(el => el.replaceWith(cfDecode(el.dataset.cfemail)));
+      content.querySelectorAll('a[href^="/cdn-cgi/l/email-protection#"]').forEach(a =>
+        a.setAttribute('href', 'mailto:' + cfDecode(a.getAttribute('href').split('#')[1])));
       const c = doc.querySelector('.panel-crumb');
       return { title: doc.title, crumb: c ? c.innerHTML : '', html: content.innerHTML };
     } catch (e) {
@@ -2934,6 +2964,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
     window.BRBPanel.decorate(body);
     scroller.scrollTop = 0;
     document.title = page.title || baseTitle;
+    panel.setAttribute('aria-label', (page.title || 'Page').split(' | ')[0]);
+    lockBehind();
     overlay.hidden = false;
     requestAnimationFrame(() => overlay.classList.add('open'));
     if (push && !window.BRB_PREVIEW) { history.pushState({ brbPage: href }, '', href); pushed = true; }
@@ -2943,6 +2975,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
   function hide() {
     overlay.classList.remove('open');
     document.title = baseTitle;
+    unlockBehind();
     closeTimer = setTimeout(() => { overlay.hidden = true; body.innerHTML = ''; }, 380);
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
   }
@@ -2982,7 +3015,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     if (a.hasAttribute('data-pay')) { e.preventDefault(); payAudit(); return; }
     if (a.dataset.interest) { e.preventDefault(); openContact(a.dataset.interest); return; }
     if (href === '/#explore' || href === '/') { e.preventDefault(); closePage(); return; }
-    // a link to a spot in the intro (say /#where-it-helps): shut the window, then go there
+    // a link to a spot in the intro (say /#automate): shut the window, then go there
     const jump = /^\/#([a-z-]+)$/.exec(href || '');
     if (jump && SLUGS.indexOf(jump[1]) >= 0) { e.preventDefault(); closePage(() => goToSection(SLUGS.indexOf(jump[1]))); }
   });
@@ -3017,7 +3050,10 @@ let landingActivated = () => {};
   const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
   // ---- the "My business needs ___" line ----
-  let ci = Math.max(0, ALL.findIndex(k => k.code === 'MKT')), hovering = null;
+  let ci = Math.max(0, ALL.findIndex(k => k.code === 'MKT')), hovering = null, curGroup = null;
+  // while a group is open, the line only cycles through that group's pages
+  const pool = () => curGroup ? curGroup.kids : ALL;
+  function setGroup(g) { curGroup = g; if (g && g.kids.indexOf(ALL[ci]) < 0) ci = ALL.indexOf(g.kids[0]); }
   function render(text, instant) {
     needEl.innerHTML = '';
     let i = 0;
@@ -3040,7 +3076,7 @@ let landingActivated = () => {};
     if (hovering || !isOn()) return;
     const chars = needEl.querySelectorAll('.ch');
     chars.forEach((c, i) => setTimeout(() => c.classList.add('out'), 9 * i));
-    setTimeout(() => { if (hovering) return; ci = (ci + 1) % ALL.length; render(ALL[ci].need); }, 9 * chars.length + 360);
+    setTimeout(() => { if (hovering) return; const p = pool(); ci = ALL.indexOf(p[(p.indexOf(ALL[ci]) + 1) % p.length]); render(ALL[ci].need); }, 9 * chars.length + 360);
   }, 3200);
 
   // a page link (it opens in the page window); a data-jump link goes to a screen of the intro; the call button opens the booking form
@@ -3056,7 +3092,11 @@ let landingActivated = () => {};
   const orbs = document.createElement('div'); orbs.className = 'lp-orbs';
   const wires = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); wires.setAttribute('class', 'lp-wires'); wires.setAttribute('aria-hidden', 'true');
   orbs.appendChild(wires);
-  const hint = document.createElement('span'); hint.className = 'lp-hint'; orbs.appendChild(hint);
+  const hint = document.createElement('button'); hint.type = 'button'; hint.className = 'lp-back lp-hint'; hint.hidden = true;
+  hint.innerHTML = '<span aria-hidden="true">&#8592;</span>All four';
+  hint.addEventListener('click', () => { const was = open; open = null; setGroup(null); layout(); say(null);
+    const orb = items.find(i => i.top && i.g === was); if (orb) orb.el.focus({ preventScroll: true }); });
+  orbs.appendChild(hint);
   stage.appendChild(orbs);
   let open = null, wireStart = 0, arriveTimer = null;
   const items = [];
@@ -3064,7 +3104,7 @@ let landingActivated = () => {};
     const b = document.createElement('button'); b.type = 'button'; b.className = 'lp-orb top';
     b.innerHTML = '<span class="in"><b>' + g.n + '</b><small>' + g.kids.length + ' pages</small></span>';
     b.setAttribute('aria-expanded', 'false');
-    b.addEventListener('click', () => { open = open === g ? null : g; layout(); });
+    b.addEventListener('click', () => { open = open === g ? null : g; setGroup(open); layout(); });
     hoverable(b, g);
     orbs.appendChild(b);
     items.push({ el: b, g, top: true, ph: gi * 1.7 });
@@ -3085,8 +3125,8 @@ let landingActivated = () => {};
     const W = orbs.clientWidth, H = orbs.clientHeight; if (!W || !H) return;
     const tops = items.filter(i => i.top);
     items.forEach(i => i.el.classList.remove('sel', 'mini', 'right'));
+    hint.hidden = !open;
     if (!open) {
-      hint.textContent = '';
       items.filter(i => !i.top).forEach(i => { i.el.classList.add('gone'); i.el.tabIndex = -1; });
       const P = [[0.14, 0.32], [0.4, 0.72], [0.62, 0.26], [0.86, 0.64]];
       tops.forEach((t, i) => {
@@ -3095,7 +3135,6 @@ let landingActivated = () => {};
         place(t, W * P[i][0], H * P[i][1], 60);
       });
     } else {
-      hint.textContent = 'Click ' + open.n + ' again to see all four';
       const sel = tops.find(t => t.g === open), others = tops.filter(t => t.g !== open);
       sel.el.classList.add('sel'); sel.el.setAttribute('aria-expanded', 'true');
       items.filter(i => !i.top && i.g !== open).forEach(i => { i.el.classList.add('gone'); i.el.tabIndex = -1; });
@@ -3174,7 +3213,7 @@ let landingActivated = () => {};
         const a = wire(document.createElement('a'), k);
         a.className = 'lp-kid' + (k.call ? ' cta' : '');
         a.style.setProperty('--d', (RM ? 0 : i * 0.06) + 's');
-        a.innerHTML = '<span class="lp-code">' + esc(k.code) + '</span><b>' + esc(k.n) + '</b><small>' + esc(k.d) + '</small>';
+        a.innerHTML = '<b>' + esc(k.n) + '</b><small>' + esc(k.d) + '</small>';
         kidsBox.appendChild(a);
       });
       other.innerHTML = '<span>Or open</span>';
@@ -3183,6 +3222,7 @@ let landingActivated = () => {};
         b.addEventListener('click', () => openMorph(o, b)); hoverable(b, o); other.appendChild(b);
       });
       morph.classList.add('open');
+      setGroup(g);
       say(g);
       morph.querySelector('.lp-back').focus({ preventScroll: true });
     };
@@ -3195,12 +3235,13 @@ let landingActivated = () => {};
     setTimeout(fill, 380);
     setTimeout(() => gh.remove(), 760);
   }
-  morph.querySelector('.lp-back').addEventListener('click', () => { morph.classList.remove('open'); say(null); });
+  morph.querySelector('.lp-back').addEventListener('click', () => { morph.classList.remove('open'); setGroup(null); say(null); });
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !isOn() || !document.getElementById('svcOverlay').hidden) return;
     if (open) { open = null; layout(); }
     morph.classList.remove('open');
+    setGroup(null);
   });
 
   // ---- which version ----

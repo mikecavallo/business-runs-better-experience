@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /leads.php
-Disallow: /thanks.html
+Disallow: /checkout.php
 Sitemap: https://businessrunsbetter.com/sitemap.xml
