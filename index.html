@@ -2636,6 +2636,15 @@ document.getElementById('year').textContent = new Date().getFullYear();
     };
   }
 
+  // Cloudflare hides email addresses in the pages it serves and decodes them with a script that only
+  // runs on a full page load, so a page shown in the window decodes them here (first byte = the key).
+  function cfDecode(hex) {
+    const key = parseInt(hex.slice(0, 2), 16);
+    let out = '';
+    for (let i = 2; i < hex.length; i += 2) out += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16) ^ key);
+    return out;
+  }
+
   async function load(href) {
     const url = (window.BRB_PREVIEW ? href.replace(/^\//, '') : href) + (href.endsWith('/') ? 'index.html' : '');
     try {
@@ -2645,6 +2654,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
       const content = doc.getElementById('pageContent');
       if (!content) throw new Error('no content');
       content.querySelectorAll('[data-standalone-only]').forEach(n => n.remove());
+      content.querySelectorAll('.__cf_email__[data-cfemail]').forEach(el => el.replaceWith(cfDecode(el.dataset.cfemail)));
+      content.querySelectorAll('a[href^="/cdn-cgi/l/email-protection#"]').forEach(a =>
+        a.setAttribute('href', 'mailto:' + cfDecode(a.getAttribute('href').split('#')[1])));
       const c = doc.querySelector('.panel-crumb');
       return { title: doc.title, crumb: c ? c.innerHTML : '', html: content.innerHTML };
     } catch (e) {
