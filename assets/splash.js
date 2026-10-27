@@ -1,13 +1,12 @@
-/* The first screen. Each visit gets one of four short, interactive ways in, picked at random
+/* The first screen. Each visit gets one of three short, interactive ways in, picked at random
    and never the same one twice in a row:
      gate   Hyperspace Gate   stars stream out of the ENTER gate; clicking jumps to light speed
      sweep  Busywork Sweep    floating to-dos the cursor pushes around; "Clear it" sorts and sweeps them
      night  9:47 PM           a late text from a new customer; "Answer it" types the reply
-     power  Power On          hold the ring to charge it; the grid lights up cell by cell
    It lives in a shadow root on #splash, so its class names can't collide with the intro's.
    index.html starts it (BRBSplash.start) once it knows the visitor isn't skipping the splash,
    and hands it what Enter and Skip should do. Returning visitors never see it (index.html
-   sends them to the landing page). Add ?splash=gate|sweep|night|power to the address to see
+   sends them to the landing page). Add ?splash=gate|sweep|night to the address to see
    one on purpose, or just ?splash for a random one. */
 (function () {
   'use strict';
@@ -15,7 +14,7 @@
   if (!host || document.documentElement.classList.contains('returning')) return;
   if (!host.attachShadow || !window.requestAnimationFrame) return;   // the plain fallback in #splash stays
 
-  var KEYS = ['gate', 'sweep', 'night', 'power'];
+  var KEYS = ['gate', 'sweep', 'night'];
   function stored(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function store(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage blocked */ } }
   var forced = null;
@@ -351,64 +350,6 @@ button { font: inherit; color: inherit; }
   background: radial-gradient(circle, var(--ink) 0%, var(--brand-lift) 16%, var(--brand) 42%, color-mix(in srgb, var(--brand) 82%, var(--bg-dark)) 60%, rgba(var(--brand-rgb), 0) 72%);
 }
 
-/* ============ 4. POWER ON ============ */
-.c-power { background: var(--bg-dark); transition: background-color 1.1s ease; }
-.c-power::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(60% 60% at 50% 46%, rgba(var(--brand-rgb), .16), transparent 72%); opacity: 0; transition: opacity 1.2s ease; }
-.c-power.powered { background-color: var(--bg); }
-.c-power.powered::after { opacity: 1; }
-.p-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; padding: 10px; transition: opacity 1.4s ease; }
-@media (orientation: portrait) { .p-grid { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(6, 1fr); } }
-.cell { position: relative; border-radius: 10px; border: 1px solid rgba(var(--brand-rgb), .075); background: rgba(var(--brand-rgb), .012); }
-.cell.pulse { animation: cellPulse 4.6s ease-in-out infinite; animation-delay: var(--pd, 0s); }
-@keyframes cellPulse { 0%, 100% { border-color: rgba(var(--brand-rgb), .075); } 50% { border-color: rgba(var(--brand-rgb), .2); } }
-.cell::before {
-  content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
-  border: 1px solid rgba(var(--brand-rgb), .62);
-  background: radial-gradient(120% 120% at 50% 50%, rgba(var(--brand-rgb), .16), rgba(var(--brand-rgb), .05));
-  box-shadow: inset 0 0 28px rgba(var(--brand-rgb), .18), 0 0 24px rgba(var(--brand-rgb), .14);
-  opacity: 0;
-}
-.cell.on::before { animation: cellOn .56s linear both; animation-delay: var(--d, 0ms); }
-@keyframes cellOn { 0% { opacity: 0; } 14% { opacity: .95; } 26% { opacity: .12; } 40% { opacity: .85; } 52% { opacity: .38; } 100% { opacity: 1; } }
-.p-grid.settled { opacity: .5; }
-.p-scan { position: absolute; left: 0; right: 0; top: 0; z-index: 3; height: 2px; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, rgba(var(--brand-rgb), .9), transparent); box-shadow: 0 0 18px rgba(var(--brand-rgb), .7); }
-.p-stack { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; transition: opacity .6s ease, transform .9s var(--ease-out); }
-.powered .p-stack { opacity: 0; transform: scale(.96); }
-.p-stack .tag { margin-bottom: clamp(18px, 5svh, 42px); }
-.p-ring {
-  --c: 0; --g: 0; --rs: 180px;
-  position: relative; width: var(--rs); height: var(--rs); flex: none;
-  appearance: none; border: 0; padding: 0; border-radius: 50%; background: none; cursor: pointer;
-  display: grid; place-items: center; color: var(--ink);
-  touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
-}
-.p-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.p-ticks line { stroke: rgba(var(--brand-rgb), .24); stroke-width: 1.6; stroke-linecap: round; transition: stroke .25s ease; }
-.p-ticks line.on { stroke: var(--brand-lift); }
-.p-track { fill: none; stroke: rgba(var(--brand-rgb), .16); stroke-width: 3; }
-.p-prog { fill: none; stroke: var(--brand-lift); stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; transform: rotate(-90deg); transform-origin: 100px 100px; filter: drop-shadow(0 0 4px rgba(var(--brand-rgb), .9)); }
-.p-face {
-  position: relative; width: 64%; height: 64%; border-radius: 50%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
-  background: radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--bg-lift) 86%, var(--ink)) 0%, var(--bg-lift) 42%, var(--bg-dark) 100%);
-  border: 1px solid rgba(var(--brand-rgb), calc(.3 + var(--c) * .6));
-  box-shadow: inset 0 1px 0 var(--hi), inset 0 -2px 0 rgba(var(--dark-rgb), .7), 0 0 calc(12px + var(--c) * 46px + var(--g) * 30px) rgba(var(--brand-rgb), calc(.14 + var(--c) * .45 + var(--g) * .25));
-  transition: transform .25s var(--ease-out), background .4s ease;
-}
-.p-ring:not(.charging):not(.full) .p-face { animation: breathe 3.8s ease-in-out infinite; }
-@keyframes breathe {
-  0%, 100% { box-shadow: inset 0 1px 0 var(--hi), inset 0 -2px 0 rgba(var(--dark-rgb), .7), 0 0 12px rgba(var(--brand-rgb), .14); }
-  50% { box-shadow: inset 0 1px 0 var(--hi), inset 0 -2px 0 rgba(var(--dark-rgb), .7), 0 0 34px rgba(var(--brand-rgb), .34); }
-}
-.p-ring.charging .p-face { transform: scale(.96); }
-.p-label { font: 400 12px/1 var(--font-display); letter-spacing: .26em; padding-left: .26em; text-transform: uppercase; }
-.p-pct { font: 500 10px/1 var(--font-mono); letter-spacing: .1em; color: var(--brand-lift); font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .2s ease; }
-.p-ring.charging .p-pct, .p-ring.full .p-pct { opacity: 1; }
-.p-ring.full .p-face { background: radial-gradient(circle at 50% 30%, var(--brand-lift), var(--brand) 72%); color: var(--on-brand); border-color: var(--brand-lift); transform: scale(1.02); }
-.p-ring.full .p-pct { color: var(--on-brand); }
-.p-ring:focus-visible { outline-offset: 6px; }
-.p-hint { margin: 4px 0 0; min-height: 1.2em; font: 400 11px/1.2 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-
 /* ============ SMALL SCREENS ============ */
 @media (max-width: 999px), (max-height: 560px) {
   .n-layout { display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -444,7 +385,6 @@ button { font: inherit; color: inherit; }
   .n-q { font-size: clamp(21px, 6.2vw, 27px); }
   .n-actions { gap: 10px; }
   .n-actions .btn { min-height: 46px; padding: 0 22px; }
-  .p-ring { --rs: 156px; }
 }
 @media (min-width: 1000px) and (min-height: 561px) {
   .phone { --pw: min(280px, calc((100svh - 90px) * .468)); }
@@ -455,10 +395,6 @@ button { font: inherit; color: inherit; }
   .gate-ring, .gate:hover .gate-ring, .gate.is-hot .gate-ring, .gate:focus-visible .gate-ring { animation: none !important; }
   .gate-label { transition: none; }
   .ph-wrap.buzz .phone, .ph-wrap.buzz .vib, .ph-wrap.buzz::before { animation: none; }
-  .p-ring:not(.charging):not(.full) .p-face { animation: none; }
-  .cell.pulse { animation: none; }
-  .cell.on::before { animation: cellFade .5s ease both; animation-delay: 0ms; }
-  @keyframes cellFade { from { opacity: 0; } to { opacity: 1; } }
   .chip.ping, .is-sent .bub.out { animation: none; }
   .concept { animation-duration: .3s; }
   .ph-notif { transform: none; }
@@ -564,28 +500,6 @@ button { font: inherit; color: inherit; }
   </div></div>
   <div class="n-bloom" aria-hidden="true"></div>
   <p class="sr-only n-live" aria-live="polite"></p>
-</section>`,
-    power: `
-<section class="concept c-power" aria-labelledby="p-title">
-  <div class="p-grid" aria-hidden="true"></div>
-  <canvas class="fx" aria-hidden="true"></canvas>
-  <div class="p-scan" aria-hidden="true"></div>
-  <div class="scene"><div class="fit">
-    <div class="p-stack">
-      <div class="brand-row">${MARK}<h2 class="wordmark" id="p-title">Business Runs Better</h2></div>
-      ${TAG}
-      <button class="p-ring" type="button" aria-describedby="p-hint">
-        <svg class="p-svg" viewBox="0 0 200 200" aria-hidden="true">
-          <g class="p-ticks"></g>
-          <circle class="p-track" cx="100" cy="100" r="80"/>
-          <circle class="p-prog" cx="100" cy="100" r="80" pathLength="100"/>
-        </svg>
-        <span class="p-face"><span class="p-label">Enter</span><span class="p-pct" aria-hidden="true">0%</span></span>
-      </button>
-      <p class="p-hint" id="p-hint" aria-live="polite">Hold to power on</p>
-      ${SKIP}
-    </div>
-  </div></div>
 </section>`
   };
 
@@ -1183,22 +1097,22 @@ button { font: inherit; color: inherit; }
       wrap.classList.remove('buzz');
       el.classList.add('is-awake', 'has-notif', 'is-open');
       if (RM) {
-        T.set(function () { el.classList.add('is-drafting'); typed.textContent = REPLY; follow(); }, 200);
-        T.set(sent, 600);
-        T.set(function () { el.classList.add('is-glow'); }, 900);
-        T.set(function () { el.classList.add('is-gone'); finish(); }, 1500);
+        T.set(function () { el.classList.add('is-drafting'); typed.textContent = REPLY; follow(); }, 900);
+        T.set(sent, 1500);
+        T.set(function () { el.classList.add('is-glow'); }, 1900);
+        T.set(function () { el.classList.add('is-gone'); finish(); }, 4600);
         return;
       }
-      T.set(function () { el.classList.add('is-drafting'); follow(); }, 250);
-      var at = 380;
+      T.set(function () { el.classList.add('is-drafting'); follow(); }, 1000);
+      var at = 1200;
       for (var i = 1; i <= REPLY.length; i++) {
         var ch = REPLY[i - 1];
-        at += /[.!?]/.test(ch) ? 70 : ch === ' ' ? 16 : rand(8, 14);
+        at += /[.!?]/.test(ch) ? 150 : ch === ' ' ? 34 : rand(17, 31);
         (function (n) { T.set(function () { typed.textContent = REPLY.slice(0, n); if (n % 6 === 0 || n === REPLY.length) follow(); }, at); })(i);
       }
-      T.set(sent, at + 120);
-      T.set(function () { el.classList.add('is-glow'); }, at + 300);
-      T.set(bloomOut, at + 650);
+      T.set(sent, at + 240);
+      T.set(function () { el.classList.add('is-glow'); }, at + 560);
+      T.set(bloomOut, at + 2600);   // a pause to read the reply before the site takes over
     }
     function sent() {
       el.classList.add('is-sent');
@@ -1218,8 +1132,8 @@ button { font: inherit; color: inherit; }
         { transform: 'translate(-50%,-50%) scale(.3)', opacity: 0 },
         { transform: 'translate(-50%,-50%) scale(' + (S * .08).toFixed(2) + ')', opacity: 1, offset: .25 },
         { transform: 'translate(-50%,-50%) scale(' + S.toFixed(2) + ')', opacity: 1 }
-      ], { duration: 620, easing: 'cubic-bezier(.55,0,.75,.35)', fill: 'forwards' });
-      T.set(function () { el.classList.add('is-gone'); finish(); }, 630);
+      ], { duration: 820, easing: 'cubic-bezier(.55,0,.75,.35)', fill: 'forwards' });
+      T.set(function () { el.classList.add('is-gone'); finish(); }, 830);
     }
     btn.addEventListener('click', answer);
     return {
@@ -1251,237 +1165,9 @@ button { font: inherit; color: inherit; }
   }
 
   /* ======================================================
-     4. POWER ON
-     ====================================================== */
-  function makePower() {
-    var el = $('.c-power'), cv = $('canvas', el), ctx = cv.getContext('2d');
-    var scene = $('.scene', el), fit = $('.fit', el), ring = $('.p-ring', el), pct = $('.p-pct', el), hint = $('.p-hint', el);
-    var grid = $('.p-grid', el), ticksG = $('.p-ticks', el), prog = $('.p-prog', el), scan = $('.p-scan', el);
-    var T = makeTimers(), A = makeAnims(), loop = makeLoop(frame);
-    var NT = 60, ticks = [], cells = [], i;
-    for (i = 0; i < NT; i++) {
-      var ang = i / NT * Math.PI * 2 - Math.PI / 2;
-      var ln = document.createElementNS(SVGNS, 'line');
-      ln.setAttribute('x1', (100 + Math.cos(ang) * 91).toFixed(2));
-      ln.setAttribute('y1', (100 + Math.sin(ang) * 91).toFixed(2));
-      ln.setAttribute('x2', (100 + Math.cos(ang) * (i % 5 === 0 ? 99 : 96)).toFixed(2));
-      ln.setAttribute('y2', (100 + Math.sin(ang) * (i % 5 === 0 ? 99 : 96)).toFixed(2));
-      ticksG.appendChild(ln);
-      ticks.push(ln);
-    }
-    for (i = 0; i < 24; i++) {
-      var cell = document.createElement('div');
-      cell.className = 'cell' + (Math.random() > .55 ? ' pulse' : '');
-      cell.style.setProperty('--pd', rand(0, 4.5).toFixed(2) + 's');
-      grid.appendChild(cell);
-      cells.push(cell);
-    }
-    var W = 1, H = 1, DPR = 1, cx = 0, cy = 0, ringR = 60, charge = 0, mode = 'idle', pressAt = 0;
-    var parts = [], dust = [], waves = [], spawnAcc = 0, lastLit = -1, glow = 0, density = 1;
-
-    function setCharge(v) {
-      charge = v;
-      prog.style.strokeDashoffset = (100 - v * 100).toFixed(2);
-      prog.style.opacity = v > .004 ? '1' : '0';
-      var lit = Math.round(v * NT);
-      if (lit !== lastLit) { for (var k = 0; k < NT; k++) ticks[k].classList.toggle('on', k < lit); lastLit = lit; }
-      ring.style.setProperty('--c', v.toFixed(3));
-      pct.textContent = Math.round(v * 100) + '%';
-    }
-    var HINTS = { idle: 'Hold to power on', hold: 'Keep holding', drain: 'Hold a little longer', auto: 'Powering on', done: 'Powering on', ended: 'Powering on' };
-    function setHint() { var t = HINTS[mode] || HINTS.idle; if (hint.textContent !== t) hint.textContent = t; }
-    function press(kind) {
-      if (mode === 'done' || mode === 'ended' || mode === 'skipped') return;
-      unlock();
-      if (kind === 'auto') mode = 'auto';
-      else { mode = 'hold'; pressAt = now(); }
-      ring.classList.add('charging');
-      setHint();
-      loop.start();
-    }
-    function release() {
-      if (mode !== 'hold') return;
-      mode = now() - pressAt < 240 ? 'auto' : 'drain';
-      setHint();
-    }
-    ring.addEventListener('pointerdown', function (e) {
-      if (e.button > 0) return;
-      e.preventDefault();
-      try { ring.setPointerCapture(e.pointerId); } catch (err) { /* not capturable */ }
-      press('hold');
-    });
-    ring.addEventListener('pointerup', release);
-    ring.addEventListener('pointercancel', function () { if (mode === 'hold') { mode = 'drain'; setHint(); } });
-    ring.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      e.preventDefault();
-      if (e.repeat) return;
-      press(e.key === ' ' ? 'hold' : 'auto');
-    });
-    ring.addEventListener('keyup', function (e) { if (e.key === ' ') { e.preventDefault(); release(); } });
-    ring.addEventListener('click', function (e) { if (e.detail === 0 && (mode === 'idle' || mode === 'drain')) press('auto'); });
-    ring.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-
-    function measure() {
-      var r0 = el.getBoundingClientRect(), r = ring.getBoundingClientRect();
-      cx = r.left + r.width / 2 - r0.left;
-      cy = r.top + r.height / 2 - r0.top;
-      ringR = r.width / 2 * .8;
-    }
-    function seedDust() {
-      var n = Math.round(clamp(W * H / 42000, 10, 28));
-      dust = [];
-      for (var k = 0; k < n; k++) dust.push({ x: rand(0, W), y: rand(0, H), vx: rand(-5, 5), vy: rand(-9, -2), s: rand(1, 2), a: rand(.08, .24) });
-    }
-    function resize() {
-      fitStack(scene, fit);
-      var s = fitCanvas(cv);
-      W = s.w; H = s.h; DPR = s.dpr;
-      density = clamp(W * H / (1280 * 760), .55, 1);
-      measure();
-      if (!dust.length) seedDust();
-      if (!loop.on) draw(0, now());
-    }
-    function spawn() {
-      var u = Math.random() * 2 * (W + H), x, y;
-      if (u < W) { x = u; y = -6; }
-      else if ((u -= W) < H) { x = W + 6; y = u; }
-      else if ((u -= H) < W) { x = W - u; y = H + 6; }
-      else { u -= W; x = -6; y = H - u; }
-      var dx = cx - x, dy = cy - y, d = Math.hypot(dx, dy) || 1;
-      var tan = rand(140, 320) * (Math.random() < .5 ? 1 : -1), rad = rand(30, 90);
-      return { x: x, y: y, vx: dx / d * rad - dy / d * tan, vy: dy / d * rad + dx / d * tan, life: .15, brand: Math.random() < .72, w: rand(.8, 2), hx: [x], hy: [y] };
-    }
-    function segDist(ax, ay, bx, by, px, py) {
-      var vx = bx - ax, vy = by - ay, l2 = vx * vx + vy * vy;
-      var t = l2 ? ((px - ax) * vx + (py - ay) * vy) / l2 : 0;
-      t = clamp(t, 0, 1);
-      return Math.hypot(ax + vx * t - px, ay + vy * t - py);
-    }
-    function frame(dt, t) {
-      if (mode === 'hold') setCharge(Math.min(1, charge + dt / .8));
-      else if (mode === 'auto') setCharge(Math.min(1, charge + dt / .45));
-      else if (mode === 'drain') {
-        setCharge(Math.max(0, charge - dt / .7));
-        if (charge <= 0) { mode = 'idle'; ring.classList.remove('charging'); setHint(); }
-      }
-      if (charge >= 1 && (mode === 'hold' || mode === 'auto')) powerOn();
-      glow *= Math.pow(.15, dt);
-      ring.style.setProperty('--g', glow.toFixed(3));
-      draw(dt, t);
-      if ((mode === 'ended' || mode === 'skipped') && !parts.length && !waves.length) loop.stop();
-    }
-    function draw(dt) {
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      ctx.clearRect(0, 0, W, H);
-      var charging = mode === 'hold' || mode === 'auto', k, p;
-      if (!RM) {
-        ctx.fillStyle = 'rgb(' + TOK.ink + ')';
-        var dm = mode === 'ended' ? .4 : 1;
-        for (k = 0; k < dust.length; k++) {
-          var d = dust[k];
-          d.x += d.vx * dt; d.y += d.vy * dt;
-          if (d.y < -4) { d.y = H + 4; d.x = rand(0, W); }
-          if (d.x < -4) d.x = W + 4; else if (d.x > W + 4) d.x = -4;
-          ctx.globalAlpha = d.a * dm;
-          ctx.fillRect(d.x, d.y, d.s, d.s);
-        }
-      }
-      if (charging && !RM) {
-        spawnAcc += (60 + 230 * charge) * density * dt;
-        while (spawnAcc >= 1) { spawnAcc -= 1; if (parts.length < 360) parts.push(spawn()); }
-      }
-      ctx.lineCap = 'round';
-      for (k = parts.length - 1; k >= 0; k--) {
-        p = parts[k];
-        var dx = cx - p.x, dy = cy - p.y, dd = Math.hypot(dx, dy) || 1;
-        if (charging) {
-          var acc = (560 + 2300 * charge) / Math.sqrt(Math.max(dd, 40) / 120);
-          p.vx += dx / dd * acc * dt; p.vy += dy / dd * acc * dt;
-          p.life = Math.min(1, p.life + dt * 2.6);
-        } else if (mode === 'drain' || mode === 'idle') {
-          p.vx -= dx / dd * 170 * dt; p.vy -= dy / dd * 170 * dt;
-          p.life -= dt * 1.5;
-        } else {
-          p.life -= dt * 1.3;
-        }
-        var damp = Math.pow(charging ? .42 : .3, dt);
-        p.vx *= damp; p.vy *= damp;
-        var ox = p.x, oy = p.y;
-        p.x += p.vx * dt; p.y += p.vy * dt;
-        p.hx.push(p.x); p.hy.push(p.y);
-        if (p.hx.length > 7) { p.hx.shift(); p.hy.shift(); }
-        if (charging && segDist(ox, oy, p.x, p.y, cx, cy) < ringR * .9) { parts.splice(k, 1); glow = Math.min(1, glow + .04); continue; }
-        if (p.life <= 0) { parts.splice(k, 1); continue; }
-        var sp = Math.hypot(p.vx, p.vy);
-        ctx.globalAlpha = p.life * clamp(.3 + sp / 900, .3, .95);
-        ctx.strokeStyle = p.brand ? 'rgb(' + TOK.brand + ')' : 'rgb(' + TOK.ink + ')';
-        ctx.lineWidth = p.w;
-        ctx.beginPath();
-        ctx.moveTo(p.hx[0], p.hy[0]);
-        for (var h = 1; h < p.hx.length; h++) ctx.lineTo(p.hx[h], p.hy[h]);
-        if (p.hx.length < 2) ctx.lineTo(p.x + .01, p.y);
-        ctx.stroke();
-      }
-      var tn = now();
-      for (k = waves.length - 1; k >= 0; k--) {
-        var wv = waves[k], q = (tn - wv.t0) / wv.dur;
-        if (q >= 1) { waves.splice(k, 1); continue; }
-        if (q < 0) continue;
-        ctx.globalAlpha = (1 - q) * .6;
-        ctx.strokeStyle = 'rgb(' + TOK.brand + ')';
-        ctx.lineWidth = 1 + (1 - q) * 6;
-        ctx.beginPath();
-        ctx.arc(cx, cy, ringR + ease.outCubic(q) * Math.hypot(W, H) * .75, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-    }
-    function powerOn() {
-      mode = 'done';
-      setCharge(1);
-      ring.classList.add('full');
-      setHint();
-      parts.forEach(function (p) { var dx = p.x - cx, dy = p.y - cy, d = Math.hypot(dx, dy) || 1, v = rand(320, 900); p.vx = dx / d * v; p.vy = dy / d * v; p.hx = [p.x]; p.hy = [p.y]; });
-      if (!RM) { var t0 = now(); waves.push({ t0: t0, dur: 900 }, { t0: t0 + 120, dur: 1100 }); }
-      var r0 = el.getBoundingClientRect();
-      var order = cells.map(function (c) {
-        var r = c.getBoundingClientRect();
-        return { c: c, d: Math.hypot(r.left + r.width / 2 - r0.left - cx, r.top + r.height / 2 - r0.top - cy) };
-      }).sort(function (a, b) { return a.d - b.d; });
-      order.forEach(function (o, k) { o.c.style.setProperty('--d', (RM ? 0 : 80 + k * 14) + 'ms'); o.c.classList.add('on'); });
-      var total = RM ? 350 : 80 + order.length * 14 + 360;
-      T.set(function () {
-        el.classList.add('powered');
-        if (!RM) A.play(scan, [{ transform: 'translateY(-10px)', opacity: 0 }, { opacity: 1, offset: .12 }, { transform: 'translateY(' + Math.round(H + 10) + 'px)', opacity: .25 }], { duration: 950, easing: 'cubic-bezier(.4,0,.2,1)' });
-      }, Math.round(total * .55));
-      T.set(function () { mode = 'ended'; grid.classList.add('settled'); finish(); }, total + 150);
-    }
-    return {
-      reset: function () {
-        T.clear(); A.cancel();
-        mode = 'idle'; parts = []; waves = []; spawnAcc = 0; glow = 0; lastLit = -1;
-        ring.classList.remove('charging', 'full');
-        el.classList.remove('powered');
-        grid.classList.remove('settled');
-        cells.forEach(function (c) { c.classList.remove('on'); });
-        setCharge(0); setHint(); resize(); seedDust();
-      },
-      start: function () { loop.start(); },
-      stop: function () { loop.stop(); T.clear(); },
-      resize: resize,
-      redraw: function () { if (!loop.on) draw(0); },
-      primary: function () { press('auto'); },
-      focusEl: ring,
-      busy: function () { return mode === 'done' || mode === 'ended'; },
-      onSkip: function () { mode = 'skipped'; ring.classList.remove('charging'); }
-    };
-  }
-
-  /* ======================================================
      CONTROLLER
      ====================================================== */
-  var MAKE = { gate: makeGate, sweep: makeSweep, night: makeNight, power: makePower };
+  var MAKE = { gate: makeGate, sweep: makeSweep, night: makeNight };
   cur = MAKE[KEY]();
   cur.reset();        // laid out and drawn at rest straight away; it starts moving on BRBSplash.start
   var running = false;

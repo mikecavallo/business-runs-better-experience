@@ -12,11 +12,14 @@
 <script src="/assets/theme.js?v=1"></script>
 <script>
 // Anyone who came through in the last 30 days skips the Enter screen and the intro and lands on
-// the landing page, which has a "Replay the intro" button. ?splash in the address always shows it.
+// the landing page, which has a "Replay the intro" button. ?splash in the address always shows it,
+// and so does a replay (the button reloads the page with a one-time flag).
 (function () {
   try {
+    var replay = sessionStorage.getItem('brb-replay') === '1';
+    sessionStorage.removeItem('brb-replay');
     var seen = +localStorage.getItem('brb-visited');
-    if (seen && Date.now() - seen < 2592e6 && !/[?&]splash\b/.test(location.search)) document.documentElement.classList.add('returning');
+    if (seen && Date.now() - seen < 2592e6 && !replay && !/[?&]splash\b/.test(location.search)) document.documentElement.classList.add('returning');
   } catch (e) { /* storage blocked: everyone gets the full intro */ }
 })();
 </script>
@@ -123,7 +126,7 @@ body { min-width: 320px; }
 .skip-link:focus { transform: translateY(0); }
 
 /* ============ PRELOADER / SPLASH ============ */
-/* #splash hosts one of four random splash screens (assets/splash.js, in a shadow root).
+/* #splash hosts one of three random splash screens (assets/splash.js, in a shadow root).
    What sits inside it here is only the plain fallback for when that script can't run. */
 #splash {
   position: fixed; inset: 0; z-index: var(--z-splash);
@@ -1271,8 +1274,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <button class="splash-skip" id="skipBtn">Skip the intro</button>
   </div>
 </div>
-<!-- One of four splash screens, picked at random each visit -->
-<script src="/assets/splash.js?v=4"></script>
+<!-- One of three splash screens, picked at random each visit -->
+<script src="/assets/splash.js?v=7"></script>
 
 <!-- ============ MAIN APP ============ -->
 <div id="app">
@@ -2019,6 +2022,10 @@ document.getElementById('scrollHint').addEventListener('click', () => goToSectio
 // "Replay the intro" on the landing page: back to the first screen, with the bottom bar
 // (sound and theme) back for the ride. It retires again at the landing page.
 document.getElementById('replayIntro').addEventListener('click', () => {
+  // the whole first visit again, starting with the 9:47 PM phone
+  if (!window.BRB_PREVIEW) {
+    try { sessionStorage.setItem('brb-replay', '1'); location.href = '/'; return; } catch (e) { /* no storage: replay in place */ }
+  }
   unlockAudio();
   document.body.classList.remove('past-intro');
   goToSection(0);
