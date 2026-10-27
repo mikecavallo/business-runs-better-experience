@@ -2,7 +2,9 @@
    and never the same one twice in a row:
      gate   Hyperspace Gate   stars stream out of the ENTER gate; clicking jumps to light speed
      sweep  Busywork Sweep    floating to-dos the cursor pushes around; "Clear it" sorts and sweeps them
-     night  9:47 PM           a late text from a new customer; "Answer it" types the reply
+     night  9:47 PM           a missed call, then a late text from a new customer; "Answer it" types the reply
+   Each one opens the story the intro tells. The 9:47 PM text is the same conversation the first
+   intro screen picks up, so keep the two in step.
    It lives in a shadow root on #splash, so its class names can't collide with the intro's.
    index.html starts it (BRBSplash.start) once it knows the visitor isn't skipping the splash,
    and hands it what Enter and Skip should do. Returning visitors never see it (index.html
@@ -190,13 +192,6 @@ button { font: inherit; color: inherit; }
 .s-stack::before { content: ""; position: absolute; inset: -48px -70px; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, rgba(var(--bg-rgb), .82), transparent); }
 .s-head { margin: 4px 0 0; max-width: 16ch; font: 400 clamp(23px, 3vw, 40px)/1.22 var(--font-display); letter-spacing: -.01em; text-wrap: balance; }
 .s-stack .actions { margin-top: 10px; }
-.s-payoff {
-  position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  display: flex; align-items: center; justify-content: center; text-align: center;
-  padding: 24px var(--gutter) 34px; opacity: 0;
-}
-.s-payoff p { margin: 0; max-width: 18ch; font: 400 clamp(23px, 3vw, 40px)/1.25 var(--font-display); letter-spacing: -.01em; text-wrap: balance; }
-.s-payoff p span { color: var(--brand-lift); }
 
 /* ============ 3. 9:47 PM ============ */
 .c-night { background: radial-gradient(90% 80% at 68% 50%, color-mix(in srgb, var(--bg) 70%, var(--bg-dark)) 0%, var(--bg-dark) 70%); }
@@ -298,6 +293,19 @@ button { font: inherit; color: inherit; }
 .pn-when { margin-left: auto; text-transform: none; letter-spacing: .02em; }
 .pn-from { margin-top: 2.6cqw; font: 700 5cqw/1.2 var(--font-body); color: var(--ink); }
 .pn-msg { margin-top: .8cqw; font: 500 5.2cqw/1.34 var(--font-body); color: rgba(var(--ink-rgb), .88); }
+/* two notifications: the new text slides in on top and pushes the missed call down */
+.ph-notifs { margin-top: 9cqw; width: 90cqw; display: flex; flex-direction: column; }
+.ph-notifs .ph-notif { margin-top: 0; width: auto; }
+.pn-slot { max-height: 0; overflow: hidden; transition: max-height .7s var(--ease-out); }
+.pn-slot .ph-notif { margin-bottom: 2.6cqw; }
+.has-notif .pn-slot { max-height: 70cqw; }
+.ph-notif.pn-missed { padding-block: 3.2cqw 3.4cqw; }
+.has-missed .ph-notif.pn-missed { opacity: 1; transform: none; }
+.has-notif .ph-notif.pn-missed { opacity: .82; }
+.pn-call { display: grid; place-items: center; color: var(--on-brand); }
+.pn-call::before, .pn-call::after { content: none; }
+.pn-call svg { width: 62%; height: 62%; }
+.pn-miss { color: var(--brand-lift); font-weight: 600; }
 .ph-lockbar { position: absolute; left: 8cqw; right: 8cqw; bottom: 10cqw; display: flex; justify-content: space-between; }
 .ph-round { width: 12cqw; height: 12cqw; border-radius: 50%; background: rgba(var(--dark-rgb), .55); border: 1px solid rgba(var(--ink-rgb), .08); }
 .ph-home { position: absolute; z-index: 6; left: 50%; bottom: 2.6cqw; width: 36cqw; height: 1.4cqw; transform: translateX(-50%); border-radius: 99px; background: rgba(var(--ink-rgb), .7); opacity: 0; transition: opacity .6s ease; }
@@ -398,6 +406,7 @@ button { font: inherit; color: inherit; }
   .chip.ping, .is-sent .bub.out { animation: none; }
   .concept { animation-duration: .3s; }
   .ph-notif { transform: none; }
+  .pn-slot { transition: none; }
   .ph-thread { transform: none; }
 }
 `;
@@ -441,7 +450,6 @@ button { font: inherit; color: inherit; }
       </div>
     </div>
   </div></div>
-  <div class="s-payoff" aria-hidden="true"><p>Your week, <span>minus the busywork.</span></p></div>
   <p class="sr-only">The screen is covered in busywork: missed calls, unread email, overdue invoices and reminders.</p>
 </section>`,
     night: `
@@ -466,18 +474,25 @@ button { font: inherit; color: inherit; }
                 <div class="ph-lock">
                   <div class="ph-date">Tuesday, March 3</div>
                   <div class="ph-clock">9:47</div>
-                  <div class="ph-notif">
-                    <div class="pn-top"><span class="pn-app"></span><span>Messages</span><span class="pn-when">now</span></div>
-                    <div class="pn-from">(910) 555-0147</div>
-                    <div class="pn-msg">Hi, are you still taking new customers this week?</div>
+                  <div class="ph-notifs">
+                    <div class="pn-slot"><div class="ph-notif">
+                      <div class="pn-top"><span class="pn-app"></span><span>Messages</span><span class="pn-when">now</span></div>
+                      <div class="pn-from">Sarah M.</div>
+                      <div class="pn-msg">Hi! Do you fix roof leaks? Water is coming in over the kitchen.</div>
+                    </div></div>
+                    <div class="ph-notif pn-missed">
+                      <div class="pn-top"><span class="pn-app pn-call"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg></span><span>Phone</span><span class="pn-when">9:46 PM</span></div>
+                      <div class="pn-from">Sarah M.</div>
+                      <div class="pn-msg pn-miss">Missed call</div>
+                    </div>
                   </div>
                   <div class="ph-lockbar"><span class="ph-round"></span><span class="ph-round"></span></div>
                 </div>
                 <div class="ph-thread">
-                  <div class="t-head"><span class="t-back"></span><span class="t-avatar"></span><span class="t-name">(910) 555-0147</span><span class="t-kind">Text message</span></div>
+                  <div class="t-head"><span class="t-back"></span><span class="t-avatar"></span><span class="t-name">Sarah M.</span><span class="t-kind">Text message</span></div>
                   <div class="t-body">
                     <div class="t-stamp">Today 9:47 PM</div>
-                    <div class="bub in">Hi, are you still taking new customers this week?</div>
+                    <div class="bub in">Hi! Do you fix roof leaks? Water is coming in over the kitchen.</div>
                     <div class="bub out"><span class="t-typed"></span><i class="caret"></i></div>
                     <div class="t-label">Drafting a reply</div>
                   </div>
@@ -776,7 +791,7 @@ button { font: inherit; color: inherit; }
      ====================================================== */
   function makeSweep() {
     var el = $('.c-sweep'), layer = $('.s-chips', el), scene = $('.scene', el), fit = $('.fit', el), stack = $('.s-stack', el);
-    var clearBtn = $('.s-clear', el), payoff = $('.s-payoff', el), band = $('.s-band', el), halo = $('.s-halo', el);
+    var clearBtn = $('.s-clear', el), band = $('.s-band', el), halo = $('.s-halo', el);
     var T = makeTimers(), A = makeAnims(), loop = makeLoop(frame);
     var DATA = [
       { tag: 'Call', alert: 1, count: 2, fmt: function (n) { return 'Missed call (' + n + ')'; } },
@@ -971,7 +986,7 @@ button { font: inherit; color: inherit; }
           c.node.style.opacity = String(1 - p * .5);
         }
         render();
-        if (done) { live.forEach(function (c2) { c2.node.hidden = true; }); mode = 'calm'; loop.stop(); showPayoff(); }
+        if (done) { live.forEach(function (c2) { c2.node.hidden = true; }); mode = 'calm'; loop.stop(); T.set(finish, 220); }
       }
     }
     function packRows(items, maxW, gap) {
@@ -996,7 +1011,7 @@ button { font: inherit; color: inherit; }
         mode = 'calm';
         loop.stop();
         live.forEach(function (c) { A.play(c.node, [{ opacity: 1 }, { opacity: 0 }], { duration: 420, fill: 'forwards' }); });
-        T.set(showPayoff, 460);
+        T.set(finish, 460);
         return;
       }
       A.play(band, [{ transform: 'translateX(-45vw)', opacity: 0 }, { opacity: 1, offset: .2 }, { opacity: 1, offset: .75 }, { transform: 'translateX(105vw)', opacity: 0 }], { duration: 800, easing: 'cubic-bezier(.45,0,.25,1)' });
@@ -1019,10 +1034,6 @@ button { font: inherit; color: inherit; }
         y += rh + rowGap;
       });
       live.forEach(function (c) { c.fx = c.x; c.fy = c.y; c.fa = c.a; c.delay = clamp(c.x / W, 0, 1) * 320; });
-    }
-    function showPayoff() {
-      A.play(payoff, [{ opacity: 0, transform: RM ? 'none' : 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: RM ? 400 : 600, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' });
-      T.set(finish, 950);   // the payoff line stays up while the intro fades in
     }
     function setPtr(e) {
       var r = el.getBoundingClientRect();
@@ -1069,8 +1080,8 @@ button { font: inherit; color: inherit; }
     var win = $('.ph-win', el), wrap = $('.ph-wrap', el), lift = $('.ph-lift', el), phone = $('.phone', el);
     var typed = $('.t-typed', el), outBub = $('.bub.out', el), label = $('.t-label', el), bloom = $('.n-bloom', el), liveEl = $('.n-live', el);
     var T = makeTimers(), A = makeAnims();
-    var REPLY = 'Yes we are! I can get you on the calendar. Does Tuesday morning work?';
-    var STATES = ['is-awake', 'has-notif', 'is-open', 'is-drafting', 'is-sent', 'is-glow', 'is-gone'];
+    var REPLY = 'Hi Sarah, sorry about the leak! We can come out tomorrow. Does 10:30 AM work?';   // the intro's first screen goes on from this reply
+    var STATES = ['is-awake', 'has-missed', 'has-notif', 'is-open', 'is-drafting', 'is-sent', 'is-glow', 'is-gone'];
     var mode = 'ready';
     try { $('.ph-date', el).textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }); } catch (e) { /* keep the default */ }
 
@@ -1095,7 +1106,7 @@ button { font: inherit; color: inherit; }
       btn.setAttribute('aria-disabled', 'true');
       btnTxt.textContent = 'Answering';
       wrap.classList.remove('buzz');
-      el.classList.add('is-awake', 'has-notif', 'is-open');
+      el.classList.add('is-awake', 'has-missed', 'has-notif', 'is-open');
       if (RM) {
         T.set(function () { el.classList.add('is-drafting'); typed.textContent = REPLY; follow(); }, 900);
         T.set(sent, 1500);
@@ -1148,12 +1159,19 @@ button { font: inherit; color: inherit; }
         fitStack(scene, fit);
       },
       start: function () {
+        /* she calls at 9:46 and nobody picks up; a minute later she texts */
         T.set(function () { el.classList.add('is-awake'); }, RM ? 0 : 420);
         T.set(function () {
-          el.classList.add('has-notif');
-          liveEl.textContent = 'New text at 9:47 PM. Hi, are you still taking new customers this week?';
+          el.classList.add('has-missed');
+          liveEl.textContent = 'Missed call from Sarah M. at 9:46 PM.';
           buzz();
         }, RM ? 0 : 900);
+        T.set(function () {
+          if (mode !== 'ready') return;
+          el.classList.add('has-notif');
+          liveEl.textContent = 'A text from Sarah M. at 9:47 PM: Hi! Do you fix roof leaks? Water is coming in over the kitchen.';
+          if (!RM) { wrap.classList.remove('buzz'); void wrap.offsetWidth; wrap.classList.add('buzz'); }
+        }, RM ? 0 : 2300);
       },
       stop: function () { T.clear(); },
       resize: function () { fitStack(scene, fit); if (mode !== 'ready') follow(); },

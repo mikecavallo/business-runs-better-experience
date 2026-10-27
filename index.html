@@ -465,6 +465,12 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 .section.leaving { opacity: 0; transform: translateY(-40px); }
 .section::-webkit-scrollbar { display: none; }
 .section-inner { max-width: min(1680px, 100%); width: 100%; }
+/* the first screen keeps the bottom clear for the "scroll to explore" prompt */
+#section-0 { padding-bottom: 158px; }
+@media (max-width: 900px) { #section-0 { padding-bottom: 140px; } }
+@media (hover: none) and (pointer: coarse) and (max-width: 900px) { #section-0 { padding-bottom: 122px; } }
+@media (hover: none) and (pointer: coarse) and (max-width: 760px) { #section-0 { padding-bottom: 94px; } }
+@media (max-height: 420px) { #section-0 { padding-bottom: 88px; } }
 
 /* ============ LETTER-BY-LETTER ============ */
 .animated-title {
@@ -497,27 +503,19 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   color: var(--dim);
 }
 
-/* ---- 0 intro ---- */
+/* ---- the last screen: your business, running better ---- */
 .intro-title { font-size: clamp(32px, 6.5vw, 94px); color: var(--ink); letter-spacing: -.045em; }
 .intro-title .accent { color: var(--cobalt-lift); }
 .intro-sub { margin-top: 36px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .intro-sub .label-mono { text-wrap: balance; }
-/* phones held upright: screen 1's words move up into the empty space under the header */
+/* phones held upright: the last screen's words move up into the empty space under the header */
 @media (max-width: 760px) and (orientation: portrait) {
-  #section-0 { align-items: flex-start; padding-top: max(130px, 25svh); }
+  .finale-section { align-items: flex-start; padding-top: max(130px, 25svh); }
 }
 /* phones: the progress bar at the top does the job, and the dots would sit on top of the words */
 @media (max-width: 760px) { .nav-pips { display: none; } }
 
-/* ---- 1 about ---- */
-.about-title {
-  font-size: clamp(19px, 2.75vw, 42px);
-  color: var(--ink); max-width: 24ch; margin: 0 auto;
-  line-height: 1.42; letter-spacing: -.025em;
-}
-.about-title .accent { color: var(--cobalt-lift); }
-
-/* ---- 2 stance ---- */
+/* ---- your week, minus the busywork ---- */
 .stance-section .section-inner { max-width: min(1480px, 100%); }
 .stance-title {
   font-size: clamp(30px, 5.9vw, 92px);
@@ -527,7 +525,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 .stance-title .accent { color: var(--cobalt-lift); }
 .stance-desc { text-align: right; margin-left: auto; margin-top: 34px; max-width: 48ch; }
 
-/* ---- 3-5 action ---- */
+/* ---- the action screens ---- */
 .action-section .section-inner { text-align: left; max-width: min(1400px, 100%); }
 .action-label {
   font-size: clamp(14.5px, 1.3vw, 19px);
@@ -655,11 +653,22 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 .week .bignum { margin-top: 22px; }
 .week .bignum b { font-size: clamp(40px, 4.6vw, 76px); }
 
-@media (max-width: 1024px) and (max-aspect-ratio: 5/4) {
+/* Words and picture sit side by side down to small laptop and landscape tablet windows. Only a
+   screen clearly taller than it is wide stacks them (it used to stack anything under 5:4, which
+   squeezed both into a narrow strip down the left of a 935x808 window). */
+@media (max-width: 1024px) and (max-aspect-ratio: 4/5) {
   .with-scene, .stance-grid { grid-template-columns: minmax(0, 1fr); }
   .stance-grid .stance-title { grid-row: auto; }
   .stance-grid .stance-desc { grid-column: auto; }
   .scene { justify-self: start; }
+}
+/* tablets held upright: one centred column, so nothing hugs the left edge */
+@media (min-width: 761px) and (max-width: 1024px) and (max-aspect-ratio: 4/5) {
+  .action-section .section-inner, .stance-section .section-inner { width: min(100%, 620px); margin-inline: auto; }
+  .with-scene { gap: 34px; }
+  .with-scene .scene { width: 100%; }
+  .with-scene .phone, .with-scene .mail { width: min(100%, 470px); }
+  .stance-grid { gap: 30px; }
 }
 @media (max-width: 760px) and (max-height: 620px) {
   .with-scene .action-label { display: none; }
@@ -748,37 +757,6 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 }
 .method-item p { font-size: clamp(14.5px, 1.15vw, 17.5px); color: var(--muted); line-height: 1.62; }
 
-/* ---- 8 areas ---- */
-.areas-section .section-inner { max-width: min(1360px, 100%); }
-.areas-title {
-  font-size: clamp(21px, 3.2vw, 48px);
-  color: var(--ink); margin-bottom: 16px; letter-spacing: -.035em;
-}
-.areas-title .accent { color: var(--cobalt-lift); }
-.areas-strip {
-  display: flex; justify-content: center; flex-wrap: wrap;
-  gap: 10px; margin-top: 34px;
-}
-.areas-strip span {
-  font-family: var(--font-mono); font-size: clamp(13px, 1.08vw, 16px);
-  color: var(--muted); letter-spacing: .04em;
-  padding: 11px 18px;
-  border: 1px solid rgba(var(--brand-rgb),.16);
-  border-radius: 3px;
-  transition: color .35s, border-color .35s, background .35s;
-}
-.areas-strip span { cursor: default; }
-.areas-strip span:hover, .areas-strip span:focus-visible, .areas-strip span.on {
-  color: var(--ink); border-color: rgba(var(--brand-rgb),.45);
-  background: rgba(var(--brand-rgb),.06);
-}
-.areas-detail {
-  min-height: 1.7em; margin: 26px auto 0; max-width: 60ch;
-  font-size: clamp(15px, 1.25vw, 19px); line-height: 1.7; color: var(--cobalt-lift);
-  opacity: 0; transform: translateY(8px);
-  transition: opacity .35s ease, transform .5s var(--ease-out);
-}
-.areas-detail.show { opacity: 1; transform: none; }
 
 /* ---- 8 landing: where to next ----
    Desktop: a constellation of Build / Grow / Run / Mike that sways like cat's cradle.
@@ -1147,22 +1125,17 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   /* Mobile type scale — the fluid clamps above are tuned for desktop and read
      oversized on a phone, which pushed tall sections past the fold. */
   .intro-title      { font-size: clamp(29px, 8.4vw, 44px); }
-  .about-title      { font-size: 17.5px; max-width: 26ch; line-height: 1.5; }
   .stance-title     { font-size: clamp(26px, 7.6vw, 40px); }
   .action-title     { font-size: clamp(29px, 8.4vw, 44px); }
   .action-subtitle  { font-size: clamp(19px, 5.4vw, 28px); }
   .action-label     { font-size: 13px; margin-bottom: 18px; }
   .philosophy-title { font-size: clamp(27px, 7.8vw, 42px); }
-  .areas-title      { font-size: 19px; }
   .final-title      { font-size: clamp(24px, 6.8vw, 36px); }
   .rule-formula     { font-size: clamp(24px, 7vw, 38px); }
   .rule-desc        { font-size: 13.5px; margin-bottom: 26px; }
   .rule-sub         { font-size: 11.5px; }
   .section-desc     { font-size: 14px; line-height: 1.65; }
   .label-mono       { font-size: 11px; }
-  .areas-strip span { font-size: 11.5px; padding: 8px 12px; }
-  .areas-strip      { gap: 7px; margin-top: 24px; }
-  .areas-detail     { font-size: 14px; margin-top: 18px; min-height: 3.4em; }
   .services-section h2 { font-size: 23px; margin-bottom: 20px; }
   .service-row .svc-name { font-size: 13px; }
   .service-row.active .svc-name, .service-row:hover .svc-name { font-size: 17.5px; }
@@ -1180,16 +1153,6 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .stance-desc { text-align: left; margin-left: 0; }
   .form-grid { grid-template-columns: 1fr; }
   .dialog-head, .dialog-body { padding-inline: 22px; }
-  .areas-strip { gap: 8px; }
-  .areas-strip span { font-size: 11px; padding: 7px 11px; }
-}
-@media (max-width: 760px) {
-  .areas-strip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  .areas-strip span {
-    display: flex; align-items: center; justify-content: center; text-align: center;
-    min-height: 44px; padding: 8px 10px; line-height: 1.35; letter-spacing: .02em;
-  }
-  .areas-strip span:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 4px); }
 }
 @media (max-width: 560px) {
   .logo span { display: none; }
@@ -1204,6 +1167,12 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 }
 @media (max-height: 420px) {
   .scroll-hint { display: none; }   /* a phone on its side has no room under the words */
+}
+/* phones: the prompt is a single line, chevron then words, so the first screen keeps its room */
+@media (hover: none) and (pointer: coarse) and (max-width: 760px) {
+  .scroll-hint { flex-direction: row; gap: 8px; bottom: 60px; }
+  .scroll-hint .scroll-text { order: 2; margin-bottom: 0; }
+  .scroll-hint .scroll-swipe { order: 1; width: 20px; height: 20px; }
 }
 
 /* ============ REDUCED MOTION ============ */
@@ -1279,7 +1248,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   </div>
 </div>
 <!-- One of three splash screens, picked at random each visit -->
-<script src="/assets/splash.js?v=7"></script>
+<script src="/assets/splash.js?v=8"></script>
 
 <!-- ============ MAIN APP ============ -->
 <div id="app">
@@ -1333,49 +1302,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 
   <main class="sections-container" id="main">
 
-    <!-- 0: Intro -->
-    <section class="section active" id="section-0" data-section="0" tabindex="-1" aria-label="Introduction">
-      <div class="section-inner">
-        <h1 class="animated-title intro-title" data-text="Your business.|Running better." data-multiline="true">Your business. Running better.</h1>
-        <div class="intro-sub">
-          <p class="label-mono">Websites, marketing &amp; AI for local business</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 1: About -->
-    <section class="section" id="section-1" data-section="1" tabindex="-1" aria-label="About">
-      <div class="section-inner">
-        <p class="animated-title about-title" data-text="I find the repetitive work costing you time, then build AI into the way your business already runs.">I find the repetitive work costing you time, then build AI into the way your business already runs.</p>
-      </div>
-    </section>
-
-    <!-- 2: Stance -->
-    <section class="section stance-section" id="section-2" data-section="2" tabindex="-1" aria-label="Approach">
-      <div class="section-inner stance-grid">
-        <div class="stance-title animated-title" data-text="Find the waste|Build the fix|Put it to work" data-multiline="true">Find the waste Build the fix Put it to work</div>
-        <div class="scene week" role="img" aria-label="An owner's week shown as five daily bars. The busywork in each day is found, fixed, and shrinks to a sliver, and the hours come back. In my own business, automation gave back more than 20 hours a week.">
-          <div class="week-head">
-            <span class="week-key"><i class="k-work"></i>The actual work</span>
-            <span class="week-key"><i class="k-busy"></i>Busywork</span>
-            <span class="week-key"><i class="k-free"></i>Hours back</span>
-          </div>
-          <div class="week-bars">
-            <div class="day" style="--w:54;--b:30"><span>Mon</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:58;--b:26"><span>Tue</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:50;--b:34"><span>Wed</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:56;--b:28"><span>Thu</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:48;--b:32"><span>Fri</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-          </div>
-          <div class="week-stage" aria-hidden="true"><span>01 &nbsp;Find the waste</span><span>02 &nbsp;Build the fix</span><span>03 &nbsp;Put it to work</span></div>
-          <div class="bignum"><b data-count="20" data-suffix="+ hrs" data-delay="3500" data-dur="900">20+ hrs</b><span>a week back in my own business, from automation alone.</span></div>
-        </div>
-        <p class="section-desc stance-desc">No AI theater and no six-month roadmap. A clear plan, a working system, and a team that can actually run it after I leave.</p>
-      </div>
-    </section>
-
-    <!-- 3: Automate -->
-    <section class="section action-section" id="section-3" data-section="3" tabindex="-1" aria-label="Automate follow-up">
+    <!-- 0: Automate: the late-night lead, booked by 9:48 -->
+    <section class="section action-section active" id="section-0" data-section="0" tabindex="-1" aria-label="Automate follow-up">
       <div class="section-inner with-scene">
         <div class="action-copy">
           <p class="action-label">For the leads that go cold while everyone is busy doing the actual work</p>
@@ -1404,8 +1332,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 4: Accelerate -->
-    <section class="section action-section" id="section-4" data-section="4" tabindex="-1" aria-label="Accelerate customer replies">
+    <!-- 1: Accelerate: the next morning's inbox -->
+    <section class="section action-section" id="section-1" data-section="1" tabindex="-1" aria-label="Accelerate customer replies">
       <div class="section-inner with-scene">
         <div class="action-copy">
           <p class="action-label">For the same twelve questions your team answers every single day</p>
@@ -1428,28 +1356,32 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 5: Areas -->
-    <section class="section areas-section" id="section-5" data-section="5" tabindex="-1" aria-label="Where AI pays off">
-      <div class="section-inner">
-        <p class="animated-title areas-title" data-text="Nine places AI can take work off your plate.">Nine places AI can take work off your plate.</p>
-        <p class="section-desc" style="margin-inline:auto">Every business is different. These are the areas where it reliably pays for itself.</p>
-        <div class="areas-strip">
-          <span tabindex="0" data-desc="New inquiries answered in seconds, qualified and booked, even on weekends.">Leads &amp; follow-up</span>
-          <span tabindex="0" data-desc="The same questions answered instantly, with the tricky ones handed to a person.">Customer service</span>
-          <span tabindex="0" data-desc="Appointments booked, confirmed and reminded without the phone tag.">Scheduling &amp; reminders</span>
-          <span tabindex="0" data-desc="Quotes drafted from your job notes in minutes, not evenings.">Estimates &amp; proposals</span>
-          <span tabindex="0" data-desc="Forms read, records updated and info moved between tools without retyping.">Admin &amp; data entry</span>
-          <span tabindex="0" data-desc="Review requests sent at the right moment, with replies drafted for you.">Reviews &amp; reputation</span>
-          <span tabindex="0" data-desc="Posts, emails and listings drafted in your voice, ready for you to approve.">Marketing content</span>
-          <span tabindex="0" data-desc="Answers from your own docs and policies, so nobody has to ask you twice.">Team knowledge</span>
-          <span tabindex="0" data-desc="A plain-English weekly report on what happened and what to do next.">Reporting &amp; decisions</span>
+    <!-- 2: Your week, minus the busywork -->
+    <section class="section stance-section" id="section-2" data-section="2" tabindex="-1" aria-label="Your week, minus the busywork">
+      <div class="section-inner stance-grid">
+        <div class="stance-title animated-title" data-text="Your week,|minus the busywork." data-multiline="true" data-accent-line="1">Your week, minus the busywork.</div>
+        <div class="scene week" role="img" aria-label="An owner's week shown as five daily bars. The busywork in each day is found, fixed, and shrinks to a sliver, and the hours come back. In my own business, automation gave back more than 20 hours a week.">
+          <div class="week-head">
+            <span class="week-key"><i class="k-work"></i>The actual work</span>
+            <span class="week-key"><i class="k-busy"></i>Busywork</span>
+            <span class="week-key"><i class="k-free"></i>Hours back</span>
+          </div>
+          <div class="week-bars">
+            <div class="day" style="--w:54;--b:30"><span>Mon</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:58;--b:26"><span>Tue</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:50;--b:34"><span>Wed</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:56;--b:28"><span>Thu</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+            <div class="day" style="--w:48;--b:32"><span>Fri</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
+          </div>
+          <div class="week-stage" aria-hidden="true"><span>01 &nbsp;Find the waste</span><span>02 &nbsp;Build the fix</span><span>03 &nbsp;Put it to work</span></div>
+          <div class="bignum"><b data-count="20" data-suffix="+ hrs" data-delay="3500" data-dur="900">20+ hrs</b><span>a week back in my own business, from automation alone.</span></div>
         </div>
-        <p class="areas-detail" id="areasDetail" aria-live="polite"></p>
+        <p class="section-desc stance-desc">No AI theater and no six-month roadmap. A clear plan, a working system, and a team that can actually run it after I leave.</p>
       </div>
     </section>
 
-    <!-- 6: Rule -->
-    <section class="section rule-section" id="section-6" data-section="6" tabindex="-1" aria-label="The rule">
+    <!-- 3: The rule: the clash -->
+    <section class="section rule-section" id="section-3" data-section="3" tabindex="-1" aria-label="The rule">
       <div class="section-inner">
         <p class="rule-desc"><span class="accent">Every build gets judged the same way.</span> Not by how clever it is, or how much of it is AI. By whether it gives back real hours in a real week.</p>
         <div class="rule-formula animated-title" data-text="USEFUL &gt; IMPRESSIVE">USEFUL &gt; IMPRESSIVE</div>
@@ -1457,8 +1389,18 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 7: Landing -->
-    <section class="section landing-section" id="section-7" data-section="7" tabindex="-1" aria-label="Where to next">
+    <!-- 4: Running better: the answer -->
+    <section class="section finale-section" id="section-4" data-section="4" tabindex="-1" aria-label="Your business, running better">
+      <div class="section-inner">
+        <h1 class="animated-title intro-title" data-text="Your business.|Running better." data-multiline="true">Your business. Running better.</h1>
+        <div class="intro-sub">
+          <p class="label-mono">Websites, marketing &amp; AI for local business</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5: Landing -->
+    <section class="section landing-section" id="section-5" data-section="5" tabindex="-1" aria-label="Where to next">
       <div class="section-inner landing" id="landing">
         <h2 class="landing-need">My business needs <span class="need" id="landingNeed" aria-live="polite">more leads.</span></h2>
         <div class="landing-stage" id="landingStage">
@@ -1623,8 +1565,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 // ============================================
 // CONFIG
 // ============================================
-const TOTAL_SECTIONS = 8;
-const LANDING_INDEX = 7;               // the last screen: where to next
+const TOTAL_SECTIONS = 6;
+const LANDING_INDEX = 5;               // the last screen: where to next
 const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const RETURNING = document.documentElement.classList.contains('returning');   // set in <head>
 const MORPH_DURATION = RM ? 450 : 1800;
@@ -1646,15 +1588,17 @@ const WARP_MS = 1900, WARP_REVEAL = 1150;
 let warpStart = 0, warpFrom = 0, warpStreaks = [];
 let entered = false;
 
+// The intro is one story: the Enter screen sets up the problem, the screens play it out
+// (that night, the next morning, the whole week), and the answer comes last.
 const SECTION_NAMES = [
-  'Introduction', 'What I do', 'Find, build, put to work', 'Automate the follow-up', 'Accelerate every reply', 'Where AI pays off', 'The rule', 'Where to next'
+  'Automate the follow-up', 'Accelerate every reply', 'Your week, minus the busywork', 'The rule', 'Your business, running better', 'Where to next'
 ];
 const SLUGS = [
-  'start', 'about', 'approach', 'automate', 'accelerate', 'where-it-helps', 'the-rule', 'explore'
+  'automate', 'accelerate', 'your-week', 'the-rule', 'running-better', 'explore'
 ];
 // Photographic backdrop per section (files in assets/img/)
 const SECTION_BG = [
-  'hero', 'void', 'void', 'flow', 'flow', 'void', 'structure', 'void'
+  'flow', 'flow', 'void', 'structure', 'hero', 'void'
 ];
 
 // ============================================
@@ -1743,13 +1687,11 @@ function buildThemePicker() {
 // what each intro screen says out loud (the mp3s are rendered from render-narration.py; this is the
 // fallback if a file won't play). The landing page has none: the sound cuts there.
 const sectionNarration = [
-  "Your business. Running better. Websites, marketing, and A I for local business.",
-  "I find the repetitive work costing you time, then build A I into the way your business already runs.",
-  "Find the waste. Build the fix. Put it to work. No A I theater, and no six month roadmap.",
   "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
   "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
-  "Nine places A I can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
+  "Your week, minus the busywork. Find the waste. Build the fix. Put it to work. No A I theater, and no six month roadmap.",
   "Every build gets judged the same way. Useful, is greater than, impressive.",
+  "Your business. Running better. Websites, marketing, and A I for local business.",
   ""
 ];
 
@@ -1757,11 +1699,78 @@ const sectionNarration = [
 // BACKGROUND PATTERNS (one per screen)
 // ============================================
 const patterns = [
-  // 0: Perspective Grid Floor
+  // 0: Circular Ripples
+  function(c, w, h, t, d) {
+    const cx=w*0.5,cy=h*0.5;
+    for(let i=0;i<20;i++){
+      const radius=(i*60+t*80)%(Math.max(w,h)*0.8);
+      const a=Math.max(0,(0.15-radius/4000))*A*(1-d*0.7);
+      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.5;
+      c.beginPath(); c.arc(cx+d*Math.sin(t+i)*80,cy+d*Math.cos(t+i)*40,radius,0,Math.PI*2); c.stroke();
+    }
+    for(let x=0;x<w;x+=100) for(let y=0;y<h;y+=100){
+      const dist=Math.hypot(x-cx,y-cy);
+      if(Math.sin(dist/50-t*3)>0.85){
+        c.fillStyle=`rgba(${PC},${0.12*A*(1-d)})`;
+        c.fillRect(x-4+d*Math.sin(t+x)*30,y-4+d*Math.cos(t+y)*30,8,8);
+      }
+    }
+  },
+  // 1: Lightning / Energy
+  function(c, w, h, t, d) {
+    const seed=(n)=>(Math.sin(n*127.1+311.7)*43758.5453)%1;
+    for(let i=0;i<12;i++){
+      const sx=w*(0.05+seed(i)*0.9), ex=w*(0.05+seed(i+50)*0.9)+d*Math.sin(t+i)*150;
+      const a=(0.12+Math.sin(t*2+i)*0.06)*A*(1-d*0.5);
+      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=2;
+      c.beginPath(); c.moveTo(sx,0);
+      for(let s=1;s<=15;s++){
+        c.lineTo(sx+(ex-sx)*(s/15)+Math.sin(t*4+s*2+i)*50*(1+d), h*(s/15));
+      }
+      c.stroke();
+      c.strokeStyle=`rgba(${PC},${a*0.3})`; c.lineWidth=8; c.stroke();
+    }
+  },
+  // 2: Converging Rays
+  function(c, w, h, t, d) {
+    const cx=w*0.5,cy=h*0.4, nr=48;
+    for(let i=0;i<nr;i++){
+      const ang=(i/nr)*Math.PI*2+t*0.1, len=Math.max(w,h)*0.8;
+      const a=(0.08+Math.sin(t+i*0.5)*0.05)*A*(1-d*0.5);
+      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1;
+      c.beginPath(); c.moveTo(cx+Math.cos(ang+d*0.3)*40,cy+Math.sin(ang+d*0.3)*40);
+      c.lineTo(cx+Math.cos(ang)*len,cy+Math.sin(ang)*len); c.stroke();
+    }
+    for(let r=1;r<=8;r++){
+      const radius=r*50+Math.sin(t*2)*8;
+      c.strokeStyle=`rgba(${PC},${(0.1-r*0.01)*A*(1-d*0.8)})`; c.lineWidth=1;
+      c.beginPath(); c.arc(cx,cy,radius*(1+d*0.5),0,Math.PI*2); c.stroke();
+    }
+  },
+  // 3: Circuit Board
+  function(c, w, h, t, d) {
+    const g=100, cols=Math.ceil(w/g)+1, rows=Math.ceil(h/g)+1;
+    for(let r=0;r<rows;r++) for(let cl=0;cl<cols;cl++){
+      const x=cl*g+d*Math.sin(t+cl+r)*40, y=r*g+d*Math.cos(t+cl*0.5+r*0.3)*40;
+      const hash=Math.sin(cl*12.9898+r*78.233)*43758.5453;
+      const dir=hash>0.5?1:0;
+      const a=(0.12+Math.sin(t+cl+r*0.5)*0.05)*A*(1-d*0.6);
+      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.5;
+      c.beginPath();
+      if(dir){c.moveTo(x,y);c.lineTo(x+g,y);}else{c.moveTo(x,y);c.lineTo(x,y+g);}
+      c.stroke();
+      if(hash>0.65){c.fillStyle=`rgba(${PC},${a})`;
+        c.beginPath(); c.arc(x,y,4*(1-d*0.5),0,Math.PI*2); c.fill();}
+      const pulse=(t*2+cl*0.3+r*0.2)%1;
+      if(pulse<0.3){c.fillStyle=`rgba(${PC},${0.2*A*(1-d)})`;
+        c.beginPath(); c.arc(dir?x+g*pulse/0.3:x, dir?y:y+g*pulse/0.3, 4,0,Math.PI*2); c.fill();}
+    }
+  },
+  // 4: Perspective Grid Floor
   function(c, w, h, t, d) {
     const rows=10, cols=12;
     c.save(); c.translate(w/2, h*0.92); c.scale(1,-1);
-    // phones held upright: screen 1's words sit higher (see #section-0), so the floor reaches up to them
+    // phones held upright: the last screen's words sit higher (see .finale-section), so the floor reaches up to them
     const top = innerWidth <= 760 && innerHeight > innerWidth ? Math.max(130, innerHeight * 0.25) / innerHeight : 0.425;
     const vY=h*(0.92-top)/0.9, bW=w*0.85;
     for(let r=0;r<rows;r++){
@@ -1791,109 +1800,7 @@ const patterns = [
     }
     c.restore();
   },
-  // 1: Hexagonal Mesh
-  function(c, w, h, t, d) {
-    const size=80, s3=Math.sqrt(3);
-    const cols=Math.ceil(w/(size*1.5))+2, rows=Math.ceil(h/(size*s3))+2;
-    for(let r=-1;r<rows;r++) for(let cl=-1;cl<cols;cl++){
-      const cx=cl*size*1.5+Math.sin(t+r*0.3)*d*60;
-      const cy=r*size*s3+(cl%2)*size*s3/2+Math.cos(t+cl*0.3)*d*60;
-      const a=(0.12+Math.sin(t*0.8+r*0.5+cl*0.7)*0.06)*A*(1-d*0.7);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.2;
-      c.beginPath();
-      for(let i=0;i<6;i++){const ang=Math.PI/3*i-Math.PI/6;
-        const px=cx+size*0.5*Math.cos(ang)*(1-d*0.3), py=cy+size*0.5*Math.sin(ang)*(1-d*0.3);
-        i===0?c.moveTo(px,py):c.lineTo(px,py);}
-      c.closePath(); c.stroke();
-      if(Math.sin(t*1.2+r+cl*1.5)>0.6){c.fillStyle=`rgba(${PC},${0.06*A*(1-d)})`; c.fill();}
-    }
-  },
-  // 2: Converging Rays
-  function(c, w, h, t, d) {
-    const cx=w*0.5,cy=h*0.4, nr=48;
-    for(let i=0;i<nr;i++){
-      const ang=(i/nr)*Math.PI*2+t*0.1, len=Math.max(w,h)*0.8;
-      const a=(0.08+Math.sin(t+i*0.5)*0.05)*A*(1-d*0.5);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1;
-      c.beginPath(); c.moveTo(cx+Math.cos(ang+d*0.3)*40,cy+Math.sin(ang+d*0.3)*40);
-      c.lineTo(cx+Math.cos(ang)*len,cy+Math.sin(ang)*len); c.stroke();
-    }
-    for(let r=1;r<=8;r++){
-      const radius=r*50+Math.sin(t*2)*8;
-      c.strokeStyle=`rgba(${PC},${(0.1-r*0.01)*A*(1-d*0.8)})`; c.lineWidth=1;
-      c.beginPath(); c.arc(cx,cy,radius*(1+d*0.5),0,Math.PI*2); c.stroke();
-    }
-  },
-  // 3: Circular Ripples
-  function(c, w, h, t, d) {
-    const cx=w*0.5,cy=h*0.5;
-    for(let i=0;i<20;i++){
-      const radius=(i*60+t*80)%(Math.max(w,h)*0.8);
-      const a=Math.max(0,(0.15-radius/4000))*A*(1-d*0.7);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.5;
-      c.beginPath(); c.arc(cx+d*Math.sin(t+i)*80,cy+d*Math.cos(t+i)*40,radius,0,Math.PI*2); c.stroke();
-    }
-    for(let x=0;x<w;x+=100) for(let y=0;y<h;y+=100){
-      const dist=Math.hypot(x-cx,y-cy);
-      if(Math.sin(dist/50-t*3)>0.85){
-        c.fillStyle=`rgba(${PC},${0.12*A*(1-d)})`;
-        c.fillRect(x-4+d*Math.sin(t+x)*30,y-4+d*Math.cos(t+y)*30,8,8);
-      }
-    }
-  },
-  // 4: Lightning / Energy
-  function(c, w, h, t, d) {
-    const seed=(n)=>(Math.sin(n*127.1+311.7)*43758.5453)%1;
-    for(let i=0;i<12;i++){
-      const sx=w*(0.05+seed(i)*0.9), ex=w*(0.05+seed(i+50)*0.9)+d*Math.sin(t+i)*150;
-      const a=(0.12+Math.sin(t*2+i)*0.06)*A*(1-d*0.5);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=2;
-      c.beginPath(); c.moveTo(sx,0);
-      for(let s=1;s<=15;s++){
-        c.lineTo(sx+(ex-sx)*(s/15)+Math.sin(t*4+s*2+i)*50*(1+d), h*(s/15));
-      }
-      c.stroke();
-      c.strokeStyle=`rgba(${PC},${a*0.3})`; c.lineWidth=8; c.stroke();
-    }
-  },
-  // 5: Constellation
-  function(c, w, h, t, d) {
-    const stars=[];
-    for(let i=0;i<80;i++){
-      const h1=(Math.sin(i*127.1+311.7)*43758.5453)%1, h2=(Math.sin(i*269.5+183.3)*43758.5453)%1;
-      stars.push({x:h1*w+d*Math.sin(t*0.5+i)*80, y:h2*h+d*Math.cos(t*0.5+i*0.7)*80,
-        bright:0.115+Math.sin(t*1.5+i*2.1)*0.07});
-    }
-    for(let i=0;i<stars.length;i++) for(let j=i+1;j<stars.length;j++){
-      const dist=Math.hypot(stars[i].x-stars[j].x,stars[i].y-stars[j].y);
-      if(dist<180){c.strokeStyle=`rgba(${PC},${0.085*A*(1-dist/180)*(1-d*0.6)})`;
-        c.lineWidth=0.8; c.beginPath(); c.moveTo(stars[i].x,stars[i].y); c.lineTo(stars[j].x,stars[j].y); c.stroke();}
-    }
-    stars.forEach(s=>{const a=Math.max(0.02,s.bright*A*(1-d*0.5));
-      c.fillStyle=`rgba(${PC},${a})`; c.beginPath(); c.arc(s.x,s.y,2.5,0,Math.PI*2); c.fill();
-      c.fillStyle=`rgba(${PC},${a*0.4})`; c.beginPath(); c.arc(s.x,s.y,8,0,Math.PI*2); c.fill();
-    });
-  },
-  // 6: Circuit Board
-  function(c, w, h, t, d) {
-    const g=100, cols=Math.ceil(w/g)+1, rows=Math.ceil(h/g)+1;
-    for(let r=0;r<rows;r++) for(let cl=0;cl<cols;cl++){
-      const x=cl*g+d*Math.sin(t+cl+r)*40, y=r*g+d*Math.cos(t+cl*0.5+r*0.3)*40;
-      const hash=Math.sin(cl*12.9898+r*78.233)*43758.5453;
-      const dir=hash>0.5?1:0;
-      const a=(0.12+Math.sin(t+cl+r*0.5)*0.05)*A*(1-d*0.6);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1.5;
-      c.beginPath();
-      if(dir){c.moveTo(x,y);c.lineTo(x+g,y);}else{c.moveTo(x,y);c.lineTo(x,y+g);}
-      c.stroke();
-      if(hash>0.65){c.fillStyle=`rgba(${PC},${a})`;
-        c.beginPath(); c.arc(x,y,4*(1-d*0.5),0,Math.PI*2); c.fill();}
-      const pulse=(t*2+cl*0.3+r*0.2)%1;
-      if(pulse<0.3){c.fillStyle=`rgba(${PC},${0.2*A*(1-d)})`;
-        c.beginPath(); c.arc(dir?x+g*pulse/0.3:x, dir?y:y+g*pulse/0.3, 4,0,Math.PI*2); c.fill();}
-    }
-  },
-  // 7: Starfield (the landing). Stars and sparkles drift, twinkle, and shy away from the cursor.
+  // 5: Starfield (the landing). Stars and sparkles drift, twinkle, and shy away from the cursor.
   (function () {
     let stars = [], sw = 0, sh = 0;
     function seed(w, h) {
@@ -2072,14 +1979,8 @@ function buildAnimatedTitles() {
           charIndex++;
         });
         lineDiv.appendChild(wordSpan);
-        if (wi < words.length - 1) {
-          const sp = document.createElement('span');
-          sp.className = 'char';
-          sp.innerHTML = '&nbsp;';
-          sp.style.transitionDelay = (charIndex * step) + 's';
-          lineDiv.appendChild(sp);
-          charIndex++;
-        }
+        // a plain space between words, so a line that wraps doesn't start with an indent
+        if (wi < words.length - 1) { lineDiv.appendChild(document.createTextNode(' ')); charIndex++; }
       });
       el.appendChild(lineDiv);
     });
@@ -2667,7 +2568,8 @@ function stopAmbient(fade) {
 /* Narration is PRE-RENDERED (Kokoro, see render-narration.py) and ships as
    static mp3. No TTS server in production, no inference latency — it's just an
    audio file. Browser speechSynthesis stays as a fallback if a file 404s. */
-const AUDIO_V = 2;     // bump when any clip is re-rendered, so browsers drop their cached copy
+const AUDIO_V = 3;     // bump when any clip is re-rendered, so browsers drop their cached copy
+const clipUrl = i => `/assets/audio/${SLUGS[i]}.mp3?v=${AUDIO_V}`;   // one clip per screen, named after its slug
 let narrationAudio = null;
 let narrationTimer = null;
 
@@ -2685,14 +2587,14 @@ function speakSection(index) {
   if (!soundEnabled) return;
   stopNarration();
   narrationTimer = setTimeout(() => {
-    const a = new Audio(`/assets/audio/s${String(index).padStart(2, '0')}.mp3?v=${AUDIO_V}`);
+    const a = new Audio(clipUrl(index));
     a.volume = 0.92;
     narrationAudio = a;
     a.play().then(() => {
       // warm the next clip so the following section starts instantly
       const nxt = index + 1;
       if (nxt < LANDING_INDEX) {
-        new Audio(`/assets/audio/s${String(nxt).padStart(2, '0')}.mp3?v=${AUDIO_V}`).preload = 'auto';
+        new Audio(clipUrl(nxt)).preload = 'auto';
       }
     }).catch(() => { narrationAudio = null; speakSectionFallback(index); });
   }, 420);
@@ -3276,34 +3178,6 @@ let landingActivated = () => {};
 })();
 
 
-// ============================================
-// AREAS: short description under the hovered item
-// ============================================
-(function () {
-  const detail = document.getElementById('areasDetail');
-  const chips = document.querySelectorAll('.areas-strip [data-desc]');
-  if (!detail) return;
-  let hideTimer;
-  function show(chip) {
-    clearTimeout(hideTimer);
-    chips.forEach(c => c.classList.toggle('on', c === chip));
-    detail.textContent = chip.dataset.desc;
-    detail.classList.add('show');
-  }
-  function hide() {
-    hideTimer = setTimeout(() => {
-      chips.forEach(c => c.classList.remove('on'));
-      detail.classList.remove('show');
-    }, 150);
-  }
-  chips.forEach(chip => {
-    chip.addEventListener('mouseenter', () => show(chip));
-    chip.addEventListener('focus', () => show(chip));
-    chip.addEventListener('click', () => show(chip));
-    chip.addEventListener('mouseleave', hide);
-    chip.addEventListener('blur', hide);
-  });
-})();
 </script>
 </body>
 </html>
