@@ -20,7 +20,7 @@
   } catch (e) { /* storage blocked: everyone gets the full intro */ }
 })();
 </script>
-<link rel="stylesheet" href="/assets/panel.css?v=4">
+<link rel="stylesheet" href="/assets/panel.css?v=5">
 <link rel="canonical" href="https://businessrunsbetter.com/">
 
 <meta property="og:type" content="website">
@@ -1271,7 +1271,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   <div class="bottom-nav" id="bottomNav">
     <div class="theme-picker">
       <span class="tp-label" aria-hidden="true">Theme</span>
-      <div class="theme-swatches" id="themeSwatches" role="group" aria-label="Colour theme"></div>
+      <div class="theme-swatches" id="themeSwatches" role="group" aria-label="Color theme"></div>
     </div>
     <button class="sound-toggle" id="soundToggle" aria-pressed="false">
       <span class="label">Sound off</span>
@@ -1430,9 +1430,9 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
               <h3>Build</h3>
               <ul>
                 <li><a href="/services/web-design/" data-code="WEB" data-need="a website that works.">Web Design &amp; Development<small>Fast, mobile-first websites built to rank and to turn visitors into calls.</small></a></li>
-                <li><a href="/services/real-estate-websites/" data-code="IDX" data-need="buyers to find its listings.">Real Estate Websites &amp; IDX<small>Agent and brokerage sites with live MLS listings, from an IDX certified developer.</small></a></li>
+                <li><a href="/services/real-estate-websites/" data-code="IDX" data-need="buyers to find its listings.">Real Estate Websites &amp; IDX<small>Agent and brokerage sites with live MLS listings, from an IDX Broker certified developer.</small></a></li>
                 <li><a href="/services/ecommerce/" data-code="SHOP" data-need="an online store that sells.">eCommerce<small>Shopify, WooCommerce, Amazon and eBay, from someone whose own store did $750K in sales in 2023.</small></a></li>
-                <li><a href="/services/custom-software/" data-code="APP" data-need="software that actually fits.">Custom Business Software<small>Internal tools, portals and integrations built around how you work.</small></a></li>
+                <li><a href="/services/custom-software/" data-code="APP" data-need="software that actually fits.">Custom Business Software<small>New tools your team or customers log into, built around how you work.</small></a></li>
                 <li><a href="/services/product-development/" data-code="PDM" data-need="its next product launched.">Product Development<small>From idea to launched product: plan it, build it, ship it, improve it.</small></a></li>
               </ul>
             </div>
@@ -1450,7 +1450,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
               <h3>Run</h3>
               <ul>
                 <li><a href="/services/ai-consulting/" data-code="PLAN" data-need="a straight answer on AI.">AI Consulting &amp; Strategy<small>Find out where AI actually pays off in your business, and what to skip. Starts with a $500 Time Audit.</small></a></li>
-                <li><a href="/services/workflow-automation/" data-code="FLOW" data-need="less busywork.">Workflow Automation<small>Estimates, forms, data entry and the tools that never talk to each other, connected and running on their own.</small></a></li>
+                <li><a href="/services/workflow-automation/" data-code="FLOW" data-need="less busywork.">Workflow Automation<small>The apps you already have, connected so the busywork runs itself.</small></a></li>
                 <li><a href="/services/ai-receptionist/" data-code="VOICE" data-need="every call answered.">AI Receptionists &amp; Voice Agents<small>A phone agent that answers every call, books appointments and hands off the tricky ones with notes.</small></a></li>
                 <li><a href="/services/lead-follow-up/" data-code="LEAD" data-need="leads answered in seconds.">Lead Follow-up<small>New inquiries answered in seconds by text, email or chat, qualified and booked onto your calendar.</small></a></li>
                 <li><a href="/services/ai-assistants/" data-code="KNOW" data-need="answers without asking me.">AI Assistants for Your Team<small>An assistant trained on your own docs, prices and policies, so your team stops asking the same questions.</small></a></li>
@@ -1462,7 +1462,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
               <ul>
                 <li><a href="/about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. 20+ years of websites, marketing and software. Now AI too.</small></a></li>
                 <li><a href="/work.html" data-code="WORK" data-need="to see real work first.">Work<small>Sites and AI tools I&rsquo;ve built, and where each one stands.</small></a></li>
-                <li><a href="/pricing.html" data-code="$" data-need="to know what it costs.">Pricing<small>$500 Time Audit, builds from $2,500, support from $300 a month.</small></a></li>
+                <li><a href="/pricing.html" data-code="$" data-need="to know what it costs.">Pricing<small>Websites from $499, SEO from $199 a month, AI builds from $2,500.</small></a></li>
                 <li><a href="#contact" data-code="CALL" data-need="a straight answer." data-call>Book a free 20-minute call<small>No pitch deck. I&rsquo;ll tell you honestly what I&rsquo;d do first.</small></a></li>
               </ul>
             </div>
@@ -1526,16 +1526,25 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <select id="interest" name="interest" required>
             <option value="" selected disabled>Choose one</option>
             <option>Free 20-minute call</option>
-            <option>Time Audit</option>
-            <option>A specific build</option>
-            <option>Website or online store</option>
-            <option>SEO or marketing</option>
-            <option>Branding, copy or video</option>
-            <option>Custom software</option>
-            <option>AI or automation</option>
-            <option>Data and reporting</option>
-            <option>Monthly support</option>
-            <option>Building an MVP</option>
+            <optgroup label="Build">
+              <option>Landing page</option>
+              <option>Website or redesign</option>
+              <option>Real estate website</option>
+              <option>Online store</option>
+              <option>Custom software or a new app</option>
+            </optgroup>
+            <optgroup label="Grow">
+              <option>SEO</option>
+              <option>Google or Facebook ads</option>
+              <option>Email, reviews or social media</option>
+              <option>Branding, copy or video</option>
+              <option>Data and reporting</option>
+            </optgroup>
+            <optgroup label="Run">
+              <option>Time Audit</option>
+              <option>AI or automation</option>
+              <option>Monthly support</option>
+            </optgroup>
             <option>Not sure yet</option>
           </select>
         </div>
@@ -1543,7 +1552,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <label for="budget">Rough budget</label>
           <select id="budget" name="budget">
             <option value="" selected>Not sure yet</option>
-            <option>Under $2,500</option>
+            <option>Under $500</option>
+            <option>$500 to $2,500</option>
             <option>$2,500 to $5,000</option>
             <option>$5,000 to $10,000</option>
             <option>$10,000+</option>
