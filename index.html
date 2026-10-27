@@ -248,7 +248,8 @@ html.returning #splash { display: none; }
 }
 
 /* ============ NAV ============ */
-nav {
+/* the header bar only: other <nav>s (the site map in the page windows) keep their own layout */
+#nav {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: var(--z-chrome);
   padding: 26px 40px;
@@ -256,7 +257,7 @@ nav {
   opacity: 0; transform: translateY(-75%);
   transition: opacity 0.6s ease 1.4s, transform 0.6s var(--ease) 1.4s;
 }
-nav.visible { opacity: 1; transform: translateY(0); }
+#nav.visible { opacity: 1; transform: translateY(0); }
 
 .logo {
   display: flex; align-items: center; gap: 12px;
@@ -664,24 +665,27 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   .with-scene .action-label { display: none; }
 }
 @media (max-width: 760px) {
-  .with-scene { gap: 22px; }
+  .with-scene { gap: 16px; }
   .bignum { margin-top: 14px; flex-direction: row; align-items: center; gap: 14px; }
   .bignum b { font-size: clamp(34px, 10vw, 46px); flex-shrink: 0; }
   .bignum span { font-size: 12.5px; line-height: 1.45; max-width: 24ch; }
-  .phone { width: min(100%, 300px); padding: 12px 11px 14px; border-radius: 24px; }
+  .phone { width: min(100%, 300px); padding: 10px 11px 12px; border-radius: 24px; }
+  .phone-top { padding-bottom: 8px; margin-bottom: 8px; }
+  .mail-top { padding-bottom: 8px; }
   .thread { min-height: 0; gap: 8px; }
   .msg span { font-size: 12.5px; padding: 8px 11px; }
   .msg:nth-of-type(4), .msg:nth-of-type(5) { display: none; }
-  .cal-card, .reply-card { width: min(70%, 230px); margin-right: 0; }
+  .cal-card, .reply-card { width: min(88%, 300px); margin-right: 0; padding: 12px 14px; }
   .mail { padding: 12px; }
   .mail-row { padding: 10px; }
   .week-stage { margin-left: 50px; }
   .week .bignum b { font-size: clamp(32px, 9.4vw, 44px); }
-  /* phones get fewer, bigger rows: three days, two emails, the booking card tucked over the phone */
+  /* phones get fewer, bigger rows: three days and two emails. The follow-up card only overlaps the
+     bottom edge of the phone or inbox, so it never covers the messages. */
   .week .day:nth-child(2), .week .day:nth-child(4) { display: none; }
-  .sms .cal-card { margin-top: -64px; }
+  .sms .cal-card { margin-top: -12px; }
   .inbox .mail-row:nth-child(3) { display: none; }
-  .inbox .reply-card { margin-top: -26px; }
+  .inbox .reply-card { margin-top: -10px; }
   .phone-top small, .mail-top small, .cal-card small, .reply-card small { font-size: 11px; }
   .msg time, .mail-row .tag { font-size: 11px; }
 }
@@ -1125,7 +1129,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .method-section .section-inner { flex-direction: column; align-items: flex-start; gap: 28px; }
 }
 @media (max-width: 900px) {
-  nav { padding: 16px 20px; }
+  #nav { padding: 16px 20px; }
   .nav-links { display: none; }
   .nav-phone-m { display: inline-flex; margin-right: 10px; }
 }
