@@ -845,7 +845,8 @@ nav.landing-map[hidden] { display: none; }
 .lp-orb.kid small { color: var(--muted); font-size: 13px; line-height: 1.4; }
 .lp-orbs.compact .lp-orb.kid small { display: none; }
 .lp-orb.kid:hover b, .lp-orb.kid:focus-visible b, .lp-orb.kid.cta b { color: var(--cobalt-lift); }
-.lp-hint { position: absolute; right: 0; top: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.lp-hint { position: absolute; left: 0; top: 0; z-index: 3; }
+.lp-hint[hidden] { display: none; }
 
 /* morphing tiles (phones and tablets) */
 .lp-morph { display: none; flex-direction: column; gap: 10px; }
@@ -871,8 +872,9 @@ nav.landing-map[hidden] { display: none; }
 .lp-morph.open .lp-grid { display: none; }
 .lp-morph.open .lp-open { display: flex; }
 .lp-bar { display: flex; align-items: center; gap: 14px; }
-.lp-back { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.lp-back span { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 3px; display: grid; place-items: center; color: var(--cobalt-lift); }
+.lp-back { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding-right: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.lp-back:hover { color: var(--ink); }
+.lp-back span { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 3px; display: grid; place-items: center; color: var(--cobalt-lift); }
 .lp-back:focus-visible { outline: 2px solid var(--cobalt-lift); outline-offset: 3px; }
 .lp-bar h3 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 15px; color: var(--cobalt-lift); }
 .lp-kids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -883,11 +885,9 @@ nav.landing-map[hidden] { display: none; }
   color: var(--ink); text-decoration: none; animation: lpPop .5s var(--ease-out) both; animation-delay: var(--d, 0s);
 }
 .lp-kid:hover, .lp-kid:focus-visible { border-color: var(--cobalt-lift); background: rgba(var(--brand-rgb), .11); }
-.lp-kid .lp-code { align-self: flex-start; font-family: var(--font-display); font-size: 9px; letter-spacing: .08em; color: var(--cobalt-lift); border: 1px solid rgba(var(--brand-rgb), .34); border-radius: 5px; padding: 4px 6px; }
 .lp-kid b { font-family: var(--font-display); font-weight: 400; font-size: 13px; letter-spacing: -.02em; line-height: 1.3; }
 .lp-kid small { display: none; color: var(--muted); font-size: 13px; line-height: 1.45; }
 .lp-kid.cta { background: var(--cobalt); border-color: var(--cobalt); color: var(--on-brand); }
-.lp-kid.cta .lp-code { color: var(--on-brand); border-color: rgba(255, 255, 255, .45); }
 @keyframes lpPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
 .lp-other { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 2px; }
 .lp-other > span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
@@ -1049,22 +1049,22 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 }
 .dialog-close:hover { color: var(--ink); border-color: var(--line-strong); }
 .dialog-body { padding: 24px 32px 30px; overflow-y: auto; max-height: calc(90dvh - 130px); overscroll-behavior: contain; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.field { display: grid; gap: 7px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+.field { display: grid; gap: 6px; }
 .field.full { grid-column: 1 / -1; }
 .field label {
   font-family: var(--font-mono); font-size: 12px;
   letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
 }
 .field input, .field select, .field textarea {
-  width: 100%; min-height: 50px; padding: 13px 15px;
-  font-family: var(--font-body); font-size: 15.5px;
+  width: 100%; min-height: 48px; padding: 12px 14px;
+  font-family: var(--font-body); font-size: 16px;   /* 16px or more, or iPhone Safari zooms in on tap */
   color: var(--ink); background: var(--bg-dark);
   border: 1px solid var(--line-strong); border-radius: 3px;
   outline: none;
   transition: border-color .25s, background .25s, box-shadow .25s;
 }
-.field textarea { min-height: 118px; resize: vertical; line-height: 1.6; }
+.field textarea { min-height: 88px; resize: vertical; line-height: 1.55; }
 .form-status { min-height: 1.4em; margin-top: 14px; font-size: 14px; color: var(--muted); }
 .form-status.error { color: #ff8a8a; }
 .form-foot a, .form-done a { color: var(--cobalt-lift); }
@@ -1541,7 +1541,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
           <label for="phone">Phone</label>
           <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional, if you prefer a call">
         </div>
-        <div class="field full">
+        <div class="field">
           <label for="interest">What can I help with?</label>
           <select id="interest" name="interest" required>
             <option value="" selected disabled>Choose one</option>
@@ -1568,7 +1568,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
             <option>Not sure yet</option>
           </select>
         </div>
-        <div class="field full">
+        <div class="field">
           <label for="budget">Rough budget</label>
           <select id="budget" name="budget">
             <option value="" selected>Not sure yet</option>
@@ -1581,7 +1581,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
         </div>
         <div class="field full">
           <label for="message">What would you like to improve?</label>
-          <textarea id="message" name="message" placeholder="Tell me about the work, bottleneck, or idea you have in mind." required></textarea>
+          <textarea id="message" name="message" rows="3" placeholder="Tell me about the work, bottleneck, or idea you have in mind." required></textarea>
         </div>
       </div>
       <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
@@ -2888,17 +2888,26 @@ document.getElementById('year').textContent = new Date().getFullYear();
   window.BRBPanel.enhance(panel);
   const baseTitle = document.title;
   let pushed = false, returnFocus = null, closeTimer = null, afterClose = null;
+  // While the window is open everything behind it is inert, so Tab stays inside (the contact form can still open on top).
+  let released = [];
+  function lockBehind() {
+    if (released.length) return;
+    [...document.body.children].forEach(el => {
+      if (el === overlay || el.id === 'contactDialog' || el.inert || /^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName)) return;
+      el.inert = true; released.push(el);
+    });
+  }
+  function unlockBehind() { released.forEach(el => { el.inert = false; }); released = []; }
   const isPage = href => /^\/(services\/[a-z0-9-]+\/?|(about|work|pricing|privacy|terms)\.html)$/.test(href || '');
 
   function comingSoon(href) {
     const a = document.querySelector('#landingMap a[href="' + href + '"]');
     const name = a ? a.firstChild.textContent.trim() : 'This page';
     const desc = a && a.querySelector('small') ? a.querySelector('small').textContent.trim() : '';
-    const code = a ? a.dataset.code : '';
     const group = a && a.closest('.lm-group') ? a.closest('.lm-group').querySelector('h3').textContent.trim() : '';
     return {
       title: name + ' | Business Runs Better',
-      crumb: (code ? '<span class="panel-code">' + code + '</span>' : '') + (group ? '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span>' : '') + '<span>' + name + '</span>',
+      crumb: (group ? '<a href="/#explore">' + group + '</a><span aria-hidden="true">/</span>' : '') + '<span>' + name + '</span>',
       html: '<section><p class="pc-eyebrow">' + (group ? group + ' &middot; ' : '') + 'coming soon</p><h1>' + name + '</h1>' +
         '<p class="pc-lede">' + desc + '</p><p>This page is still being written. If it’s what you need, let’s talk now.</p>' +
         '<div class="pc-actions"><a class="pc-btn" href="#contact" data-book-call>Book a free 20-minute call</a>' +
@@ -2943,6 +2952,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
     window.BRBPanel.decorate(body);
     scroller.scrollTop = 0;
     document.title = page.title || baseTitle;
+    panel.setAttribute('aria-label', (page.title || 'Page').split(' | ')[0]);
+    lockBehind();
     overlay.hidden = false;
     requestAnimationFrame(() => overlay.classList.add('open'));
     if (push && !window.BRB_PREVIEW) { history.pushState({ brbPage: href }, '', href); pushed = true; }
@@ -2952,6 +2963,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
   function hide() {
     overlay.classList.remove('open');
     document.title = baseTitle;
+    unlockBehind();
     closeTimer = setTimeout(() => { overlay.hidden = true; body.innerHTML = ''; }, 380);
     if (returnFocus && returnFocus.focus) returnFocus.focus({ preventScroll: true });
   }
@@ -3026,7 +3038,10 @@ let landingActivated = () => {};
   const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
   // ---- the "My business needs ___" line ----
-  let ci = Math.max(0, ALL.findIndex(k => k.code === 'MKT')), hovering = null;
+  let ci = Math.max(0, ALL.findIndex(k => k.code === 'MKT')), hovering = null, curGroup = null;
+  // while a group is open, the line only cycles through that group's pages
+  const pool = () => curGroup ? curGroup.kids : ALL;
+  function setGroup(g) { curGroup = g; if (g && g.kids.indexOf(ALL[ci]) < 0) ci = ALL.indexOf(g.kids[0]); }
   function render(text, instant) {
     needEl.innerHTML = '';
     let i = 0;
@@ -3049,7 +3064,7 @@ let landingActivated = () => {};
     if (hovering || !isOn()) return;
     const chars = needEl.querySelectorAll('.ch');
     chars.forEach((c, i) => setTimeout(() => c.classList.add('out'), 9 * i));
-    setTimeout(() => { if (hovering) return; ci = (ci + 1) % ALL.length; render(ALL[ci].need); }, 9 * chars.length + 360);
+    setTimeout(() => { if (hovering) return; const p = pool(); ci = ALL.indexOf(p[(p.indexOf(ALL[ci]) + 1) % p.length]); render(ALL[ci].need); }, 9 * chars.length + 360);
   }, 3200);
 
   // a page link (it opens in the page window); a data-jump link goes to a screen of the intro; the call button opens the booking form
@@ -3065,7 +3080,11 @@ let landingActivated = () => {};
   const orbs = document.createElement('div'); orbs.className = 'lp-orbs';
   const wires = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); wires.setAttribute('class', 'lp-wires'); wires.setAttribute('aria-hidden', 'true');
   orbs.appendChild(wires);
-  const hint = document.createElement('span'); hint.className = 'lp-hint'; orbs.appendChild(hint);
+  const hint = document.createElement('button'); hint.type = 'button'; hint.className = 'lp-back lp-hint'; hint.hidden = true;
+  hint.innerHTML = '<span aria-hidden="true">&#8592;</span>All four';
+  hint.addEventListener('click', () => { const was = open; open = null; setGroup(null); layout(); say(null);
+    const orb = items.find(i => i.top && i.g === was); if (orb) orb.el.focus({ preventScroll: true }); });
+  orbs.appendChild(hint);
   stage.appendChild(orbs);
   let open = null, wireStart = 0, arriveTimer = null;
   const items = [];
@@ -3073,7 +3092,7 @@ let landingActivated = () => {};
     const b = document.createElement('button'); b.type = 'button'; b.className = 'lp-orb top';
     b.innerHTML = '<span class="in"><b>' + g.n + '</b><small>' + g.kids.length + ' pages</small></span>';
     b.setAttribute('aria-expanded', 'false');
-    b.addEventListener('click', () => { open = open === g ? null : g; layout(); });
+    b.addEventListener('click', () => { open = open === g ? null : g; setGroup(open); layout(); });
     hoverable(b, g);
     orbs.appendChild(b);
     items.push({ el: b, g, top: true, ph: gi * 1.7 });
@@ -3094,8 +3113,8 @@ let landingActivated = () => {};
     const W = orbs.clientWidth, H = orbs.clientHeight; if (!W || !H) return;
     const tops = items.filter(i => i.top);
     items.forEach(i => i.el.classList.remove('sel', 'mini', 'right'));
+    hint.hidden = !open;
     if (!open) {
-      hint.textContent = '';
       items.filter(i => !i.top).forEach(i => { i.el.classList.add('gone'); i.el.tabIndex = -1; });
       const P = [[0.14, 0.32], [0.4, 0.72], [0.62, 0.26], [0.86, 0.64]];
       tops.forEach((t, i) => {
@@ -3104,7 +3123,6 @@ let landingActivated = () => {};
         place(t, W * P[i][0], H * P[i][1], 60);
       });
     } else {
-      hint.textContent = 'Click ' + open.n + ' again to see all four';
       const sel = tops.find(t => t.g === open), others = tops.filter(t => t.g !== open);
       sel.el.classList.add('sel'); sel.el.setAttribute('aria-expanded', 'true');
       items.filter(i => !i.top && i.g !== open).forEach(i => { i.el.classList.add('gone'); i.el.tabIndex = -1; });
@@ -3183,7 +3201,7 @@ let landingActivated = () => {};
         const a = wire(document.createElement('a'), k);
         a.className = 'lp-kid' + (k.call ? ' cta' : '');
         a.style.setProperty('--d', (RM ? 0 : i * 0.06) + 's');
-        a.innerHTML = '<span class="lp-code">' + esc(k.code) + '</span><b>' + esc(k.n) + '</b><small>' + esc(k.d) + '</small>';
+        a.innerHTML = '<b>' + esc(k.n) + '</b><small>' + esc(k.d) + '</small>';
         kidsBox.appendChild(a);
       });
       other.innerHTML = '<span>Or open</span>';
@@ -3192,6 +3210,7 @@ let landingActivated = () => {};
         b.addEventListener('click', () => openMorph(o, b)); hoverable(b, o); other.appendChild(b);
       });
       morph.classList.add('open');
+      setGroup(g);
       say(g);
       morph.querySelector('.lp-back').focus({ preventScroll: true });
     };
@@ -3204,12 +3223,13 @@ let landingActivated = () => {};
     setTimeout(fill, 380);
     setTimeout(() => gh.remove(), 760);
   }
-  morph.querySelector('.lp-back').addEventListener('click', () => { morph.classList.remove('open'); say(null); });
+  morph.querySelector('.lp-back').addEventListener('click', () => { morph.classList.remove('open'); setGroup(null); say(null); });
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !isOn() || !document.getElementById('svcOverlay').hidden) return;
     if (open) { open = null; layout(); }
     morph.classList.remove('open');
+    setGroup(null);
   });
 
   // ---- which version ----

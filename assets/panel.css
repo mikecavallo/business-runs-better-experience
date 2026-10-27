@@ -40,11 +40,9 @@
 }
 .panel-crumb a { color: var(--brand-lift); text-decoration: none; }
 .panel-crumb a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.panel-code {
-  flex: none; font-family: var(--font-display); font-size: 9.5px; letter-spacing: .08em;
-  color: var(--brand-lift); padding: 5px 7px; border-radius: 6px;
-  border: 1px solid rgba(var(--brand-rgb), .45); background: rgba(var(--brand-rgb), .1);
-}
+/* the crumb is a flex row, so the page name carries its own "…" when it runs out of room */
+.panel-crumb > a { flex: none; }
+.panel-crumb > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 /* buttons: close, and the scrollbar arrows */
 .pbtn {
@@ -178,7 +176,7 @@
 .pc-form .full { grid-column: 1 / -1; }
 .pc-form label { display: block; margin-bottom: 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
 .pc-form input, .pc-form textarea, .pc-form select {
-  width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 9px; font: inherit; font-size: 15px;
+  width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 9px; font: inherit; font-size: 16px;   /* under 16px, iPhone Safari zooms in */
   color: var(--ink); background: var(--bg-dark); border: 1px solid rgba(var(--brand-rgb), .25);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, .4);
 }
@@ -189,7 +187,7 @@
   background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
 }
 .pc-form select option { color: var(--ink); background: var(--bg-dark); }
-.pc-form textarea { min-height: 110px; resize: vertical; }
+.pc-form textarea { min-height: 88px; resize: vertical; }
 .pc-form input:focus, .pc-form textarea:focus, .pc-form select:focus { outline: none; border-color: var(--brand-lift); box-shadow: 0 0 0 3px rgba(var(--brand-rgb), .2); }
 .pc-form .form-honey { position: absolute; left: -9999px; }
 .pc-form .form-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
