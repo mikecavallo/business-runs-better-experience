@@ -15,7 +15,7 @@ window.BRB_CONFIG = {
     timeAudit: '/checkout.php',
     runAndImprove: ''
   },
-  calendarUrl: '',
+  calendarUrl: 'https://cal.com/mike-cavallo/business-is-better',
   auditCalendarUrl: '',
   testimonials: [
     // { quote: 'What they said.', name: 'Jane Smith', business: 'Smith Plumbing, Wilmington' },

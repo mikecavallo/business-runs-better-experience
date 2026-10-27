@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business Runs Better | Websites, Marketing &amp; AI for Local Business</title>
-<meta name="description" content="Websites, SEO, marketing, custom software and practical AI for local businesses, from Mike Cavallo in Leland, NC. IDX certified real estate websites, AI receptionists and automation, at fixed prices.">
+<title>Websites, Marketing &amp; AI in Wilmington, NC | Business Runs Better</title>
+<meta name="description" content="Websites, SEO, marketing and practical AI for local businesses in Wilmington, Leland and Brunswick County, NC. One person, fixed prices, start to finish.">
 <meta name="theme-color" content="#16191d">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
@@ -20,12 +20,12 @@
   } catch (e) { /* storage blocked: everyone gets the full intro */ }
 })();
 </script>
-<link rel="stylesheet" href="/assets/panel.css?v=3">
+<link rel="stylesheet" href="/assets/panel.css?v=4">
 <link rel="canonical" href="https://businessrunsbetter.com/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Business Runs Better | Websites, Marketing &amp; AI for Local Business">
-<meta property="og:description" content="Less busywork, more business. Websites, marketing, custom software and practical AI for local businesses, at fixed prices.">
+<meta property="og:title" content="Websites, Marketing &amp; AI in Wilmington, NC | Business Runs Better">
+<meta property="og:description" content="Less busywork, more business. Websites, marketing and AI for local businesses in the Wilmington area, at fixed prices.">
 <meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.webp">
 <meta property="og:url" content="https://businessrunsbetter.com/">
 <meta name="twitter:card" content="summary_large_image">
@@ -268,7 +268,7 @@ nav.visible { opacity: 1; transform: translateY(0); }
 .logo .rise { transition: transform .6s var(--ease-out); transform-origin: 9px 22px; }
 .logo:hover .rise { transform: translateY(-2px); }
 
-.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-links { display: flex; gap: 36px; align-items: center; margin-left: auto; }
 .nav-links button, .nav-links a {
   color: var(--dim);
   text-decoration: none; background: none; border: none; cursor: pointer;
@@ -279,8 +279,9 @@ nav.visible { opacity: 1; transform: translateY(0); }
 }
 .nav-links button:hover, .nav-links a:hover { color: var(--cobalt-lift); }
 .nav-links button, .nav-links a { white-space: nowrap; }
-/* Mid-width screens: drop the in-page jump links first; phone and call button stay. */
-@media (max-width: 1100px) { .nav-links > :nth-child(-n+2) { display: none; } }
+/* Mid-width screens: Pricing goes first (it's in the menu), then the wordmark beside the logo. */
+@media (max-width: 1100px) { .nav-links .nl-pricing { display: none; } .nav-links { gap: 28px; } }
+@media (max-width: 1020px) { .logo span { display: none; } }
 .nav-phone { display: inline-flex; align-items: center; gap: 9px; color: var(--ink) !important; letter-spacing: .08em !important; }
 .nav-phone svg, .nav-phone-m svg { width: 14px; height: 14px; color: var(--cobalt-lift); flex-shrink: 0; }
 .nav-phone-m {
@@ -304,62 +305,7 @@ nav.visible { opacity: 1; transform: translateY(0); }
 .nav-cta:hover { border-color: var(--cobalt-lift) !important; background: rgba(var(--brand-rgb),.10); }
 .nav-cta::after { display: none; }
 
-.menu-btn {
-  display: none;
-  width: 42px; height: 42px;
-  align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--line); border-radius: 3px;
-  cursor: pointer; color: var(--ink);
-}
-.menu-btn span { display: block; width: 16px; height: 1.5px; background: currentColor; position: relative; }
-.menu-btn span::before, .menu-btn span::after {
-  content: ''; position: absolute; left: 0; width: 16px; height: 1.5px; background: currentColor;
-}
-.menu-btn span::before { top: -5px; } .menu-btn span::after { top: 5px; }
-
-.mobile-menu {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(16, 19, 23, .97);
-  backdrop-filter: blur(14px);
-  display: none; flex-direction: column;
-  padding: 90px 28px 40px;
-  overflow-y: auto; overscroll-behavior: contain;
-}
-.mobile-menu.open { display: flex; }
-/* every page, in the landing page's groups */
-.mm-groups { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 40px; }
-@media (min-width: 600px) { .mm-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.mm-group { padding: 16px 0 8px; border-bottom: 1px solid var(--line); }
-.mm-head {
-  margin-bottom: 2px; font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--cobalt-lift);
-}
-.mobile-menu a.menu-page {
-  display: flex; align-items: center; min-height: 44px; padding: 6px 0;
-  color: var(--ink); font-family: var(--font-body); font-size: 16.5px; font-weight: 500;
-  line-height: 1.3; text-decoration: none;
-}
-.mobile-menu a.menu-page:hover, .mobile-menu a.menu-page:focus-visible { color: var(--cobalt-lift); }
-/* the call button and the phone number, centred under the list */
-.mm-cta { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 28px; text-align: center; }
-.mm-book {
-  display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px;
-  border: 1px solid rgba(255, 255, 255, .12); border-radius: 10px; cursor: pointer;
-  font-family: var(--font-body); font-size: 15.5px; font-weight: 600;
-  color: var(--on-brand); background: linear-gradient(180deg, var(--cobalt-lift), var(--brand));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 8px 22px -6px rgba(var(--brand-rgb), .6);
-}
-.mm-phone {
-  font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; color: var(--ink);
-  text-decoration: none; border-bottom: 1px solid rgba(var(--brand-rgb), .5); padding-bottom: 3px;
-}
-.mobile-menu .close {
-  position: absolute; top: 24px; right: 24px;
-  display: flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; padding: 0; cursor: pointer;
-  background: none; border: 1px solid var(--line); border-radius: 3px;
-  color: var(--ink); font-size: 20px;
-}
+/* the menu button and the site menu itself are styled in assets/panel.css (shared with the pages) */
 
 /* ============ SCROLL HINT ============ */
 /* the first slide tells people how to move on; tapping it does the same */
@@ -544,6 +490,8 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 @media (max-width: 760px) and (orientation: portrait) {
   #section-0 { align-items: flex-start; padding-top: max(130px, 25svh); }
 }
+/* phones: the progress bar at the top does the job, and the dots would sit on top of the words */
+@media (max-width: 760px) { .nav-pips { display: none; } }
 
 /* ---- 1 about ---- */
 .about-title {
@@ -553,17 +501,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 }
 .about-title .accent { color: var(--cobalt-lift); }
 
-/* ---- 2 stance ---- */
-.stance-section .section-inner { max-width: min(1480px, 100%); }
-.stance-title {
-  font-size: clamp(30px, 5.9vw, 92px);
-  color: var(--ink); text-align: left; letter-spacing: -.045em;
-}
-.stance-title .line { display: block; }
-.stance-title .accent { color: var(--cobalt-lift); }
-.stance-desc { text-align: right; margin-left: auto; margin-top: 34px; max-width: 48ch; }
-
-/* ---- 3-5 action ---- */
+/* ---- 2 the follow-up demo ---- */
 .action-section .section-inner { text-align: left; max-width: min(1400px, 100%); }
 .action-label {
   font-size: clamp(14.5px, 1.3vw, 19px);
@@ -599,7 +537,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 }
 .phone-top { display: flex; flex-direction: column; align-items: center; gap: 2px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--line); }
 .phone-top b { font-size: 14px; font-weight: 600; color: var(--ink); }
-.phone-top small, .mail-top small, .cal-card small, .reply-card small { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.phone-top small, .cal-card small { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
 .thread { display: flex; flex-direction: column; gap: 10px; min-height: 292px; }
 .msg { display: flex; flex-direction: column; max-width: 84%; margin: 0; }
 .msg span { padding: 9px 12px; border-radius: 16px; font-size: 13.5px; line-height: 1.42; }
@@ -618,7 +556,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   15%, 85% { opacity: 1; max-height: 34px; padding-block: 11px; }
   100% { opacity: 0; max-height: 0; padding-block: 0; margin-top: -10px; }
 }
-.cal-card, .reply-card {
+.cal-card {
   position: relative; z-index: 1; margin: -18px -4% 0 auto; width: min(66%, 260px);
   display: flex; flex-direction: column; gap: 5px; padding: 14px 16px; border-radius: 12px;
   background: color-mix(in srgb, var(--bg-lift) 92%, transparent);
@@ -626,74 +564,12 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   box-shadow: 0 18px 50px rgba(0, 0, 0, .4), 0 0 0 4px rgba(var(--brand-rgb), .12);
 }
 .cal-card b { font-size: 14px; font-weight: 600; color: var(--ink); }
-.cal-card span, .reply-card span { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.cal-card span { font-size: 12.5px; line-height: 1.45; color: var(--muted); }
 .section.active .cal-card { animation: landIn .8s var(--ease-out) both; animation-delay: var(--at); }
 @keyframes landIn { 0% { opacity: 0; transform: translate(18px, 26px) scale(.9); } 70% { opacity: 1; transform: translate(0, -3px) scale(1.02); } 100% { opacity: 1; transform: none; } }
 
-/* inbox scene */
-.mail {
-  width: min(100%, 430px); padding: 16px; border-radius: 16px;
-  border: 1px solid rgba(var(--brand-rgb), .3);
-  background: color-mix(in srgb, var(--bg-dark) 86%, transparent);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, .35); backdrop-filter: blur(6px);
-  display: flex; flex-direction: column; gap: 8px;
-}
-.mail-top { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px 10px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
-.mail-top b { font-size: 14px; font-weight: 600; color: var(--ink); }
-.mail-row { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 4px 10px; align-items: start; padding: 12px; border-radius: 10px; background: rgba(var(--brand-rgb), .05); border: 1px solid rgba(var(--brand-rgb), .12); }
-.mail-row .dot { width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: var(--cobalt-lift); }
-.section.active .mail-row .dot { animation: readDot .4s ease both; animation-delay: calc(var(--at) + 1.1s); }
-@keyframes readDot { to { opacity: .15; } }
-.mail-row b { display: block; font-size: 13px; font-weight: 600; color: var(--ink); }
-.mail-row span { display: block; font-size: 13px; line-height: 1.45; color: var(--muted); }
-.mail-row .tag { grid-column: 2; justify-self: start; font-style: normal; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; }
-.tag.ok { color: var(--on-brand); background: var(--cobalt); }
-.tag.hand { color: var(--cobalt-lift); border: 1px dashed var(--cobalt-lift); }
-.reply-card { margin-top: -12px; }
-.section.active .reply-card { animation: landIn .8s var(--ease-out) both; animation-delay: var(--at); }
-
-/* owner's week scene */
-.stance-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px) clamp(28px, 5vw, 96px); align-items: center; }
-.stance-grid .stance-title { font-size: clamp(30px, 4.1vw, 68px); grid-row: span 2; }
-.stance-grid .stance-desc { grid-column: 2; text-align: left; margin: 0; max-width: 46ch; }
-.week { width: 100%; }
-.week-head { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 16px; }
-.week-key { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
-.week-key i { width: 18px; height: 8px; border-radius: 2px; }
-.k-work, .bar .work { background: color-mix(in srgb, var(--muted) 42%, transparent); }
-.k-busy, .bar .busy { background: repeating-linear-gradient(135deg, var(--cobalt-lift) 0 5px, rgba(var(--brand-rgb), .45) 5px 10px); }
-.k-free, .bar .free { background: transparent; border: 1px dashed var(--cobalt-lift); box-sizing: border-box; }
-.week-bars { display: flex; flex-direction: column; gap: 10px; }
-.day { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 12px; }
-.day span { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
-.bar { display: flex; height: 22px; border-radius: 4px; overflow: hidden; transform-origin: left center; }
-.bar b { display: block; height: 100%; }
-.bar .work { width: calc(var(--w) * 1%); }
-.bar .busy { width: calc(var(--b) * .2%); }
-.bar .free { width: calc(var(--b) * .8%); }
-.section.active .bar { animation: barGrow .8s var(--ease-out) both; }
-.section.active .day:nth-child(2) .bar { animation-delay: .08s; } .section.active .day:nth-child(3) .bar { animation-delay: .16s; }
-.section.active .day:nth-child(4) .bar { animation-delay: .24s; } .section.active .day:nth-child(5) .bar { animation-delay: .32s; }
-@keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.section.active .bar .busy { animation: busyFind 1.2s ease 1.5s both, busyShrink 1s var(--ease-out) 3s both; }
-@keyframes busyFind { 0%, 100% { box-shadow: none; } 30%, 70% { box-shadow: inset 0 0 0 2px var(--ink); } }
-@keyframes busyShrink { from { width: calc(var(--b) * 1%); } to { width: calc(var(--b) * .2%); } }
-.section.active .bar .free { animation: freeOpen 1s var(--ease-out) 3s both; }
-@keyframes freeOpen { from { width: 0; opacity: 0; } to { width: calc(var(--b) * .8%); opacity: 1; } }
-.week-stage { position: relative; height: 18px; margin: 16px 0 0 50px; }
-.week-stage span { position: absolute; left: 0; top: 0; opacity: 0; font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--cobalt-lift); }
-.section.active .week-stage span:nth-child(1) { animation: stageOn .8s ease 1.5s both; }
-.section.active .week-stage span:nth-child(2) { animation: stageOn .8s ease 2.3s both; }
-.section.active .week-stage span:nth-child(3) { animation: stageStay .6s ease 3.1s both; }
-@keyframes stageOn { 0% { opacity: 0; transform: translateY(6px); } 25%, 75% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6px); } }
-@keyframes stageStay { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.week .bignum { margin-top: 22px; }
-.week .bignum b { font-size: clamp(40px, 4.6vw, 76px); }
-
 @media (max-width: 1024px) {
-  .with-scene, .stance-grid { grid-template-columns: minmax(0, 1fr); }
-  .stance-grid .stance-title { grid-row: auto; }
-  .stance-grid .stance-desc { grid-column: auto; }
+  .with-scene { grid-template-columns: minmax(0, 1fr); }
   .scene { justify-self: start; }
 }
 @media (max-width: 760px) and (max-height: 620px) {
@@ -708,11 +584,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   .thread { min-height: 0; gap: 8px; }
   .msg span { font-size: 12.5px; padding: 8px 11px; }
   .msg:nth-of-type(4), .msg:nth-of-type(5) { display: none; }
-  .cal-card, .reply-card { width: min(70%, 230px); margin-right: 0; }
-  .mail { padding: 12px; }
-  .mail-row { padding: 10px; }
-  .week-stage { margin-left: 50px; }
-  .week .bignum b { font-size: clamp(32px, 9.4vw, 44px); }
+  .cal-card { width: min(70%, 230px); margin-right: 0; }
 }
 
 /* ---- 6 philosophy ---- */
@@ -773,39 +645,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 }
 .method-item p { font-size: clamp(14.5px, 1.15vw, 17.5px); color: var(--muted); line-height: 1.62; }
 
-/* ---- 8 areas ---- */
-.areas-section .section-inner { max-width: min(1360px, 100%); }
-.areas-title {
-  font-size: clamp(21px, 3.2vw, 48px);
-  color: var(--ink); margin-bottom: 16px; letter-spacing: -.035em;
-}
-.areas-title .accent { color: var(--cobalt-lift); }
-.areas-strip {
-  display: flex; justify-content: center; flex-wrap: wrap;
-  gap: 10px; margin-top: 34px;
-}
-.areas-strip span {
-  font-family: var(--font-mono); font-size: clamp(13px, 1.08vw, 16px);
-  color: var(--muted); letter-spacing: .04em;
-  padding: 11px 18px;
-  border: 1px solid rgba(var(--brand-rgb),.16);
-  border-radius: 3px;
-  transition: color .35s, border-color .35s, background .35s;
-}
-.areas-strip span { cursor: default; }
-.areas-strip span:hover, .areas-strip span:focus-visible, .areas-strip span.on {
-  color: var(--ink); border-color: rgba(var(--brand-rgb),.45);
-  background: rgba(var(--brand-rgb),.06);
-}
-.areas-detail {
-  min-height: 1.7em; margin: 26px auto 0; max-width: 60ch;
-  font-size: clamp(15px, 1.25vw, 19px); line-height: 1.7; color: var(--cobalt-lift);
-  opacity: 0; transform: translateY(8px);
-  transition: opacity .35s ease, transform .5s var(--ease-out);
-}
-.areas-detail.show { opacity: 1; transform: none; }
-
-/* ---- 8 landing: where to next ----
+/* ---- 4 landing: where to next ----
    Desktop: a constellation of Build / Grow / Run / Mike that sways like cat's cradle.
    Phones and tablets: four tiles that morph open into their pages. */
 .landing-section .section-inner.landing { height: 100%; max-width: min(1600px, 100%); display: flex; flex-direction: column; text-align: left; }
@@ -1144,7 +984,9 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   background: var(--bg); padding: 40px; text-align: center;
 }
 .noscript-fallback div { max-width: 46ch; }
-.noscript-fallback h1 { font-family: var(--font-display); font-size: 19px; margin-bottom: 16px; }
+.noscript-fallback .ns-title { font-family: var(--font-display); font-size: 19px; color: var(--ink); margin-bottom: 16px; }
+.noscript-fallback strong { color: var(--ink); }
+.noscript-fallback a { color: var(--cobalt-lift); }
 .noscript-fallback p { color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
 
 /* ============ RESPONSIVE ============ */
@@ -1154,7 +996,6 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 @media (max-width: 900px) {
   nav { padding: 16px 20px; }
   .nav-links { display: none; }
-  .menu-btn { display: flex; }
   .nav-phone-m { display: inline-flex; margin-right: 10px; }
 }
 @media (max-width: 360px) {
@@ -1168,21 +1009,16 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
      oversized on a phone, which pushed tall sections past the fold. */
   .intro-title      { font-size: clamp(29px, 8.4vw, 44px); }
   .about-title      { font-size: 17.5px; max-width: 26ch; line-height: 1.5; }
-  .stance-title     { font-size: clamp(26px, 7.6vw, 40px); }
   .action-title     { font-size: clamp(29px, 8.4vw, 44px); }
   .action-subtitle  { font-size: clamp(19px, 5.4vw, 28px); }
   .action-label     { font-size: 13px; margin-bottom: 18px; }
   .philosophy-title { font-size: clamp(27px, 7.8vw, 42px); }
-  .areas-title      { font-size: 19px; }
   .final-title      { font-size: clamp(24px, 6.8vw, 36px); }
   .rule-formula     { font-size: clamp(24px, 7vw, 38px); }
   .rule-desc        { font-size: 13.5px; margin-bottom: 26px; }
   .rule-sub         { font-size: 11.5px; }
   .section-desc     { font-size: 14px; line-height: 1.65; }
   .label-mono       { font-size: 11px; }
-  .areas-strip span { font-size: 11.5px; padding: 8px 12px; }
-  .areas-strip      { gap: 7px; margin-top: 24px; }
-  .areas-detail     { font-size: 14px; margin-top: 18px; min-height: 3.4em; }
   .services-section h2 { font-size: 23px; margin-bottom: 20px; }
   .service-row .svc-name { font-size: 13px; }
   .service-row.active .svc-name, .service-row:hover .svc-name { font-size: 17.5px; }
@@ -1197,11 +1033,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .method-section .section-inner { gap: 20px; }
   .bottom-nav { padding: 14px 20px; }
   .scroll-hint { bottom: 62px; }
-  .stance-desc { text-align: left; margin-left: 0; }
   .form-grid { grid-template-columns: 1fr; }
   .dialog-head, .dialog-body { padding-inline: 22px; }
-  .areas-strip { gap: 8px; }
-  .areas-strip span { font-size: 11px; padding: 7px 11px; }
 }
 @media (max-width: 560px) {
   .logo span { display: none; }
@@ -1249,7 +1082,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   "description": "Websites, SEO, marketing, custom software and practical AI for local businesses.",
   "founder": {"@type": "Person", "name": "Mike Cavallo", "url": "https://businessrunsbetter.com/about.html"},
   "address": {"@type": "PostalAddress", "addressLocality": "Leland", "addressRegion": "NC", "addressCountry": "US"},
-  "areaServed": [{"@type": "City", "name": "Leland, NC"}, {"@type": "City", "name": "Wilmington, NC"}, {"@type": "AdministrativeArea", "name": "Brunswick County, NC"}, {"@type": "AdministrativeArea", "name": "New Hanover County, NC"}],
+  "areaServed": [{"@type": "City", "name": "Leland, NC"}, {"@type": "City", "name": "Wilmington, NC"}, {"@type": "AdministrativeArea", "name": "Brunswick County, NC"}, {"@type": "AdministrativeArea", "name": "New Hanover County, NC"}, {"@type": "AdministrativeArea", "name": "Pender County, NC"}],
   "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
     {"@type": "OfferCatalog", "name": "Build", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web Design & Development", "url": "https://businessrunsbetter.com/services/web-design/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Real Estate Websites & IDX", "url": "https://businessrunsbetter.com/services/real-estate-websites/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "eCommerce", "url": "https://businessrunsbetter.com/services/ecommerce/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Custom Business Software", "url": "https://businessrunsbetter.com/services/custom-software/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Product Development", "url": "https://businessrunsbetter.com/services/product-development/"}}]},
     {"@type": "OfferCatalog", "name": "Grow", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SEO & AI Search", "url": "https://businessrunsbetter.com/services/seo/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Marketing & Lead Generation", "url": "https://businessrunsbetter.com/services/marketing/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Data-Driven Decisions", "url": "https://businessrunsbetter.com/services/data-driven-decisions/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Creative, Copy & Video", "url": "https://businessrunsbetter.com/services/creative/"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Branding", "url": "https://businessrunsbetter.com/services/branding/"}}]},
@@ -1266,10 +1099,12 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 <noscript>
   <div class="noscript-fallback">
     <div>
-      <h1>Business Runs Better</h1>
-      <p>Websites, marketing &amp; AI for local business. I find the repetitive work costing you time, then build AI into the way your business already runs.</p>
-      <p><strong style="color:#f3f6fb">What I do:</strong> AI implementation · Automated lead generation · Web development · AI consulting &amp; strategy · MVP development · Customer service &amp; support · Scheduling, estimates &amp; admin · Reviews, reporting &amp; team knowledge</p>
-      <p>The interactive version of this site needs JavaScript. Either way, the fastest way to start is to email me directly.</p>
+      <p class="ns-title">Business Runs Better</p>
+      <p>Websites, marketing &amp; AI for local business, from Mike Cavallo in Leland, NC. I build your website, bring in more customers and put AI to work on the busywork. One person, start to finish.</p>
+      <p><strong>Build:</strong> <a href="/services/web-design/">Websites</a> · <a href="/services/real-estate-websites/">Real estate websites</a> · <a href="/services/ecommerce/">Online stores</a> · <a href="/services/custom-software/">Custom software</a> · <a href="/services/product-development/">Product development</a></p>
+      <p><strong>Grow:</strong> <a href="/services/seo/">SEO</a> · <a href="/services/marketing/">Marketing</a> · <a href="/services/data-driven-decisions/">Data-driven decisions</a> · <a href="/services/creative/">Creative, copy &amp; video</a> · <a href="/services/branding/">Branding</a></p>
+      <p><strong>Run:</strong> <a href="/services/ai-consulting/">AI consulting</a> · <a href="/services/workflow-automation/">Workflow automation</a> · <a href="/services/ai-receptionist/">AI receptionists</a> · <a href="/services/lead-follow-up/">Lead follow-up</a> · <a href="/services/ai-assistants/">AI assistants</a> · <a href="/services/private-ai/">Private AI</a></p>
+      <p>The interactive version of this site needs JavaScript. The fastest way to start is to call or email me.</p>
       <p style="margin-top:26px"><a class="final-email" href="tel:+19105240056">910-524-0056</a> &nbsp; <a class="final-email" href="mailto:info@businessrunsbetter.com">info@businessrunsbetter.com</a></p>
       <p><a href="/about.html">About</a> · <a href="/pricing.html">Pricing</a> · <a href="/work.html">Work</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></p>
     </div>
@@ -1304,8 +1139,8 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       <span>BUSINESS RUNS BETTER</span>
     </button>
     <div class="nav-links">
-      <button onclick="goToSection(5)">Where it helps</button>
-      <a href="/pricing.html">Pricing</a>
+      <button onclick="goToSection(LANDING_INDEX)">Services</button>
+      <a class="nl-pricing" href="/pricing.html">Pricing</a>
       <a class="nav-phone" href="tel:+19105240056"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg>910-524-0056</a>
       <button class="nav-cta" onclick="bookCall()">Book a free call</button>
     </div>
@@ -1313,7 +1148,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
   </nav>
 
-  <div class="mobile-menu" id="mobileMenu">
+  <div class="site-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Menu">
     <button class="close" id="menuClose" aria-label="Close menu">&times;</button>
   </div>
 
@@ -1356,36 +1191,12 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
     <!-- 1: About -->
     <section class="section" id="section-1" data-section="1" tabindex="-1" aria-label="About">
       <div class="section-inner">
-        <p class="animated-title about-title" data-text="I find the repetitive work costing you time, then build AI into the way your business already runs.">I find the repetitive work costing you time, then build AI into the way your business already runs.</p>
+        <p class="animated-title about-title" data-text="I build your website, bring in more customers and put AI to work on the busywork. One person, start to finish.">I build your website, bring in more customers and put AI to work on the busywork. One person, start to finish.</p>
       </div>
     </section>
 
-    <!-- 2: Stance -->
-    <section class="section stance-section" id="section-2" data-section="2" tabindex="-1" aria-label="Approach">
-      <div class="section-inner stance-grid">
-        <div class="stance-title animated-title" data-text="Find the waste|Build the fix|Put it to work" data-multiline="true">Find the waste Build the fix Put it to work</div>
-        <div class="scene week" role="img" aria-label="An owner's week shown as five daily bars. The busywork in each day is found, fixed, and shrinks to a sliver, and the hours come back. In my own business, automation gave back more than 20 hours a week.">
-          <div class="week-head">
-            <span class="week-key"><i class="k-work"></i>The actual work</span>
-            <span class="week-key"><i class="k-busy"></i>Busywork</span>
-            <span class="week-key"><i class="k-free"></i>Hours back</span>
-          </div>
-          <div class="week-bars">
-            <div class="day" style="--w:54;--b:30"><span>Mon</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:58;--b:26"><span>Tue</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:50;--b:34"><span>Wed</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:56;--b:28"><span>Thu</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-            <div class="day" style="--w:48;--b:32"><span>Fri</span><div class="bar"><b class="work"></b><b class="busy"></b><b class="free"></b></div></div>
-          </div>
-          <div class="week-stage" aria-hidden="true"><span>01 &nbsp;Find the waste</span><span>02 &nbsp;Build the fix</span><span>03 &nbsp;Put it to work</span></div>
-          <div class="bignum"><b data-count="20" data-suffix="+ hrs" data-delay="3500" data-dur="900">20+ hrs</b><span>a week back in my own business, from automation alone.</span></div>
-        </div>
-        <p class="section-desc stance-desc">No AI theater and no six-month roadmap. A clear plan, a working system, and a team that can actually run it after I leave.</p>
-      </div>
-    </section>
-
-    <!-- 3: Automate -->
-    <section class="section action-section" id="section-3" data-section="3" tabindex="-1" aria-label="Automate follow-up">
+    <!-- 2: Automate -->
+    <section class="section action-section" id="section-2" data-section="2" tabindex="-1" aria-label="Automate follow-up">
       <div class="section-inner with-scene">
         <div class="action-copy">
           <p class="action-label">For the leads that go cold while everyone is busy doing the actual work</p>
@@ -1414,61 +1225,17 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
       </div>
     </section>
 
-    <!-- 4: Accelerate -->
-    <section class="section action-section" id="section-4" data-section="4" tabindex="-1" aria-label="Accelerate customer replies">
-      <div class="section-inner with-scene">
-        <div class="action-copy">
-          <p class="action-label">For the same twelve questions your team answers every single day</p>
-          <div class="action-title animated-title" data-text="Accelerate">Accelerate</div>
-          <div class="action-subtitle animated-title" data-text="every reply">every reply</div>
-          <p class="sr-only">Common questions answered instantly, email drafts ready to send, details collected up front, and the complicated ones handed to the right person with context attached.</p>
-        </div>
-        <div class="scene inbox" role="img" aria-label="Three customer emails arrive. Two common questions are answered automatically within seconds. The third, about a billing problem, is handed to the owner with a summary attached.">
-          <div class="mail">
-            <div class="mail-top"><b>Inbox</b><small>Today</small></div>
-            <div class="mail-row step" style="--at:.6s"><i class="dot"></i><div><b>Dana P.</b><span>What time are you open on Saturday?</span></div><em class="tag ok step" style="--at:1.7s">Answered in 2 sec</em></div>
-            <div class="mail-row step" style="--at:1.1s"><i class="dot"></i><div><b>Marcus L.</b><span>Do you take Amex? Is there parking out front?</span></div><em class="tag ok step" style="--at:2.4s">Answered in 3 sec</em></div>
-            <div class="mail-row step" style="--at:1.6s"><i class="dot"></i><div><b>Priya S.</b><span>My last invoice looks wrong. Can someone call me?</span></div><em class="tag hand step" style="--at:3.2s">Sent to you with a summary</em></div>
-          </div>
-          <div class="reply-card step" style="--at:4.1s">
-            <small>Sent automatically &middot; to Dana</small>
-            <span>We're open 8 AM to 2 PM on Saturday. Want me to save you a spot?</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5: Areas -->
-    <section class="section areas-section" id="section-5" data-section="5" tabindex="-1" aria-label="Where AI pays off">
+    <!-- 3: Rule -->
+    <section class="section rule-section" id="section-3" data-section="3" tabindex="-1" aria-label="The rule">
       <div class="section-inner">
-        <p class="animated-title areas-title" data-text="Nine places AI can take work off your plate.">Nine places AI can take work off your plate.</p>
-        <p class="section-desc" style="margin-inline:auto">Every business is different. These are the areas where it reliably pays for itself.</p>
-        <div class="areas-strip">
-          <span tabindex="0" data-desc="New inquiries answered in seconds, qualified and booked, even on weekends.">Leads &amp; follow-up</span>
-          <span tabindex="0" data-desc="The same questions answered instantly, with the tricky ones handed to a person.">Customer service</span>
-          <span tabindex="0" data-desc="Appointments booked, confirmed and reminded without the phone tag.">Scheduling &amp; reminders</span>
-          <span tabindex="0" data-desc="Quotes drafted from your job notes in minutes, not evenings.">Estimates &amp; proposals</span>
-          <span tabindex="0" data-desc="Forms read, records updated and info moved between tools without retyping.">Admin &amp; data entry</span>
-          <span tabindex="0" data-desc="Review requests sent at the right moment, with replies drafted for you.">Reviews &amp; reputation</span>
-          <span tabindex="0" data-desc="Posts, emails and listings drafted in your voice, ready for you to approve.">Marketing content</span>
-          <span tabindex="0" data-desc="Answers from your own docs and policies, so nobody has to ask you twice.">Team knowledge</span>
-          <span tabindex="0" data-desc="A plain-English weekly report on what happened and what to do next.">Reporting &amp; decisions</span>
-        </div>
-        <p class="areas-detail" id="areasDetail" aria-live="polite"></p>
-      </div>
-    </section>
-
-    <!-- 6: Rule -->
-    <section class="section rule-section" id="section-6" data-section="6" tabindex="-1" aria-label="The rule">
-      <div class="section-inner">
-        <p class="rule-desc"><span class="accent">Every build gets judged the same way.</span> Not by how clever it is, or how much of it is AI. By whether it gives back real hours in a real week.</p>
+        <p class="rule-desc"><span class="accent">Everything I build gets judged the same way.</span> Not by how clever it is or how much AI is in it. By whether it brings in customers or gives you real hours back.</p>
         <div class="rule-formula animated-title" data-text="USEFUL &gt; IMPRESSIVE">USEFUL &gt; IMPRESSIVE</div>
-        <p class="rule-sub">( the only benchmark that matters )</p>
+        <p class="rule-sub">(the only benchmark that matters)</p>
       </div>
     </section>
 
-    <!-- 7: Landing -->
-    <section class="section landing-section" id="section-7" data-section="7" tabindex="-1" aria-label="Where to next">
+    <!-- 4: Landing -->
+    <section class="section landing-section" id="section-4" data-section="4" tabindex="-1" aria-label="Where to next">
       <div class="section-inner landing" id="landing">
         <h2 class="landing-need">My business needs <span class="need" id="landingNeed" aria-live="polite">more leads.</span></h2>
         <div class="landing-stage" id="landingStage">
@@ -1480,7 +1247,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
               <ul>
                 <li><a href="/services/web-design/" data-code="WEB" data-need="a website that works.">Web Design &amp; Development<small>Fast, mobile-first websites built to rank and to turn visitors into calls.</small></a></li>
                 <li><a href="/services/real-estate-websites/" data-code="IDX" data-need="buyers to find its listings.">Real Estate Websites &amp; IDX<small>Agent and brokerage sites with live MLS listings, from an IDX certified developer.</small></a></li>
-                <li><a href="/services/ecommerce/" data-code="SHOP" data-need="an online store that sells.">eCommerce<small>Shopify, WooCommerce, Amazon and eBay, from someone who ran a $750K store.</small></a></li>
+                <li><a href="/services/ecommerce/" data-code="SHOP" data-need="an online store that sells.">eCommerce<small>Shopify, WooCommerce, Amazon and eBay, from someone whose own store did $750K in sales in 2023.</small></a></li>
                 <li><a href="/services/custom-software/" data-code="APP" data-need="software that actually fits.">Custom Business Software<small>Internal tools, portals and integrations built around how you work.</small></a></li>
                 <li><a href="/services/product-development/" data-code="PDM" data-need="its next product launched.">Product Development<small>From idea to launched product: plan it, build it, ship it, improve it.</small></a></li>
               </ul>
@@ -1509,7 +1276,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
             <div class="lm-group" data-key="mike" data-need="to know who it&rsquo;s hiring.">
               <h3>Mike</h3>
               <ul>
-                <li><a href="/about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. Twenty years of websites, stores, software and AI.</small></a></li>
+                <li><a href="/about.html" data-code="ME" data-need="to know who it&rsquo;s hiring.">About Mike<small>Self-taught at 12. 20+ years of websites, marketing and software. Now AI too.</small></a></li>
                 <li><a href="/work.html" data-code="WORK" data-need="to see real work first.">Work<small>Sites and AI tools I&rsquo;ve built, and where each one stands.</small></a></li>
                 <li><a href="/pricing.html" data-code="$" data-need="to know what it costs.">Pricing<small>$500 Time Audit, builds from $2,500, support from $300 a month.</small></a></li>
                 <li><a href="#contact" data-code="CALL" data-need="a straight answer." data-call>Book a free 20-minute call<small>No pitch deck. I&rsquo;ll tell you honestly what I&rsquo;d do first.</small></a></li>
@@ -1617,14 +1384,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   </div>
 </dialog>
 
-<script src="/assets/site-config.js?v=202610091841"></script>
+<script src="/assets/site-config.js?v=202610271"></script>
 <script src="/assets/panel.js?v=2"></script>
 <script>
 // ============================================
 // CONFIG
 // ============================================
-const TOTAL_SECTIONS = 8;
-const LANDING_INDEX = 7;               // the last screen: where to next
+const TOTAL_SECTIONS = 5;
+const LANDING_INDEX = 4;               // the last screen: where to next
 const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const RETURNING = document.documentElement.classList.contains('returning');   // set in <head>
 const MORPH_DURATION = RM ? 450 : 1800;
@@ -1647,14 +1414,14 @@ let warpStart = 0, warpFrom = 0, warpStreaks = [];
 let entered = false;
 
 const SECTION_NAMES = [
-  'Introduction', 'What I do', 'Find, build, put to work', 'Automate the follow-up', 'Accelerate every reply', 'Where AI pays off', 'The rule', 'Where to next'
+  'Introduction', 'What I do', 'Automate the follow-up', 'The rule', 'Where to next'
 ];
 const SLUGS = [
-  'start', 'about', 'approach', 'automate', 'accelerate', 'where-it-helps', 'the-rule', 'explore'
+  'start', 'about', 'automate', 'the-rule', 'explore'
 ];
 // Photographic backdrop per section (files in assets/img/)
 const SECTION_BG = [
-  'hero', 'void', 'void', 'flow', 'flow', 'void', 'structure', 'void'
+  'hero', 'void', 'flow', 'structure', 'void'
 ];
 
 // ============================================
@@ -1740,19 +1507,18 @@ function buildThemePicker() {
   if (saved && THEMES[saved]) applyTheme(saved);
 })();
 
+// what each intro screen says out loud (the mp3s are rendered from render-narration.py; this is the
+// fallback if a file won't play). The landing page has none: the sound cuts there.
 const sectionNarration = [
   "Your business. Running better. Websites, marketing, and A I for local business.",
-  "I find the repetitive work costing you time, then build A I into the way your business already runs.",
-  "Find the waste. Build the fix. Put it to work. No A I theater, and no six month roadmap.",
+  "I build your website, bring in more customers, and put A I to work on the busywork. One person, start to finish.",
   "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
-  "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
-  "Nine places A I can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
-  "Every build gets judged the same way. Useful, is greater than, impressive.",
-  "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step."
+  "Everything I build gets judged the same way. Not by how clever it is. By whether it brings in customers, or gives you real hours back. Useful, is greater than, impressive.",
+  ""
 ];
 
 // ============================================
-// 9 BACKGROUND PATTERNS
+// BACKGROUND PATTERNS (one per screen)
 // ============================================
 const patterns = [
   // 0: Perspective Grid Floor
@@ -1806,23 +1572,7 @@ const patterns = [
       if(Math.sin(t*1.2+r+cl*1.5)>0.6){c.fillStyle=`rgba(${PC},${0.06*A*(1-d)})`; c.fill();}
     }
   },
-  // 2: Converging Rays
-  function(c, w, h, t, d) {
-    const cx=w*0.5,cy=h*0.4, nr=48;
-    for(let i=0;i<nr;i++){
-      const ang=(i/nr)*Math.PI*2+t*0.1, len=Math.max(w,h)*0.8;
-      const a=(0.08+Math.sin(t+i*0.5)*0.05)*A*(1-d*0.5);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=1;
-      c.beginPath(); c.moveTo(cx+Math.cos(ang+d*0.3)*40,cy+Math.sin(ang+d*0.3)*40);
-      c.lineTo(cx+Math.cos(ang)*len,cy+Math.sin(ang)*len); c.stroke();
-    }
-    for(let r=1;r<=8;r++){
-      const radius=r*50+Math.sin(t*2)*8;
-      c.strokeStyle=`rgba(${PC},${(0.1-r*0.01)*A*(1-d*0.8)})`; c.lineWidth=1;
-      c.beginPath(); c.arc(cx,cy,radius*(1+d*0.5),0,Math.PI*2); c.stroke();
-    }
-  },
-  // 3: Circular Ripples
+  // 2: Circular Ripples
   function(c, w, h, t, d) {
     const cx=w*0.5,cy=h*0.5;
     for(let i=0;i<20;i++){
@@ -1839,40 +1589,7 @@ const patterns = [
       }
     }
   },
-  // 4: Lightning / Energy
-  function(c, w, h, t, d) {
-    const seed=(n)=>(Math.sin(n*127.1+311.7)*43758.5453)%1;
-    for(let i=0;i<12;i++){
-      const sx=w*(0.05+seed(i)*0.9), ex=w*(0.05+seed(i+50)*0.9)+d*Math.sin(t+i)*150;
-      const a=(0.12+Math.sin(t*2+i)*0.06)*A*(1-d*0.5);
-      c.strokeStyle=`rgba(${PC},${a})`; c.lineWidth=2;
-      c.beginPath(); c.moveTo(sx,0);
-      for(let s=1;s<=15;s++){
-        c.lineTo(sx+(ex-sx)*(s/15)+Math.sin(t*4+s*2+i)*50*(1+d), h*(s/15));
-      }
-      c.stroke();
-      c.strokeStyle=`rgba(${PC},${a*0.3})`; c.lineWidth=8; c.stroke();
-    }
-  },
-  // 5: Constellation
-  function(c, w, h, t, d) {
-    const stars=[];
-    for(let i=0;i<80;i++){
-      const h1=(Math.sin(i*127.1+311.7)*43758.5453)%1, h2=(Math.sin(i*269.5+183.3)*43758.5453)%1;
-      stars.push({x:h1*w+d*Math.sin(t*0.5+i)*80, y:h2*h+d*Math.cos(t*0.5+i*0.7)*80,
-        bright:0.115+Math.sin(t*1.5+i*2.1)*0.07});
-    }
-    for(let i=0;i<stars.length;i++) for(let j=i+1;j<stars.length;j++){
-      const dist=Math.hypot(stars[i].x-stars[j].x,stars[i].y-stars[j].y);
-      if(dist<180){c.strokeStyle=`rgba(${PC},${0.085*A*(1-dist/180)*(1-d*0.6)})`;
-        c.lineWidth=0.8; c.beginPath(); c.moveTo(stars[i].x,stars[i].y); c.lineTo(stars[j].x,stars[j].y); c.stroke();}
-    }
-    stars.forEach(s=>{const a=Math.max(0.02,s.bright*A*(1-d*0.5));
-      c.fillStyle=`rgba(${PC},${a})`; c.beginPath(); c.arc(s.x,s.y,2.5,0,Math.PI*2); c.fill();
-      c.fillStyle=`rgba(${PC},${a*0.4})`; c.beginPath(); c.arc(s.x,s.y,8,0,Math.PI*2); c.fill();
-    });
-  },
-  // 6: Circuit Board
+  // 3: Circuit Board
   function(c, w, h, t, d) {
     const g=100, cols=Math.ceil(w/g)+1, rows=Math.ceil(h/g)+1;
     for(let r=0;r<rows;r++) for(let cl=0;cl<cols;cl++){
@@ -1891,7 +1608,7 @@ const patterns = [
         c.beginPath(); c.arc(dir?x+g*pulse/0.3:x, dir?y:y+g*pulse/0.3, 4,0,Math.PI*2); c.fill();}
     }
   },
-  // 7: Starfield (the landing). Stars and sparkles drift, twinkle, and shy away from the cursor.
+  // 4: Starfield (the landing). Stars and sparkles drift, twinkle, and shy away from the cursor.
   (function () {
     let stars = [], sw = 0, sh = 0;
     function seed(w, h) {
@@ -2135,14 +1852,24 @@ function buildMobileMenu() {
   cta.querySelector('.mm-book').addEventListener('click', () => { closeMenu(); bookCall(); });
   menu.appendChild(cta);
 }
+// While the menu is open everything behind it is inert, so Tab can't wander off behind it.
+let menuReleased = [];
 function openMenu() {
-  document.getElementById('mobileMenu').classList.add('open');
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.add('open');
   document.getElementById('menuBtn').setAttribute('aria-expanded', 'true');
+  for (let el = menu; el && el !== document.body; el = el.parentElement) {
+    [...el.parentElement.children].forEach(sib => {
+      if (sib !== el && !sib.inert && !/^(SCRIPT|STYLE)$/.test(sib.tagName)) { sib.inert = true; menuReleased.push(sib); }
+    });
+  }
   document.getElementById('menuClose').focus();
 }
 function closeMenu() {
   document.getElementById('mobileMenu').classList.remove('open');
   document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
+  menuReleased.forEach(el => { el.inert = false; });
+  menuReleased = [];
 }
 document.getElementById('menuBtn').addEventListener('click', openMenu);
 document.getElementById('menuClose').addEventListener('click', () => {
@@ -2428,7 +2155,7 @@ document.addEventListener('touchend', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (document.getElementById('mobileMenu').classList.contains('open')) { closeMenu(); return; }
+    if (document.getElementById('mobileMenu').classList.contains('open')) { closeMenu(); document.getElementById('menuBtn').focus(); return; }
   }
   if (!entered || uiBlocked()) return;
   if (e.repeat) { e.preventDefault(); return; }   // holding a key must not chain sections
@@ -2647,7 +2374,7 @@ function stopAmbient(fade) {
 /* Narration is PRE-RENDERED (Kokoro, see render-narration.py) and ships as
    static mp3. No TTS server in production, no inference latency — it's just an
    audio file. Browser speechSynthesis stays as a fallback if a file 404s. */
-const AUDIO_V = 2;     // bump when any clip is re-rendered, so browsers drop their cached copy
+const AUDIO_V = 3;     // bump when any clip is re-rendered, so browsers drop their cached copy
 let narrationAudio = null;
 let narrationTimer = null;
 
@@ -2671,7 +2398,7 @@ function speakSection(index) {
     a.play().then(() => {
       // warm the next clip so the following section starts instantly
       const nxt = index + 1;
-      if (nxt < TOTAL_SECTIONS) {
+      if (nxt < LANDING_INDEX) {
         new Audio(`/assets/audio/s${String(nxt).padStart(2, '0')}.mp3?v=${AUDIO_V}`).preload = 'auto';
       }
     }).catch(() => { narrationAudio = null; speakSectionFallback(index); });
@@ -2982,7 +2709,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
     if (a.hasAttribute('data-pay')) { e.preventDefault(); payAudit(); return; }
     if (a.dataset.interest) { e.preventDefault(); openContact(a.dataset.interest); return; }
     if (href === '/#explore' || href === '/') { e.preventDefault(); closePage(); return; }
-    // a link to a spot in the intro (say /#where-it-helps): shut the window, then go there
+    // a link to a spot in the intro (say /#automate): shut the window, then go there
     const jump = /^\/#([a-z-]+)$/.exec(href || '');
     if (jump && SLUGS.indexOf(jump[1]) >= 0) { e.preventDefault(); closePage(() => goToSection(SLUGS.indexOf(jump[1]))); }
   });
@@ -3224,34 +2951,6 @@ let landingActivated = () => {};
 })();
 
 
-// ============================================
-// AREAS: short description under the hovered item
-// ============================================
-(function () {
-  const detail = document.getElementById('areasDetail');
-  const chips = document.querySelectorAll('.areas-strip [data-desc]');
-  if (!detail) return;
-  let hideTimer;
-  function show(chip) {
-    clearTimeout(hideTimer);
-    chips.forEach(c => c.classList.toggle('on', c === chip));
-    detail.textContent = chip.dataset.desc;
-    detail.classList.add('show');
-  }
-  function hide() {
-    hideTimer = setTimeout(() => {
-      chips.forEach(c => c.classList.remove('on'));
-      detail.classList.remove('show');
-    }, 150);
-  }
-  chips.forEach(chip => {
-    chip.addEventListener('mouseenter', () => show(chip));
-    chip.addEventListener('focus', () => show(chip));
-    chip.addEventListener('click', () => show(chip));
-    chip.addEventListener('mouseleave', hide);
-    chip.addEventListener('blur', hide);
-  });
-})();
 </script>
 </body>
 </html>

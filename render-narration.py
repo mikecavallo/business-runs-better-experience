@@ -3,8 +3,9 @@
 Pre-render the Business Runs Better narration with Kokoro (local, port 8880).
 
 Run this ONLY when the narration copy or the chosen voice changes.
-The output is 13 static audio files that ship with the site — the production
-server needs no TTS, no Python, and no GPU. Playback is just <audio>.
+The output is one static audio file per intro screen (the landing page has none).
+They ship with the site, so the server needs no TTS, no Python and no GPU. Playback is just <audio>.
+After re-rendering, bump AUDIO_V in index.html so browsers drop their cached copies.
 
   python3 render-narration.py --voice bm_george
 """
@@ -14,13 +15,9 @@ KOKORO = "http://127.0.0.1:8880/v1/audio/speech"
 
 LINES = [
  "Your business. Running better. Websites, marketing, and A.I. for local business.",
- "I find the repetitive work costing you time, then build A.I. into the way your business already runs.",
- "Find the waste. Build the fix. Put it to work. No A.I. theater, and no six month roadmap.",
+ "I build your website, bring in more customers, and put A.I. to work on the busywork. One person, start to finish.",
  "Automate the follow up. New inquiries answered in seconds, leads qualified and routed, calls booked straight into the calendar.",
- "Accelerate every reply. Common questions answered instantly, email drafts ready to send, and the complicated ones handed to the right person.",
- "Nine places A.I. can take work off your plate. Leads, customer service, scheduling, estimates, admin, reviews, marketing, team knowledge, and reporting.",
- "Every build gets judged the same way. Useful, is greater than, impressive.",
- "If you can imagine it, we can build it. Tell me where your business loses time, or what you've been picturing, and I'll come back with a practical next step.",
+ "Everything I build gets judged the same way. Not by how clever it is. By whether it brings in customers, or gives you real hours back. Useful, is greater than, impressive.",
 ]
 
 def main():

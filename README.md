@@ -1,8 +1,8 @@
 # Business Runs Better — interactive experience
 
-A single-page, full-screen scroll experience for an AI consultancy. Thirteen sections,
-each with its own procedurally generated canvas background, morphing between states as
-you navigate.
+The site for Business Runs Better: websites, marketing and AI for local business. A short
+full-screen intro (four screens, each with its own procedurally generated canvas background,
+morphing between states as you navigate) ends on a landing page that links to every page.
 
 **[Live demo →](https://mikecavallo.github.io/business-runs-better-experience/)**
 
@@ -32,10 +32,10 @@ Adding a theme is one object entry. The photographic backdrops are lit with a si
 hue, so each theme rotates them with a CSS `hue-rotate` to match rather than shipping
 five sets of images.
 
-**Pre-rendered neural narration.** Optional voice-over for all thirteen sections,
-generated offline with [Kokoro](https://github.com/hexgrad/kokoro) and shipped as 619 KB
-of static mp3. There is no TTS service in production and no inference latency — it's
-just `<audio>`. Browser `speechSynthesis` remains as a fallback. Re-render with
+**Pre-rendered neural narration.** Optional voice-over for the four intro screens,
+generated offline with [Kokoro](https://github.com/hexgrad/kokoro) and shipped as about 200 KB
+of static mp3. There is no TTS service in production and no inference latency: it's
+just `<audio>`. The sound cuts when you reach the landing page. Browser `speechSynthesis` remains as a fallback. Re-render with
 `render-narration.py`.
 
 **Gesture-accurate navigation.** One scroll gesture advances exactly one section: the
@@ -144,7 +144,8 @@ Development only — the deployed site never touches it.
 python3 render-narration.py --voice bm_george
 ```
 
-Any of Kokoro's 67 voices works. Takes about 3 seconds for all thirteen lines.
+Any of Kokoro's 67 voices works. Takes a few seconds for all four lines. Bump `AUDIO_V` in
+`index.html` afterwards so browsers drop their cached copies.
 
 ---
 

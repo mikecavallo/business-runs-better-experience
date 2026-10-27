@@ -43,6 +43,7 @@ body.pg { overflow: hidden; background: var(--bg); color: var(--ink); font-famil
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15);
 }
 .pg-cta:hover { border-color: var(--brand-lift); background: rgba(var(--brand-rgb), .25); }
+.pg-nav .menu-btn { margin-left: 2px; }
 
 .pg-main {
   position: relative; z-index: 1; height: calc(100% - 72px);
