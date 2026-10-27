@@ -524,7 +524,8 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 /* ---- scenes: show it, don't describe it ----
    Everything inside .scene animates in when its section becomes .active, so it
    replays every time you arrive on the screen. Reduced motion jumps to the end state. */
-.bignum { margin-top: clamp(22px, 3.6vh, 40px); display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.bignum { margin-top: clamp(22px, 3.6vh, 40px); display: flex; flex-direction: column; gap: 8px; text-align: left; transition: opacity .35s ease; }
+.bignum.count-wait { opacity: 0; transition: none; }
 .bignum b {
   font-family: var(--font-display); font-weight: 400; color: var(--ink);
   font-size: clamp(44px, 6vw, 100px); line-height: .95; letter-spacing: -.05em;
@@ -638,7 +639,7 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
 .week .bignum { margin-top: 22px; }
 .week .bignum b { font-size: clamp(40px, 4.6vw, 76px); }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px) and (max-aspect-ratio: 5/4) {
   .with-scene, .stance-grid { grid-template-columns: minmax(0, 1fr); }
   .stance-grid .stance-title { grid-row: auto; }
   .stance-grid .stance-desc { grid-column: auto; }
@@ -661,6 +662,13 @@ body:not(.on-first) .theme-picker { opacity: 0; visibility: hidden; pointer-even
   .mail-row { padding: 10px; }
   .week-stage { margin-left: 50px; }
   .week .bignum b { font-size: clamp(32px, 9.4vw, 44px); }
+  /* phones get fewer, bigger rows: three days, two emails, the booking card tucked over the phone */
+  .week .day:nth-child(2), .week .day:nth-child(4) { display: none; }
+  .sms .cal-card { margin-top: -64px; }
+  .inbox .mail-row:nth-child(3) { display: none; }
+  .inbox .reply-card { margin-top: -26px; }
+  .phone-top small, .mail-top small, .cal-card small, .reply-card small { font-size: 11px; }
+  .msg time, .mail-row .tag { font-size: 11px; }
 }
 
 /* ---- 6 philosophy ---- */
@@ -1108,6 +1116,10 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
 }
 @media (max-width: 360px) {
   .nav-phone-m span { display: none; }
+}
+/* Phones and small tablets. (This block was accidentally limited to 360px wide,
+   so most phones got the desktop type sizes and the scenes had to shrink.) */
+@media (max-width: 900px) {
   .nav-pips { display: none; }
   /* bottom padding must clear the fixed bottom bar (~58px) so the last
      item never rests behind it */
@@ -1151,6 +1163,14 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   .dialog-head, .dialog-body { padding-inline: 22px; }
   .areas-strip { gap: 8px; }
   .areas-strip span { font-size: 11px; padding: 7px 11px; }
+}
+@media (max-width: 760px) {
+  .areas-strip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .areas-strip span {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 44px; padding: 8px 10px; line-height: 1.35; letter-spacing: .02em;
+  }
+  .areas-strip span:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 4px); }
 }
 @media (max-width: 560px) {
   .logo span { display: none; }
@@ -1240,7 +1260,7 @@ dialog.contact::backdrop { background: rgba(8, 10, 13, .82); backdrop-filter: bl
   </div>
 </div>
 <!-- One of four splash screens, picked at random each visit -->
-<script src="/assets/splash.js?v=2"></script>
+<script src="/assets/splash.js?v=3"></script>
 
 <!-- ============ MAIN APP ============ -->
 <div id="app">
@@ -2175,10 +2195,14 @@ function runCounters(index) {
   sec.querySelectorAll('[data-count]').forEach(el => {
     const to = parseFloat(el.dataset.count), suf = el.dataset.suffix || '';
     const delay = +el.dataset.delay || 0, dur = +el.dataset.dur || 900;
+    const box = el.closest('.bignum') || el;
     clearTimeout(counterTimers.get(el));
-    if (RM) { el.textContent = to + suf; return; }
+    if (RM) { box.classList.remove('count-wait'); el.textContent = to + suf; return; }
+    // hidden until it starts counting, so nobody reads "0+ hrs" while the scene plays
+    box.classList.add('count-wait');
     el.textContent = '0' + suf;
     counterTimers.set(el, setTimeout(() => {
+      box.classList.remove('count-wait');
       const start = performance.now();
       (function tick(now) {
         const p = Math.min(1, (now - start) / dur);
@@ -2199,8 +2223,8 @@ function fitScenes() {
     scene.style.zoom = '';
     const over = sec.scrollHeight - sec.clientHeight;
     if (over <= 0) return;
-    const h = scene.offsetHeight;
-    scene.style.zoom = Math.max(0.5, (h - over - 8) / h).toFixed(3);
+    const h = scene.offsetHeight, floor = innerWidth <= 760 ? 0.8 : 0.5;
+    scene.style.zoom = Math.max(floor, (h - over - 8) / h).toFixed(3);
   });
 }
 let fitTimer = null;
