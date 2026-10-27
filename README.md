@@ -125,7 +125,7 @@ loads. Setup steps are in the comment at the top of that file.
    Under *After payment*, choose "Don't show confirmation page" and redirect to
    `https://businessrunsbetter.com/thanks.html`. Paste the link URL into `stripe.timeAudit` in
    `assets/site-config.js`.
-2. **(Optional) Run & Improve.** A recurring $300/month Payment Link to send to clients after a
+2. **(Optional) Monthly support.** A recurring $300/month Payment Link to send to clients after a
    build; paste it into `stripe.runAndImprove` if you want it on the site.
 3. **Builds.** Send Stripe Invoices from the dashboard (50% deposit, 50% on handoff).
 4. **Webhook.** Stripe → Developers → Webhooks → Add endpoint

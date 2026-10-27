@@ -31,8 +31,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Time Audit checkout | Business Runs Better</title>
-<link rel="stylesheet" href="/assets/page.css?v=3">
-<link rel="stylesheet" href="/assets/panel.css?v=5">
+<link rel="stylesheet" href="/assets/page.css?v=4">
+<link rel="stylesheet" href="/assets/panel.css?v=6">
 </head>
 <body class="pg">
 <main class="pg-main">

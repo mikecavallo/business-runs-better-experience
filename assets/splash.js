@@ -63,16 +63,16 @@ button { font: inherit; color: inherit; }
 .mark { display: block; width: 30px; height: 30px; flex: none; }
 .brand-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
 .wordmark { margin: 0; font: 400 12px/1.4 var(--font-display); letter-spacing: .2em; text-transform: uppercase; color: var(--ink); }
-.tag { margin: 0; font: 400 11px/1.65 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); text-wrap: balance; }
+.tag { margin: 0; font: 400 13px/1.6 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); text-wrap: balance; }
 .actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 
 .btn {
   appearance: none; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 50px; padding: 0 28px; border-radius: 14px;
+  min-height: 50px; padding: 0 28px; border-radius: 10px;
   font: 500 12px/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase;
   color: var(--on-brand);
-  background: linear-gradient(180deg, var(--brand-lift), var(--brand));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-lift) 30%, var(--brand)), var(--brand));
   border: 1px solid color-mix(in srgb, var(--brand-lift) 75%, var(--ink));
   box-shadow: inset 0 1px 0 rgba(var(--ink-rgb), .45), inset 0 -2px 0 rgba(var(--dark-rgb), .3), 0 2px 4px rgba(var(--dark-rgb), .45), 0 16px 36px -14px rgba(var(--brand-rgb), .75);
   transition: transform .15s ease, box-shadow .35s ease, filter .35s ease;
@@ -85,7 +85,7 @@ button { font: inherit; color: inherit; }
 .skip {
   appearance: none; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 44px; padding: 0 20px; border-radius: 12px;
+  min-height: 44px; padding: 0 20px; border-radius: 10px;
   font: 400 13px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
   color: var(--ink);
   background: rgba(var(--brand-rgb), .07);
@@ -433,7 +433,7 @@ button { font: inherit; color: inherit; }
   .g-mark { width: 44px; height: 44px; }
   .gate { --gs: 108px; border-radius: 27px; }
   .g-stack { gap: 30px; }
-  .tag { font-size: 10px; letter-spacing: .14em; }
+  .tag { font-size: 12px; letter-spacing: .1em; }
   .chip { font-size: 10.5px; padding: 7px 10px 7px 9px; gap: 7px; border-radius: 9px; }
   .chip-tag { font-size: 8px; padding-right: 7px; letter-spacing: .12em; }
   .chip-dot { width: 5px; height: 5px; }

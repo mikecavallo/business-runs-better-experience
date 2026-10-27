@@ -35,7 +35,7 @@
 }
 .panel-crumb {
   display: flex; align-items: center; gap: 10px; min-width: 0;
-  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
   color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .panel-crumb a { color: var(--brand-lift); text-decoration: none; }
@@ -59,6 +59,8 @@
 .pbtn:active { transform: translateY(1px); box-shadow: inset 0 2px 4px rgba(0, 0, 0, .4); }
 .pbtn:focus-visible { outline: 2px solid var(--brand-lift); outline-offset: 2px; }
 .pbtn[disabled] { opacity: .32; pointer-events: none; }
+.pbtn[data-close] { position: relative; }
+.pbtn[data-close]::before { content: ''; position: absolute; inset: -5px; }   /* 44px tap area around the 34px button */
 
 /* the well the content sits in */
 .panel-well {
@@ -118,7 +120,7 @@
 .pc-btn {
   display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 10px;
   font-family: var(--font-body); font-weight: 600; font-size: 15px; text-decoration: none; cursor: pointer;
-  color: var(--on-brand) !important; background: linear-gradient(180deg, var(--brand-lift), var(--brand));
+  color: var(--on-brand) !important; background: linear-gradient(180deg, color-mix(in srgb, var(--brand-lift) 30%, var(--brand)), var(--brand));   /* white text passes 4.5:1 on Cobalt */
   border: 1px solid rgba(255, 255, 255, .12);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 8px 22px -6px rgba(var(--brand-rgb), .6);
 }
@@ -174,7 +176,7 @@
 /* the contact form on standalone pages */
 .pc-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
 .pc-form .full { grid-column: 1 / -1; }
-.pc-form label { display: block; margin-bottom: 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+.pc-form label { display: block; margin-bottom: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
 .pc-form input, .pc-form textarea, .pc-form select {
   width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 9px; font: inherit; font-size: 16px;   /* under 16px, iPhone Safari zooms in */
   color: var(--ink); background: var(--bg-dark); border: 1px solid rgba(var(--brand-rgb), .25);
@@ -199,14 +201,14 @@
 /* the footer: every page (it doubles as the menu's source on standalone pages), where I work, the legal line */
 .pc-foot { padding-top: 28px; border-top: 1px solid rgba(var(--brand-rgb), .18); }
 .pc-sitemap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 28px; }
-.pc-foot .sm-head { margin: 0 0 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--brand-lift); }
+.pc-foot .sm-head { margin: 0 0 8px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--brand-lift); }
 .pc-sitemap ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
 .pc-sitemap a { display: inline-block; padding: 4px 0; font-size: 13.5px; line-height: 1.4; color: var(--muted); text-decoration: none; }
 .pc-sitemap a:hover { color: var(--ink); }
 .pc-sitemap a[aria-current="page"] { color: var(--ink); }
 .pc-foot .pc-where { margin: 26px 0 14px; font-size: 13.5px; line-height: 1.6; color: var(--muted); max-width: 70ch; }
-.pc-legal { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; color: var(--dim); }
-.pc-legal a { color: var(--muted); }
+.pc-legal { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: var(--dim); }
+.pc-legal a { color: var(--muted); display: inline-block; padding: 14px 0; margin: -14px 0; }   /* 44px tap area, same look */
 /* a page's H1 can carry its location line on top (the local service pages) */
 .panel-content h1 > .pc-eyebrow { display: block; margin-bottom: 16px; line-height: 1.5; }
 
@@ -290,7 +292,7 @@
 .pc-tier .pc-btn { margin-top: auto; justify-content: center; text-align: center; }
 .pc-btn.ghost { color: var(--ink) !important; background: rgba(var(--brand-rgb), .08); border: 1px solid rgba(var(--brand-rgb), .5); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1); }
 .pc-btn.ghost:hover { background: rgba(var(--brand-rgb), .2); filter: none; }
-.pc-tier .pc-fine { margin: 0; text-align: center; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; color: var(--dim); }
+.pc-tier .pc-fine { margin: 0; text-align: center; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--dim); }
 .pc-note { padding: 18px 20px; border-radius: 12px; border-left: 2px solid var(--brand-lift); background: rgba(var(--brand-rgb), .05); }
 .pc-steps.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 /* Pricing: one group each for Build, Grow and Run */
@@ -344,7 +346,7 @@
 .menu-btn {
   display: flex; flex: none; width: 42px; height: 42px;
   align-items: center; justify-content: center;
-  background: none; border: 1px solid var(--line); border-radius: 3px;
+  background: none; border: 1px solid var(--line); border-radius: 10px;
   cursor: pointer; color: var(--ink);
 }
 .menu-btn:hover { border-color: var(--brand-lift); }
@@ -379,7 +381,7 @@
   display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px;
   border: 1px solid rgba(255, 255, 255, .12); border-radius: 10px; cursor: pointer; text-decoration: none;
   font-family: var(--font-body); font-size: 15.5px; font-weight: 600;
-  color: var(--on-brand); background: linear-gradient(180deg, var(--brand-lift), var(--brand));
+  color: var(--on-brand); background: linear-gradient(180deg, color-mix(in srgb, var(--brand-lift) 30%, var(--brand)), var(--brand));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 8px 22px -6px rgba(var(--brand-rgb), .6);
 }
 .mm-phone {
