@@ -15,7 +15,7 @@ rng = np.random.default_rng(11)
 
 # ---- cue times, same rules as scene.html
 W = json.load(open(os.path.join(HERE, "words-timed.json")))
-COUNTS = [3, 5, 4, 3, 3, 4, 2, 2, 6, 6, 3, 5, 2, 6, 10]
+COUNTS = [3, 3, 4, 3, 3, 2, 2, 6, 6, 6, 9, 4, 2, 2, 7, 10]
 P, i = {}, 0
 for k, n in enumerate(COUNTS):
     P[k + 1] = W[i][1] - .12; i += n
@@ -23,7 +23,7 @@ P[1] = 0.0
 FLING = next(w for w in W if w[0] == "behind.")[2] + .1
 LAND = FLING + .65
 CTA = W[-5][1] - .05
-ANSWERED = P[10] + .9
+ANSWERED = P[9] + .9
 
 def tt(d): return np.arange(int(d * SR)) / SR
 def add(buf, sig, at, gain=1.0):
@@ -102,9 +102,9 @@ sfx = np.zeros(N)
 # intro: clock races, mugs pile up, phone buzzes
 add(sfx, pop(), .7, .5)
 for k in range(28):
-    tk = P[2] + k * max(.05, .22 - k * .006)
+    tk = P[2] + k * max(.05, .2 - k * .006)
     if tk < P[3]: add(sfx, knock(), tk, .18)
-for k, a in enumerate([.1, .4, .7, 1.0]): add(sfx, pop(), P[2] + a, .55)
+for a in [.1, .4, .7, 1.0]: add(sfx, pop(), P[2] + a, .55)
 for a in np.arange(P[2] + .2, P[3], .45): add(sfx, buzz(), a, .4)
 # roof: rain, buzzing, hammer
 add(sfx, rain(P[4] - P[3]), P[3], .55)
@@ -117,37 +117,41 @@ for k, a in enumerate([.05, .3, .55]): add(sfx, ding(1568 + k * 200, 2093 + k * 
 add(sfx, scribble(P[6] - P[5]), P[5], .45)
 add(sfx, whoosh(.5, 600, 6000), P[5] + .2, .3)
 add(sfx, pop(), P[5] + .3, .45)
-# 5 AM: alarm
-add(sfx, alarm(P[7] - P[6] - .05), P[6], .7)
-add(sfx, pop(), P[6] + .2, .45)
 # wheel: squeaks speed up, chores pop in, then the fling
-a = P[7]
+a = P[6]
 while a < FLING:
-    add(sfx, squeak(800 + 600 * (a - P[7]) / (FLING - P[7])), a, .35)
-    a += max(.09, .32 - (a - P[7]) * .08)
-for k in range(6): add(sfx, pop(), P[7] + k * .18, .35)
+    add(sfx, squeak(800 + 600 * (a - P[6]) / (FLING - P[6])), a, .35)
+    a += max(.09, .32 - (a - P[6]) * .08)
+for k in range(6): add(sfx, pop(), P[6] + k * .18, .35)
 add(sfx, scratch(), FLING - .05, .8)
 add(sfx, slide_whistle(LAND - FLING), FLING, .6)
 add(sfx, thud(), LAND, 1.0)
-for a in np.arange(LAND + .15, P[9] + .35, .28): add(sfx, tweet(), a, .5)
+for a in np.arange(LAND + .15, P[8] + .35, .28): add(sfx, tweet(), a, .5)
 # the reveal
-add(sfx, chime_arp(84, 5, .09, .8), P[9] + .1, .6)
-add(sfx, chime_arp(72, 8, .07, 1.0), P[9] + 1.1, .8)
-add(sfx, whoosh(.3, 3000, 200, up=False), P[10] - .3, .35)
-add(sfx, pop(), P[10] + .02, .6)
-# the better day
-for a in np.arange(P[10] + .15, ANSWERED, .5): add(sfx, ring(), a, .5)
-add(sfx, whoosh(.35, 1500, 8000), P[10] + .45, .25)
+add(sfx, chime_arp(84, 5, .09, .8), P[8] + .1, .6)
+add(sfx, chime_arp(72, 8, .07, 1.0), P[8] + 1.1, .8)
+add(sfx, whoosh(.3, 3000, 200, up=False), P[9] - .3, .35)
+add(sfx, pop(), P[9] + .02, .6)
+# leads answered, quotes sent
+for a in np.arange(P[9] + .15, ANSWERED, .5): add(sfx, ring(), a, .5)
+add(sfx, whoosh(.35, 1500, 8000), P[9] + .45, .25)
 add(sfx, ding(2093, 2637), ANSWERED, .55); add(sfx, ding(2349, 3136), ANSWERED + .35, .45)
-add(sfx, whoosh(.4, 500, 5000), P[11], .3); add(sfx, whoosh(.3, 1500, 8000), P[11] + .3, .22)
-add(sfx, stamp(), P[11] + .85, .7); add(sfx, ding(2093, 2637), P[11] + .9, .45)
-for k in range(3): add(sfx, bloop(76 + k * 2), P[12] + .3 + k * .32, .55)
-for a in np.arange(P[12] + 1.0, P[13], .5): add(sfx, ring(), a, .45)
-add(sfx, whoosh(.35, 300, 3000), P[13], .25)
-add(sfx, pop(), P[13] + .2, .5); add(sfx, ding(1760, 2637), P[13] + .35, .4)
-add(sfx, chime_arp(96, 3, .04, .25), P[13] + .85, .4)
-add(sfx, chime_arp(79, 4, .08, .7), P[14] + .05, .4)
-add(sfx, whoosh(.4, 300, 3000), P[15], .3)
+add(sfx, whoosh(.4, 500, 5000), P[10], .3); add(sfx, whoosh(.3, 1500, 8000), P[10] + .3, .22)
+add(sfx, stamp(), P[10] + .85, .7); add(sfx, ding(2093, 2637), P[10] + .9, .45)
+# growth: jobs fill the board, the crew arrives, revenue shoots up
+for k in range(11): add(sfx, bloop(72 + (k % 5) * 2), P[11] + .1 + k * .13, .32)
+add(sfx, ding(1760, 2349), P[11] + 1.6, .45)
+add(sfx, pop(), P[12], .6); add(sfx, pop(), P[12] + .18, .6)
+add(sfx, chime_arp(79, 4, .06, .5), P[12] + .5, .4)
+add(sfx, sweep(250, 1800, .45, 1.6) * env(.45, .01, .5) * .5, P[13], .7)
+for k in range(6): add(sfx, ding(2637 + k * 120, 3520 + k * 120), P[13] + .3 + k * .08, .22)
+# and Dave? home for dinner
+add(sfx, whoosh(.35, 300, 3000), P[14], .25)
+add(sfx, pop(), P[14] + .2, .5); add(sfx, ding(1760, 2637), P[14] + .35, .4)
+add(sfx, chime_arp(96, 3, .04, .25), P[14] + .85, .4)
+add(sfx, chime_arp(79, 4, .08, .7), P[15] + .05, .4)
+# end card
+add(sfx, whoosh(.4, 300, 3000), P[16], .3)
 add(sfx, pop(), CTA, .6); add(sfx, chime_arp(84, 3, .06, .5), CTA + .7, .35)
 add(sfx, chime_arp(96, 3, .04, .25), 28.2, .35)
 
@@ -178,14 +182,14 @@ while t0 < FLING - .05:
     if k % 4 == 0 and t0 > P[3]: add(music, kick(), t0, .45)
     t0 += b / 2; k += 1
 # reveal: a warm swell
-d = P[10] - (P[9] + .1); t = tt(d)
+d = P[9] - (P[8] + .1); t = tt(d)
 swell = sum(np.sin(2 * np.pi * note(m) * t + m) for m in [60, 64, 67, 71, 76]) / 5
-add(music, swell * np.minimum(1, t / (d * .7)) * np.minimum(1, (d - t) / .15), P[9] + .1, .35)
+add(music, swell * np.minimum(1, t / (d * .7)) * np.minimum(1, (d - t) / .15), P[8] + .1, .35)
 # the better day: 112 BPM, C major, strummed and bouncy
 bpm = 112; b = 60 / bpm
 chords = [[60, 64, 67, 72], [65, 69, 72, 77], [67, 71, 74, 79], [65, 69, 72, 77]]
 roots = [48, 53, 55, 53]
-t0 = P[10]; k = 0
+t0 = P[9]; k = 0
 end_at = 28.4
 pattern = [1, 0, 1, 1, 0, 1, 1, 0]   # down . up up . up down .
 mel = [76, 79, 81, 79, 76, 74, 72, 74]

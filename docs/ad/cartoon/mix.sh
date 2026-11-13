@@ -1,5 +1,5 @@
 #!/bin/bash
-# mix.sh VIDEO_ONLY OUT  -- run in this folder after synth.py has written music.wav and sfx.wav here
+# mix.sh VIDEO_ONLY OUT  -- run in a folder holding vo-timed.wav (from retime.py), music.wav and sfx.wav (from synth.py)
 set -e
 FC="[1:a]aresample=48000,aformat=channel_layouts=mono,acompressor=threshold=0.08:ratio=3:attack=4:release=120,apad=whole_dur=30,asplit=2[vo][vosc];
 [2:a]aresample=48000,volume=0.45[mus];

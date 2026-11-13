@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Fit the voiceover to the 30-second cartoon: slow it a touch, add two pauses, start it a beat in.
+"""Fit the voiceover to the 30-second cartoon: add two pauses and start it a beat in.
 Writes vo-timed.wav and words-timed.json (word times on the video's own clock)."""
 import json, subprocess
-TEMPO, START = 0.94, 0.6
+TEMPO, START = 1.0, 0.5
 words = json.load(open("words.json"))
 # pauses: after "behind." (the wheel collapses) and after "dinner." (the happy dinner lands)
 names = [w[0] for w in words]
-pauses = [(names.index("behind."), 0.7), (len(names) - 1 - names[::-1].index("dinner."), 0.5)]
+pauses = [(names.index("behind."), 0.6), (len(names) - 1 - names[::-1].index("dinner."), 0.3)]
 cuts = sorted(((words[i][2] + words[i + 1][1]) / 2, d) for i, d in pauses)
 # build the audio: slowed, split at the cuts, silence inserted
 parts, prev, filt, labels = [], 0.0, [], []

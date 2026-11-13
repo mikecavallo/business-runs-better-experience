@@ -1,22 +1,32 @@
-# Meta ad kit: "Answered first"
+# Meta ad kit
 
-Everything here runs natively on Facebook and Instagram (feed, Stories and Reels). There are two ads: a video ad and a tap-through carousel. Both send people to the same place.
+Everything here runs natively on Facebook and Instagram (feeds, Stories and Reels). There are three ads, and all of them send people to the same place.
 
-| File | What it is | Where it goes |
-|---|---|---|
-| `brb-ad-30s-story.mp4` | 30 s video, 1080×1920 | Stories and Reels |
-| `brb-ad-30s-feed.mp4` | Same video, 1080×1350 | Facebook and Instagram feeds |
-| `carousel/card-1…5-square.png` | 5 carousel cards, 1080×1080 | Feeds |
-| `carousel/card-1…5-story.png` | Same 5 cards, 1080×1920 | Stories and Reels |
-| `cover-story.jpg`, `cover-feed.jpg` | Video thumbnails | Optional cover frame |
+| File | What it is |
+|---|---|
+| `brb-ad-30s.mp4` | Ad 1, "Answered first": 30 s video, 1080×1920 |
+| `cartoon/brb-cartoon-30s.mp4` | Ad 3, "Dave": 30 s cartoon, 1080×1920 |
+| `carousel/card-1…5-square.png` | Ad 2, the tap-through carousel: 5 cards, 1080×1080, for feeds |
+| `carousel/card-1…5-story.png` | The same 5 cards, 1080×1920, for Stories and Reels |
+| `cover.jpg`, `cartoon/cover.jpg` | Optional cover frames for the videos |
 
-Key text in every 9:16 file sits inside Meta's safe zone (top 14%, bottom 35% and 6% at the sides kept clear), so the Reels caption and button never cover it.
+**One file per video.** Each video is a single 1080×1920 file used on every placement. Stories and Reels show all of it. Feeds show the middle 4:5 of a tall video, so everything that has to be read sits between 285 px and 1250 px from the top. That band is inside the feed's crop and inside Meta's Reels safe zone (top 14%, bottom 35% and 6% at the sides kept clear), so the Reels caption and button never cover it.
 
-**Where the ads link:** `https://businessrunsbetter.com/ad/?utm_source=meta&utm_medium=paid&utm_campaign=answered-first`. That's the 60-second "9:47 PM test" (`ad/index.html`), which ends in a free-call booking. It goes live when the PR is merged. Until then, link straight to the booking page: `https://cal.com/mike-cavallo/business-is-better`.
+**Where the ads link:** `https://businessrunsbetter.com/ad/?utm_source=meta&utm_medium=paid&utm_campaign=answered-first` (use `utm_campaign=dave-cartoon` for the cartoon). That's the 60-second "9:47 PM test" (`ad/index.html`), which ends in a free-call booking. It goes live when the PR is merged. Until then, link straight to the booking page: `https://cal.com/mike-cavallo/business-is-better`.
+
+### Set up a video ad in Ads Manager
+
+1. **Create** → objective **Traffic**, optimized for **Landing page views**. Once the Meta Pixel is on the site, switch to **Leads** so Meta finds people who actually book.
+2. **Audience:** a radius around Leland/Wilmington (25 miles is a good start), ages 25–65, with Advantage+ audience on.
+3. **Placements:** Advantage+ placements.
+4. **Ad:** single video. Upload the one file.
+5. **Text:** primary text, headline, button and URL from the ad's section below.
+
+Run Ad 1 and Ad 3 in the same ad set and let Meta show more of whichever books more calls.
 
 ---
 
-## Ad 1: the video
+## Ad 1: "Answered first"
 
 **The hook:** "You didn't lose that job to a better business. You lost it to the one that answered first."
 
@@ -30,19 +40,9 @@ Key text in every 9:16 file sits inside Meta's safe zone (top 14%, bottom 35% an
 | 21–23 s | And AI that clears the busywork. | The notifications get checked off: "All caught up" |
 | 23–30 s | Book a free twenty-minute call at Business Runs Better dot com. | businessrunsbetter.com, 910-524-0056 |
 
-Captions are burned in word by word, because most feed video plays with the sound off.
-
-### Set it up in Ads Manager
-
-1. **Create** → objective **Traffic**, optimized for **Landing page views**. Once the Meta Pixel is on the site, switch to **Leads** so Meta finds people who actually book.
-2. **Audience:** a radius around Leland/Wilmington (25 miles is a good start), ages 25–65, with Advantage+ audience on.
-3. **Placements:** Advantage+ placements.
-4. **Ad:** single video. Upload `brb-ad-30s-feed.mp4`, then use **Edit media per placement** (it may be labeled "placement asset customization") to put `brb-ad-30s-story.mp4` on Stories and Reels.
-5. **Text:**
-   - **Primary text:** You didn't lose that job to a better business. You lost it to the one that answered first. Leads answered in seconds, a website that rings your phone, and AI that clears the busywork. Book a free 20-minute call.
-   - **Headline:** Take the 9:47 PM test
-   - **Button:** Learn More
-   - **URL:** the link above
+- **Primary text:** You didn't lose that job to a better business. You lost it to the one that answered first. Leads answered in seconds, a website that rings your phone, and AI that clears the busywork. Book a free 20-minute call.
+- **Headline:** Take the 9:47 PM test
+- **Button:** Learn More
 
 ## Ad 2: the tap-through carousel
 
@@ -59,36 +59,32 @@ On Stories, people tap through the cards one by one. In feeds, they swipe. The f
 **Description on every card:** Business Runs Better · Leland, NC
 **Button:** Learn More. **URL:** the same link on every card.
 
-### Set it up in Ads Manager
-
-1. Same campaign and ad set as the video. Add a second ad with format **Carousel**.
+1. Same campaign and ad set as the videos. Add an ad with format **Carousel**.
 2. Add 5 cards with the square PNGs, in order 1 to 5.
 3. **Untick "Automatically show the best-performing cards first."** If it stays on, Meta reorders the cards and the story stops making sense.
 4. Untick the profile end card too: card 5 is already the end card.
 5. For Stories and Reels, swap each card's image for its `-story.png` version under the per-placement media option. If Ads Manager doesn't offer that for carousels, duplicate the ad: keep the square cards on Feeds, and put the story cards on a copy limited to Stories and Reels.
 
-**Primary text for the carousel:** A customer texts at 9:47 PM about a roof leak. Who answers? For businesses around Wilmington and Leland, I build the systems that answer every lead in seconds, get you found on Google, and take the busywork off your plate. Free 20-minute call, no pitch deck.
+**Primary text:** A customer texts at 9:47 PM about a roof leak. Who answers? For businesses around Wilmington and Leland, I build the systems that answer every lead in seconds, get you found on Google, and take the busywork off your plate. Free 20-minute call, no pitch deck.
 
 ## Ad 3: the cartoon ("Dave")
 
-`cartoon/brb-cartoon-30s-story.mp4` (1080×1920) and `cartoon/brb-cartoon-30s-feed.mp4` (1080×1350). Set it up exactly like Ad 1: one video ad, the feed file on Feeds and the story file on Stories and Reels.
+Dave works non-stop. Business Runs Better gives him his time back, he uses it to take on more jobs and hire a second crew, and he still makes it home for dinner.
 
 | Time | Voiceover | On screen |
 |---|---|---|
-| 0–3.5 s | This is Dave. Dave works all the time. | Dave at his desk at night: the clock races, coffee piles up, the phone won't stop |
-| 3.5–8.5 s | Calls on the roof. Texts at dinner. Quotes at midnight. Emails at five A.M. | Rain on the roof, a cold dinner, papers flying at midnight, a 5 AM alarm |
-| 8.5–11.7 s | Always busy. Always behind. | A hamster wheel of chores spins faster until it throws him out |
-| 11.7–14.6 s | Then Dave found Business Runs Better. | A little blue dot lands and becomes the logo |
-| 14.6–19.8 s | Now leads get answered in seconds. Quotes get drafted. The website brings in calls. | Calls answered and booked, quotes ready to send, new leads from the website |
-| 19.8–23.3 s | And Dave? Dave makes it home for dinner. | 5:30 PM. Dinner with the dog, phone face down |
-| 23.3–30 s | Book a free call at Business Runs Better dot com. | businessrunsbetter.com, free 20-minute call, 910-524-0056 |
+| 0–3.3 s | This is Dave. Dave never stops. | Dave at his desk at night: the clock races, coffee piles up, the phone won't stop |
+| 3.3–6.9 s | Calls on the roof. Texts at dinner. Quotes at midnight. | Rain on the roof, a cold dinner, papers flying at midnight |
+| 6.9–10 s | Always busy. Always behind. | A hamster wheel of chores spins faster until it throws him out |
+| 10–12.5 s | Then Dave found Business Runs Better. | A little blue dot lands and becomes the logo |
+| 12.5–16.1 s | Now leads get answered in seconds. Quotes go out the same day. | Calls answered and booked, quotes sent the same day |
+| 16.1–21.1 s | With the time back, Dave takes on more jobs. Hires a second crew. Revenue's up. | The job board fills up, a second crew joins, a revenue arrow shoots up |
+| 21.1–24.2 s | And Dave? He still makes it home for dinner. | 5:30 PM. Dinner with the dog, phone face down |
+| 24.2–30 s | Book a free call at Business Runs Better dot com. | businessrunsbetter.com, free 20-minute call, 910-524-0056 |
 
-- **Primary text:** Meet Dave. Calls on the roof, texts at dinner, quotes at midnight. Then he found Business Runs Better. Now leads get answered in seconds, quotes get drafted, and Dave makes it home for dinner. Book a free 20-minute call.
-- **Headline:** Get your evenings back
+- **Primary text:** Meet Dave. Calls on the roof, texts at dinner, quotes at midnight. Then he found Business Runs Better. Now his leads get answered in seconds, he takes on more jobs, runs two crews, and still makes it home for dinner. Book a free 20-minute call.
+- **Headline:** More jobs. Same evenings.
 - **Button:** Learn More
-- **URL:** `https://businessrunsbetter.com/ad/?utm_source=meta&utm_medium=paid&utm_campaign=dave-cartoon`
-
-Run it next to Ad 1 in the same ad set and let Meta show the one that books more calls.
 
 ---
 
@@ -97,13 +93,15 @@ Run it next to Ad 1 in the same ad set and let Meta show the one that books more
 From the repo root, with `python3 -m http.server 8765` running (the pages load the site's fonts):
 
 ```bash
-node docs/ad/render.cjs /tmp/story.mp4 story      # video frames, about a minute each
-node docs/ad/render.cjs /tmp/feed.mp4 feed
-python3 docs/ad/synth.py /tmp                     # music.wav and sfx.wav
-cd /tmp && cp story.mp4 video-only.mp4 && cp <repo>/docs/ad/voiceover.mp3 . && bash <repo>/docs/ad/mix.sh 0.42 brb-ad-30s-story.mp4
-node docs/ad/render-cards.cjs                     # the 10 carousel PNGs into docs/ad/carousel/
+# Ad 1
+node docs/ad/render.cjs /tmp/video-only.mp4 story    # 900 frames, about a minute
+python3 docs/ad/synth.py /tmp                        # music.wav and sfx.wav
+cp docs/ad/voiceover.mp3 /tmp/ && cd /tmp && bash <repo>/docs/ad/mix.sh 0.42 brb-ad-30s.mp4
+# Ad 2
+node docs/ad/render-cards.cjs                        # the 10 carousel PNGs into docs/ad/carousel/
+# Ad 3, from docs/ad/cartoon/
+python3 voiceover.py && python3 retime.py           # voice, then fit it to 30 s (writes vo-timed.wav, words-timed.json)
+node render.cjs /tmp/v.mp4 && python3 synth.py /tmp && cp vo-timed.wav mix.sh /tmp/ && cd /tmp && ./mix.sh v.mp4 brb-cartoon-30s.mp4
 ```
 
-The cartoon lives in `docs/ad/cartoon/`: `voiceover.py` then `retime.py` (fits the voice to 30 s and writes `words-timed.json`), `scene.html` (all the drawing), `render.cjs`, `synth.py` and `mix.sh`, the same way as above.
-
-To view a single moment, open `docs/ad/scene.html?format=feed&t=12.5`; add `&play` to watch it run. To change the words, edit `TEXT` in `voiceover.py` and run it in `docs/ad/` (it writes `voiceover.mp3` and `words.json`), then adjust the cue times in `scene.html` and `synth.py`. The voice is ElevenLabs "Chris". The music and sound effects are synthesized in `synth.py`, so there is nothing to license.
+To view a single moment, open `docs/ad/scene.html?t=12.5` or `docs/ad/cartoon/scene.html?t=12.5`; add `&play` to watch it run. To change the words, edit `TEXT` in the matching `voiceover.py`, then check the cue times in `scene.html` and `synth.py`. The voice is ElevenLabs "Chris". The music and sound effects are synthesized in the `synth.py` files, so there is nothing to license.

@@ -4,12 +4,13 @@
 import json, base64, urllib.request, sys
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "iP95p4xoKVk53GoZ742B"  # ElevenLabs "Chris"
 B = lambda s: f'<break time="{s}s" />'
-TEXT = (f"This is Dave. {B(0.15)} Dave works all the time. {B(0.3)} "
-        f"Calls on the roof. Texts at dinner. Quotes at midnight. Emails at five A.M. {B(0.3)} "
+TEXT = (f"This is Dave. {B(0.15)} Dave never stops. {B(0.3)} "
+        f"Calls on the roof. Texts at dinner. Quotes at midnight. {B(0.3)} "
         f"Always busy. Always behind. {B(0.4)} "
         f"Then Dave found Business Runs Better. {B(0.3)} "
-        f"Now leads get answered in seconds. Quotes get drafted. The website brings in calls. {B(0.2)} "
-        f"And Dave? Dave makes it home for dinner. {B(0.35)} "
+        f"Now leads get answered in seconds. Quotes go out the same day. {B(0.3)} "
+        f"With the time back, Dave takes on more jobs. Hires a second crew. Revenue's up. {B(0.3)} "
+        f"And Dave? He still makes it home for dinner. {B(0.35)} "
         f"Book a free call at Business Runs Better dot com.")
 body = json.dumps({"text": TEXT, "model_id": "eleven_multilingual_v2",
    "voice_settings": {"stability": 0.5, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True, "speed": 1.06}}).encode()

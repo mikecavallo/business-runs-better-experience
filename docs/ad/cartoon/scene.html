@@ -5,9 +5,10 @@
 <title>BRB cartoon ad: scene</title>
 <!--
   "Dave" — the 30-second cartoon ad, drawn on one canvas. render(t) draws the frame at t seconds.
-  ?format=story (1080x1920, Reels and Stories; key action inside Meta's safe zone) or ?format=feed (1080x1350).
+  One 1080x1920 file for every placement. Everything that matters sits between y 285 and 1250: inside Meta's
+  Reels/Stories safe zone and inside the middle 4:5 that Facebook and Instagram feeds show of a 9:16 video.
   ?t=12.5 shows one moment; ?play runs it in real time. render.cjs turns it into video.
-  All the art is drawn in a 1080x900 "stage"; each format places the stage and the captions.
+  All the art is drawn in a 1080x900 "stage" placed under the captions.
 -->
 <style>
 @font-face { font-family: Michroma; src: url(../../../assets/fonts/michroma-400-latin.woff2) format('woff2'); font-weight: 400; }
@@ -21,6 +22,7 @@ html, body { margin: 0; width: 1080px; overflow: hidden; background: #000; }
 .phrase .w { display: inline-block; white-space: pre; }
 .phrase .bad { color: #ffb35c; }
 .phrase .hl { color: #8fb0ff; }
+.phrase .good { color: #6ee7a0; }
 </style>
 </head>
 <body>
@@ -28,13 +30,8 @@ html, body { margin: 0; width: 1080px; overflow: hidden; background: #000; }
 <div id="cap"></div>
 <script>
 /* ---------------- setup ---------------- */
-const LAYOUTS = {
-  story: { H: 1920, capTop: 270, capH: 250, font: 86, stageTop: 520, s: 1 },
-  feed:  { H: 1350, capTop: 40,  capH: 250, font: 84, stageTop: 330, s: 1 }
-};
+const L = { H: 1920, capTop: 292, capH: 250, font: 74, stageTop: 548, s: 1 };
 const Q = new URLSearchParams(location.search);
-const FORMAT = Q.get('format') === 'feed' ? 'feed' : 'story';
-const L = LAYOUTS[FORMAT];
 const DUR = 30;
 const cv = document.getElementById('c'), ctx = cv.getContext('2d');
 cv.height = L.H; document.documentElement.style.height = document.body.style.height = L.H + 'px';
@@ -99,7 +96,8 @@ function bubble(t, a, x, y, label, o = {}) {
 function limbPts(sx, sy, a1, a2, l1, l2) { const ex = sx + l1 * Math.sin(a1), ey = sy + l1 * Math.cos(a1); return [[sx, sy], [ex, ey], [ex + l2 * Math.sin(a1 + a2), ey + l2 * Math.cos(a1 + a2)], a1 + a2]; }
 function dave(x, y, k, q = {}) {
   const p = Object.assign({ tired: 0, smile: 0, look: [0, 0], armL: [-.18, .12], armR: [.18, -.12], legL: [-.05, 0], legR: [.05, 0], blink: 0, mouth: 0,
-    rot: 0, sweat: 0, hair: 0, holdL: null, holdR: null, surprise: 0, legs: true, headTilt: 0, bob: 0, brows: null, wink: 0, phoneGlow: 0, stars: 0, t: 0 }, q);
+    rot: 0, sweat: 0, hair: 0, holdL: null, holdR: null, surprise: 0, legs: true, headTilt: 0, bob: 0, brows: null, wink: 0, phoneGlow: 0, stars: 0, t: 0, tag: 'DAVE', hat: false }, q);
+  const sk = p.skin || SKIN, skd = p.skinD || SKIN_D, hc = p.hairCol || HAIR, sh = p.shirt || SHIRT, shd = p.shirtD || SHIRT_D;
   ctx.save(); ctx.translate(x, y); ctx.scale(k, k); ctx.translate(0, -250); ctx.rotate(p.rot); ctx.translate(0, 250);
   ctx.translate(0, p.bob);
   // legs
@@ -109,27 +107,27 @@ function dave(x, y, k, q = {}) {
     ell(f[0] + (hx < 0 ? -10 : 10), f[1] + 4, 34, 18, SHOE, 6);
   });
   // torso
-  rr(-84, -348, 168, 214, 48, SHIRT);
-  poly([[-36, -346], [0, -298], [36, -346]], SHIRT_D, 5);
+  rr(-84, -348, 168, 214, 48, sh);
+  poly([[-36, -346], [0, -298], [36, -346]], shd, 5);
   [-268, -230, -192].forEach(yy => circ(0, yy, 5, '#fff3e6', 3));
   rr(-84, -160, 168, 22, 6, '#3a2a22', 5);
-  rr(18, -302, 50, 30, 6, '#ffffff', 4); text('DAVE', 43, -286, 15, OUT, 800);
+  rr(18, -302, 50, 30, 6, '#ffffff', 4); text(p.tag, 43, -286, 15, OUT, 800);
   // arms
   [[-82, p.armL, p.holdL, -1], [82, p.armR, p.holdR, 1]].forEach(([sx, a, hold, side]) => {
     const [s, e, h, ang] = limbPts(sx, -322, a[0], a[1], 88, 84);
     const ctxLW = 44;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.beginPath(); ctx.moveTo(...s); ctx.lineTo(...e); ctx.lineTo(...h); ctx.strokeStyle = OUT; ctx.lineWidth = ctxLW + LW * 2; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(...e); ctx.lineTo(...h); ctx.strokeStyle = SKIN; ctx.lineWidth = ctxLW - 6; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(...s); ctx.lineTo(mix(s[0], e[0], 1.12), mix(s[1], e[1], 1.12)); ctx.strokeStyle = SHIRT; ctx.lineWidth = ctxLW; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(...e); ctx.lineTo(...h); ctx.strokeStyle = sk; ctx.lineWidth = ctxLW - 6; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(...s); ctx.lineTo(mix(s[0], e[0], 1.12), mix(s[1], e[1], 1.12)); ctx.strokeStyle = sh; ctx.lineWidth = ctxLW; ctx.stroke();
     holdItem(hold, h[0], h[1], ang, side, p);
-    if (hold !== 'thumb') circ(h[0], h[1], 22, SKIN, 6);
+    if (hold !== 'thumb') circ(h[0], h[1], 22, sk, 6);
   });
   // head
   ctx.save(); ctx.translate(0, -452); ctx.rotate(p.headTilt);
   if (p.phoneGlow) glow(0, 40, 170, '140,190,255', .35 * p.phoneGlow);
-  circ(-98, 6, 21, SKIN, 6); circ(98, 6, 21, SKIN, 6);
-  circ(0, 0, 100, SKIN);
+  circ(-98, 6, 21, sk, 6); circ(98, 6, 21, sk, 6);
+  circ(0, 0, 100, sk);
   // hair
   ctx.beginPath();
   const n = 13;
@@ -140,7 +138,8 @@ function dave(x, y, k, q = {}) {
     i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
   }
   ctx.quadraticCurveTo(60, -70 + p.hair * 10, 10, -62); ctx.quadraticCurveTo(-50, -58, -99, -26);
-  path(HAIR, 6);
+  path(hc, 6);
+  if (p.hat) { ctx.beginPath(); ctx.arc(0, -46, 104, Math.PI, TAU); path('#ffcc33', 6); rr(-128, -56, 256, 24, 12, '#ffcc33', 6); line(0, -146, 0, -60, '#e0a800', 8); }
   // stubble
   if (p.tired > .45) { ctx.fillStyle = `rgba(80,55,40,${(p.tired - .45) * 1.3})`; for (let i = 0; i < 26; i++) { const a = Math.PI * (.12 + .76 * hash(i + 5)), r = 62 + hash(i + 9) * 26; ctx.beginPath(); ctx.arc(Math.cos(a) * r, Math.sin(a) * r + 6, 2.6, 0, TAU); ctx.fill(); } }
   // eyes
@@ -156,7 +155,7 @@ function dave(x, y, k, q = {}) {
     circ(ex + p.look[0] * 9, ey + p.look[1] * 9 + 3, 11 * (1 - p.surprise * .2), OUT, 0);
     circ(ex + p.look[0] * 9 + 3, ey + p.look[1] * 9 - 1, 3.5, '#fff', 0);
     const droop = p.tired * .55;
-    if (droop > 0) { ctx.fillStyle = SKIN_D; ctx.fillRect(ex - 30, ey - 40, 60, 12 + droop * 2 * ry); ctx.beginPath(); ctx.moveTo(ex - 30, ey - 28 + droop * 2 * ry); ctx.lineTo(ex + 30, ey - 28 + droop * 2 * ry); ctx.strokeStyle = OUT; ctx.lineWidth = 5; ctx.stroke(); }
+    if (droop > 0) { ctx.fillStyle = skd; ctx.fillRect(ex - 30, ey - 40, 60, 12 + droop * 2 * ry); ctx.beginPath(); ctx.moveTo(ex - 30, ey - 28 + droop * 2 * ry); ctx.lineTo(ex + 30, ey - 28 + droop * 2 * ry); ctx.strokeStyle = OUT; ctx.lineWidth = 5; ctx.stroke(); }
     ctx.restore();
     ell(ex, ey, rx, ry, null, 5);
   });
@@ -167,7 +166,7 @@ function dave(x, y, k, q = {}) {
     line(sd * 18, by - worry * 10, sd * 58, by + worry * 8 - 4, OUT, 8);
   });
   // nose
-  ctx.beginPath(); ctx.arc(0, 18, 13, .1 * Math.PI, .9 * Math.PI); ctx.strokeStyle = SKIN_D; ctx.lineWidth = 6; ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 18, 13, .1 * Math.PI, .9 * Math.PI); ctx.strokeStyle = skd; ctx.lineWidth = 6; ctx.stroke();
   // mouth
   if (p.mouth > .05 || p.surprise > .3) {
     const mo = Math.max(p.mouth, p.surprise);
@@ -193,7 +192,7 @@ function holdItem(what, x, y, ang, side, p) {
   if (what === 'fork') { line(0, 6, 0, -80, OUT, 11); line(0, 6, 0, -80, '#c9ced8', 5); ctx.beginPath(); ctx.ellipse(0, -92, 22, 16, 0, 0, TAU); path('#f2c14e', 4, false); }
   if (what === 'mug') { rr(-26, -40, 52, 54, 8, '#ffffff', 5); ctx.beginPath(); ctx.arc(30, -14, 13, -Math.PI / 2, Math.PI / 2); ctx.lineWidth = 6; ctx.strokeStyle = OUT; ctx.stroke(); }
   ctx.restore();
-  if (what === 'thumb') { circ(x, y, 24, SKIN, 6); ell(x + side * 2, y - 30, 11, 20, SKIN, 5); }
+  if (what === 'thumb') { circ(x, y, 24, p.skin || SKIN, 6); ell(x + side * 2, y - 30, 11, 20, p.skin || SKIN, 5); }
 }
 
 /* ---------------- little helpers: the blue dot, the dog, props ---------------- */
@@ -354,31 +353,14 @@ function sMidnight(t) {
   rr(700, 470, 90, 70, 8, '#c9ced8', 5); for (let i = 0; i < 3; i++) for (let j = 0; j < 2; j++) rr(712 + i * 26, 500 + j * 18, 18, 12, 3, '#6f7b96', 0);
   bubble(t, S.p5 + .3, 540, 88, 'Quote due: 8 AM', { icon: 'alert', size: 30 });
 }
-function sFiveAM(t) {
-  room('#1f2538', '#181c2c');
-  windowFrame(720, 80, 240, 220, ['#141a33', '#3b4f80']);
-  // bed
-  rr(170, 330, 740, 130, 30, '#6b4a78'); rr(220, 380, 220, 70, 30, '#ffffff', 6);
-  dave(540, 790, 1, { tired: 1, smile: -.3, hair: 1, look: [0, .7], phoneGlow: 1, blink: blinkAt(t, 1), legs: false,
-    armL: [-.25, 1.3], armR: [.25, -1.3], t });
-  rr(130, 590, 820, 200, 40, '#8a6aa0'); for (let i = 0; i < 4; i++) line(200 + i * 190, 610, 220 + i * 190, 770, '#7a5a90', 5);
-  // laptop from behind
-  poly([[410, 600], [670, 600], [650, 440], [430, 440]], '#9aa3b5', 6); circ(540, 520, 14, '#ffffff', 4);
-  glow(540, 430, 220, '140,190,255', .35);
-  // nightstand + ringing alarm
-  rr(900, 520, 160, 200, 8, '#5e4030');
-  const sh = Math.sin(t * 90) * 5;
-  ctx.save(); ctx.translate(980 + sh, 470); circ(-34, -44, 16, '#c9ced8', 5); circ(34, -44, 16, '#c9ced8', 5); clock(0, 0, 50, 5, 0, '#ffe08a'); ctx.restore();
-  bubble(t, S.p6 + .2, 290, 190, '48 unread', { icon: 'alert' });
-}
 function sWheel(t) {
-  const reveal = lin(t, S.p9 + .45, S.p9 + 1.6);
+  const reveal = lin(t, S.p8 + .45, S.p8 + 1.6);
   room('#2a2238', '#1e1a2b');
   glow(540, 420, 520, '255,90,110', .14 * (1 - reveal));
   glow(540, 300, 700, '76,125,255', .45 * reveal);
   // wheel speed and the fling
   const fling = S.fling, land = fling + .65;
-  const speed = t < fling ? mix(4, 22, lin(t, S.p7, fling)) : mix(22, 0, lin(t, fling, fling + 1.8));
+  const speed = t < fling ? mix(4, 22, lin(t, S.p6, fling)) : mix(22, 0, lin(t, fling, fling + 1.8));
   const ang = S.wheelAng(t);
   ctx.save(); ctx.globalAlpha = 1 - reveal * .5;
   poly([[500, 400], [580, 400], [640, 760], [440, 760]], '#59607a', 6);
@@ -392,7 +374,7 @@ function sWheel(t) {
   const chores = ['3 missed calls', 'Quote due', '48 unread', 'Call back!', 'Invoice?', 'Reviews: 0 new'];
   chores.forEach((c, i) => {
     const a = t * .9 + i * TAU / chores.length;
-    const appear = S.p7 + i * .18;
+    const appear = S.p6 + i * .18;
     const k = lin(t, appear, appear + .3) * (1 - lin(t, fling, fling + .4));
     if (k <= 0) return;
     ctx.save(); ctx.globalAlpha = k; bubble(t, appear, 540 + Math.cos(a) * 440, 380 + Math.sin(a) * 300, c, { size: 26, icon: 'alert' }); ctx.restore();
@@ -409,17 +391,17 @@ function sWheel(t) {
     dave(x, y, .95, { tired: .6, surprise: 1, hair: 1, rot: k * TAU * 1.5, legL: [-.9, .4], legR: [.9, -.4], armL: [-2.4, .2], armR: [2.4, -.2], t });
   } else {
     const k = lin(t, land, land + .25);
-    const looking = lin(t, S.p9 + .3, S.p9 + .7);
-    const happy = lin(t, S.p9 + 1.4, S.p9 + 2.1);
+    const looking = lin(t, S.p8 + .3, S.p8 + .7);
+    const happy = lin(t, S.p8 + 1.4, S.p8 + 2.1);
     dave(540, 850 - Math.sin(k * Math.PI) * 30, .95, { tired: mix(.6, .1, happy), smile: mix(-.2, .9, happy), hair: mix(1, .5, happy), legs: true,
       legL: [-1.25, .2], legR: [1.25, -.2], armL: [-.8, -.3], armR: [.8, .3], look: [0, mix(.4, -1, looking)], surprise: looking * (1 - happy),
       stars: (1 - looking) * lin(t, land, land + .2), t });
   }
   // the blue dot arrives and becomes the logo
-  const dIn = lin(t, S.p9 + .1, S.p9 + .8);
+  const dIn = lin(t, S.p8 + .1, S.p8 + .8);
   if (dIn > 0) {
     const dy = mix(-300, 150, eo(dIn)) + Math.sin(t * 3) * 6;
-    const mk = lin(t, S.p9 + 1.1, S.p9 + 2.0);
+    const mk = lin(t, S.p8 + 1.1, S.p8 + 2.0);
     if (mk > 0) {
       ctx.save(); ctx.translate(540, 150); const sc = 3.4; ctx.scale(sc, sc); ctx.translate(-30.25, -10.75);
       ctx.lineCap = 'square';
@@ -433,7 +415,7 @@ function sWheel(t) {
       for (let i = 0; i < 14; i++) { ctx.rotate(TAU / 14); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-40, -900); ctx.lineTo(40, -900); ctx.closePath(); ctx.fillStyle = '#9db8ff'; ctx.fill(); }
       ctx.restore();
     }
-    dot(540, dy, mix(30, 11.5, lin(t, S.p9 + 1.1, S.p9 + 1.5)), t);
+    dot(540, dy, mix(30, 11.5, lin(t, S.p8 + 1.1, S.p8 + 1.5)), t);
   }
 }
 function brightOffice(t, o = {}) {
@@ -444,51 +426,102 @@ function brightOffice(t, o = {}) {
 }
 function sLeads(t) {
   brightOffice(t);
-  const lt = t - S.p10;
-  const answered = S.p10 + .9;
+  const lt = t - S.p9;
+  const answered = S.p9 + .9;
   dave(540, 720, 1, { tired: .15, smile: t > answered + .3 ? .9 : .4, hair: .3, look: t < answered ? [.7, .6] : [0, 0], blink: blinkAt(t),
     armL: [-.4, -.4], holdL: 'mug', armR: t > answered + .4 ? [2.7 + Math.sin(t * 8) * .1, .6] : [.3, .5], holdR: t > answered + .4 ? 'thumb' : null, t });
   desk('#b07a4f');
   mug(330, 540, true, t);
-  phoneOnDesk(770, 528, t, t > S.p10 + .15 && t < answered, t > answered);
+  phoneOnDesk(770, 528, t, t > S.p9 + .15 && t < answered, t > answered);
   // the dot flies in and answers
-  const fly = lin(t, S.p10 + .45, answered);
+  const fly = lin(t, S.p9 + .45, answered);
   if (fly > 0) dot(mix(1150, 770, eo(fly)), mix(200, 470, eo(fly)) + Math.sin(t * 5) * 6, 22, t);
   bubble(t, answered, 810, 330, 'Answered in 4 sec', { icon: 'check', size: 30 });
   bubble(t, answered + .35, 810, 410, 'Booked: Tue 10:30 AM', { icon: 'check', size: 30 });
 }
 function sQuotes(t) {
   brightOffice(t, { h: 2, m: 40 });
-  const neat = eio(lin(t, S.p11 + .45, S.p11 + .9));
+  const neat = eio(lin(t, S.p10 + .45, S.p10 + .9));
   dave(540, 720, 1, { tired: .1, smile: .8, hair: .3, look: [-.5, .3], blink: blinkAt(t, .5), armL: [-.3, -.3], armR: [2.6, .5], holdR: 'thumb', t });
   desk('#b07a4f');
-  const flyIn = 1 - eo(lin(t, S.p11, S.p11 + .4));
+  const flyIn = 1 - eo(lin(t, S.p10, S.p10 + .4));
   papers(330 - flyIn * 500, 520, 6, t, (1 - neat) * .35, neat);
-  const dx = mix(-100, 330, lin(t, S.p11 + .3, S.p11 + .7)), dy = 380 + Math.sin(t * 6) * 8;
+  const dx = mix(-100, 330, lin(t, S.p10 + .3, S.p10 + .7)), dy = 380 + Math.sin(t * 6) * 8;
   dot(dx, dy, 20, t);
-  const stamp = lin(t, S.p11 + .85, S.p11 + 1.05);
-  if (stamp > 0) { ctx.save(); ctx.translate(330, 440); ctx.rotate(-.18); ctx.scale(mix(2, 1, eo(stamp)), mix(2, 1, eo(stamp))); ctx.globalAlpha = stamp; rr(-80, -30, 160, 60, 10, null, 0); ctx.strokeStyle = '#2fbf71'; ctx.lineWidth = 8; ctx.strokeRect(-80, -30, 160, 60); text('READY', 0, 2, 34, '#2fbf71', 800, 'center', 'DM Mono'); ctx.restore(); }
-  bubble(t, S.p11 + .9, 250, 290, 'Quote ready to send', { icon: 'check', size: 30 });
+  const stamp = lin(t, S.p10 + .85, S.p10 + 1.05);
+  if (stamp > 0) { ctx.save(); ctx.translate(330, 440); ctx.rotate(-.18); ctx.scale(mix(2, 1, eo(stamp)), mix(2, 1, eo(stamp))); ctx.globalAlpha = stamp; rr(-80, -30, 160, 60, 10, null, 0); ctx.strokeStyle = '#2fbf71'; ctx.lineWidth = 8; ctx.strokeRect(-80, -30, 160, 60); text('SENT', 0, 2, 34, '#2fbf71', 800, 'center', 'DM Mono'); ctx.restore(); }
+  bubble(t, S.p10 + .9, 250, 290, 'Quote sent: same day', { icon: 'check', size: 30 });
 }
-function sWeb(t) {
-  brightOffice(t, { h: 3, m: 50 });
-  const cheer = t > S.p12 + 1.0;
-  dave(540, 720, 1, { tired: 0, smile: 1, hair: .2, look: [0, .5], mouth: cheer ? .6 : 0, blink: blinkAt(t, .9),
-    armL: cheer ? [-2.7 + Math.sin(t * 14) * .15, -.3] : [-.5, 1.7 + Math.sin(t * 30) * .1], armR: cheer ? [2.7 - Math.sin(t * 14) * .15, .3] : [.5, -1.7 + Math.sin(t * 30 + 1) * .1], bob: cheer ? -Math.abs(Math.sin(t * 9)) * 10 : 0, t });
-  desk('#b07a4f');
-  laptopFront(540, 540, 340, t);
-  ['New lead!', 'New lead!', 'New lead!'].forEach((s, i) => bubble(t, S.p12 + .3 + i * .32, [250, 830, 300][i], [260, 300, 420][i], s, { icon: 'blue', size: 30 }));
-  phoneOnDesk(860, 528, t, t > S.p12 + 1.0, true);
+function sGrowth(t) {
+  brightOffice(t, { clock: false });
+  // the job board fills up
+  rr(46, 70, 340, 420, 16, '#ffffff', 7);
+  text('JOBS THIS WEEK', 216, 108, 24, OUT, 500, 'center', 'DM Mono');
+  line(66, 134, 366, 134, '#d8dde6', 4);
+  const cols = 5, rows = 3, cw = 60, ch = 104, x0 = 68, y0 = 150;
+  const cols5 = ['#4c7dff', '#2fbf71', '#ffb35c'];
+  let dotTarget = null;
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const n = r * cols + c;
+    const at = n < 4 ? -1 : S.p11 + .1 + (n - 4) * .13;
+    const k = n < 4 ? 1 : lin(t, at, at + .2);
+    const x = x0 + c * cw, y = y0 + r * ch;
+    rr(x + 3, y + 3, cw - 10, ch - 14, 8, '#eef1f6', 0);
+    if (k > 0) {
+      ctx.save(); ctx.translate(x + cw / 2 - 2, y + ch / 2 - 4); ctx.scale(back(k), back(k));
+      rr(-25, -42, 50, 84, 8, cols5[n % 3], 5);
+      poly([[-14, -2], [0, -16], [14, -2]], '#ffffff', 0); rr(-10, -2, 20, 16, 2, '#ffffff', 0);
+      line(-14, 26, 14, 26, 'rgba(255,255,255,.8)', 4);
+      ctx.restore();
+      if (n >= 4 && t < at + .25) dotTarget = [x + cw / 2, y - 6];
+    }
+  }
+  bubble(t, S.p11 + 1.6, 216, 540, 'Booked solid', { icon: 'check', size: 30 });
+  // Dave points at the board, welcomes the crew, then celebrates
+  const crewIn = S.p12, money = S.p13;
+  const cheer = t > money + .25;
+  dave(560, 720, .95, { tired: 0, smile: 1, hair: .15, look: t < crewIn ? [-1, -.3] : [.8, 0], blink: blinkAt(t, .4), mouth: cheer ? .55 : 0,
+    armL: cheer ? [-2.7 + Math.sin(t * 14) * .15, -.3] : t < crewIn ? [-1.95, .35] : [-.4, -.3],
+    armR: cheer ? [2.7 - Math.sin(t * 14) * .15, .3] : t < crewIn ? [.3, -.2] : [2.6, .5], holdR: !cheer && t >= crewIn ? 'thumb' : null,
+    bob: cheer ? -Math.abs(Math.sin(t * 9)) * 10 : 0, t });
+  // the second crew
+  [[800, '#8d5a3c', '#6f4329', '#1f1712', 0], [960, '#f6d0b0', '#dcae8a', '#c58b4c', .18]].forEach(([x, skin, skinD, hairCol, delay]) => {
+    const k = lin(t, crewIn + delay, crewIn + delay + .35); if (k <= 0) return;
+    const wave = Math.sin(t * 10 + x) * .25;
+    dave(x, 720 + (1 - back(k)) * 140, .78, { skin, skinD, hairCol, tag: 'CREW', hat: true, smile: .9, look: [-.6, 0], blink: blinkAt(t, x / 100),
+      armL: [-.2, .1], armR: cheer ? [2.7 + wave, .3] : [2.4 + wave, .6], t });
+  });
+  bubble(t, crewIn + .5, 880, 150, 'Crew #2 hired', { icon: 'check', size: 30 });
+  // revenue: an arrow shoots up and coins pop off it
+  const a = lin(t, money, money + .45);
+  if (a > 0) {
+    const pts = [[90, 660], [300, 540], [430, 600], [680, 330], [800, 400], [990, 100]];
+    const seg = []; let total = 0;
+    for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); total += d; }
+    let left = eo(a) * total; const drawn = [pts[0]]; let tip = pts[0], dir = 0;
+    for (let i = 1; i < pts.length && left > 0; i++) {
+      const f = Math.min(1, left / seg[i - 1]); left -= seg[i - 1];
+      tip = [mix(pts[i - 1][0], pts[i][0], f), mix(pts[i - 1][1], pts[i][1], f)]; drawn.push(tip);
+      dir = Math.atan2(pts[i][1] - pts[i - 1][1], pts[i][0] - pts[i - 1][0]);
+    }
+    stroke2(drawn, 30, '#2fbf71', 7);
+    ctx.save(); ctx.translate(tip[0], tip[1]); ctx.rotate(dir); poly([[34, 0], [-22, -34], [-22, 34]], '#2fbf71', 7); ctx.restore();
+    for (let i = 0; i < 9; i++) {
+      const ca = money + .3 + i * .07, ck = lin(t, ca, ca + .7); if (ck <= 0 || ck >= 1) continue;
+      const bx = 160 + hash(i) * 800, by = 560 - hash(i + 4) * 380 - eo(ck) * 120 + ck * ck * 160;
+      ctx.globalAlpha = 1 - ck * ck; circ(bx, by, 30, '#ffcc33', 6); text('$', bx, by + 2, 34, '#a8790a', 800); ctx.globalAlpha = 1;
+    }
+  }
 }
 function sAndDave(t) {
   // close on Dave's face; he checks the clock: 5:30
-  const z = 1 + eio(lin(t, S.p13, S.p13 + .5)) * .7;
+  const z = 1 + eio(lin(t, S.p14, S.p14 + .5)) * .7;
   ctx.save(); ctx.translate(540, 300); ctx.scale(z, z); ctx.translate(-540, -300);
   brightOffice(t, { clock: false });
-  dave(540, 720, 1, { tired: 0, smile: t > S.p13 + .7 ? 1 : .5, hair: .2, look: t < S.p13 + .7 ? [-1, -.6] : [0, 0], brows: -.6, wink: lin(t, S.p13 + .85, S.p13 + .95) * (1 - lin(t, S.p13 + 1.1, S.p13 + 1.2)), t });
+  dave(540, 720, 1, { tired: 0, smile: t > S.p14 + .7 ? 1 : .5, hair: .2, look: t < S.p14 + .7 ? [-1, -.6] : [0, 0], brows: -.6, wink: lin(t, S.p14 + .85, S.p14 + .95) * (1 - lin(t, S.p14 + 1.1, S.p14 + 1.2)), t });
   ctx.restore();
-  const ck = lin(t, S.p13 + .2, S.p13 + .45);
-  if (ck > 0) { ctx.save(); ctx.translate(190, 170); ctx.scale(back(ck), back(ck)); clock(0, 0, 90, 5, 30, '#fffaf0'); ctx.restore(); bubble(t, S.p13 + .35, 190, 320, '5:30 PM', { size: 32 }); }
+  const ck = lin(t, S.p14 + .2, S.p14 + .45);
+  if (ck > 0) { ctx.save(); ctx.translate(190, 170); ctx.scale(back(ck), back(ck)); clock(0, 0, 90, 5, 30, '#fffaf0'); ctx.restore(); bubble(t, S.p14 + .35, 190, 320, '5:30 PM', { size: 32 }); }
 }
 function sDinnerGood(t) {
   room('#ffe2b8', '#e8b98a');
@@ -513,7 +546,7 @@ function sCTA(t) {
   for (let i = 0; i < 16; i++) { ctx.rotate(TAU / 16); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-60, -1400); ctx.lineTo(60, -1400); ctx.closePath(); ctx.fillStyle = '#9db8ff'; ctx.fill(); }
   ctx.restore();
   ctx.fillStyle = '#0a1438'; ctx.fillRect(0, 720, 1080, L.H); line(0, 720, 1080, 720, OUT, 7);
-  const a = lin(t, S.p15, S.p15 + .4);
+  const a = lin(t, S.p16, S.p16 + .4);
   // lockup
   ctx.save(); ctx.globalAlpha = eo(a); ctx.translate(0, (1 - eo(a)) * 30);
   ctx.font = '400 50px Michroma'; const lw = ctx.measureText('RUNS BETTER').width, lx = 540 - (118 + 30 + lw) / 2;
@@ -534,7 +567,7 @@ function sCTA(t) {
   const ph = lin(t, S.cta + .7, S.cta + 1.0);
   if (ph > 0) { ctx.globalAlpha = ph; text('Free 20-minute call · 910-524-0056', 540, 336, 36, '#dbe5ff', 700); ctx.globalAlpha = 1; }
   // Dave and the dot, relaxed
-  const dv = lin(t, S.p15 + .1, S.p15 + .5);
+  const dv = lin(t, S.p16 + .1, S.p16 + .5);
   dave(470, 720 + (1 - eo(dv)) * 300, .64, { tired: 0, smile: 1, hair: .1, look: [.5, -.2], blink: blinkAt(t, 2), armR: [2.6, .5], holdR: 'thumb', armL: [-.3, -.2], wink: lin(t, 28.2, 28.3) * (1 - lin(t, 28.6, 28.7)), t });
   dot(660, 520 + Math.sin(t * 2.4) * 12, 26, t);
 }
@@ -556,17 +589,18 @@ function render(t) {
   ctx.save(); ctx.translate(540, 450); ctx.scale(punch, punch); ctx.translate(-540, -450);
   sc.fn(t);
   ctx.restore();
-  iris(t, S.p10 - .3, S.p10, true, 540, 250);
-  iris(t, S.p10, S.p10 + .3, false, 540, 300);
+  iris(t, S.p9 - .3, S.p9, true, 540, 250);
+  iris(t, S.p9, S.p9 + .3, false, 540, 300);
   renderCaptions(t);
 }
 
 /* ---------------- captions ---------------- */
 const PHRASES = [
-  { n: 3 }, { n: 5 }, { n: 4, cls: { 0: 'bad' } }, { n: 3, cls: { 0: 'bad' } }, { n: 3, cls: { 0: 'bad', 2: 'bad' } }, { n: 4, cls: { 0: 'bad', 2: 'bad', 3: 'bad' }, show: { 2: '5', 3: 'AM.' } },
+  { n: 3 }, { n: 3, cls: { 1: 'bad', 2: 'bad' } }, { n: 4, cls: { 0: 'bad' } }, { n: 3, cls: { 0: 'bad' } }, { n: 3, cls: { 0: 'bad', 2: 'bad' } },
   { n: 2, cls: { 1: 'bad' } }, { n: 2, cls: { 1: 'bad' } },
-  { n: 6, cls: { 3: 'hl', 4: 'hl', 5: 'hl' } }, { n: 6, cls: { 5: 'hl' } }, { n: 3, cls: { 2: 'hl' } }, { n: 5, cls: { 4: 'hl' } },
-  { n: 2 }, { n: 6, cls: { 3: 'hl', 4: 'hl', 5: 'hl' } },
+  { n: 6, cls: { 3: 'hl', 4: 'hl', 5: 'hl' } }, { n: 6, cls: { 5: 'hl' } }, { n: 6, cls: { 4: 'hl', 5: 'hl' } },
+  { n: 9, cls: { 7: 'good', 8: 'good' } }, { n: 4, cls: { 2: 'good', 3: 'good' } }, { n: 2, cls: { 0: 'good', 1: 'good' } },
+  { n: 2 }, { n: 7, cls: { 4: 'hl', 5: 'hl', 6: 'hl' } },
   { n: 10, cut: 4, cls: { 2: 'hl' } }
 ];
 let PH = [], W = [];
@@ -615,21 +649,20 @@ window.ready = (async () => {
   S.cta = W[W.length - 5].s - .05;    // "Business" in "...at Business Runs Better dot com"
   // the wheel's angle is the integral of its speed, so it never jumps
   const angs = []; let acc = 0;
-  for (let i = 0; i <= 3000; i++) { const t = i / 100; const sp = t < S.fling ? mix(4, 22, lin(t, S.p7, S.fling)) : mix(22, 0, lin(t, S.fling, S.fling + 1.8)); acc += sp * .01 * .35; angs.push(acc); }
+  for (let i = 0; i <= 3000; i++) { const t = i / 100; const sp = t < S.fling ? mix(4, 22, lin(t, S.p6, S.fling)) : mix(22, 0, lin(t, S.fling, S.fling + 1.8)); acc += sp * .01 * .35; angs.push(acc); }
   S.wheelAng = t => angs[Math.min(3000, Math.max(0, Math.round(t * 100)))];
   SCENES = [
     { a: 0, b: S.p3, fn: sIntro },
     { a: S.p3, b: S.p4, fn: sRoof, punch: 1 },
     { a: S.p4, b: S.p5, fn: sDinnerBad, punch: 1 },
     { a: S.p5, b: S.p6, fn: sMidnight, punch: 1 },
-    { a: S.p6, b: S.p7, fn: sFiveAM, punch: 1 },
-    { a: S.p7, b: S.p10, fn: sWheel, punch: 1 },
-    { a: S.p10, b: S.p11, fn: sLeads },
-    { a: S.p11, b: S.p12, fn: sQuotes, punch: 1 },
-    { a: S.p12, b: S.p13, fn: sWeb, punch: 1 },
-    { a: S.p13, b: S.p14, fn: sAndDave },
-    { a: S.p14, b: S.p15, fn: sDinnerGood, punch: 1 },
-    { a: S.p15, b: DUR + 1, fn: sCTA }
+    { a: S.p6, b: S.p9, fn: sWheel, punch: 1 },
+    { a: S.p9, b: S.p10, fn: sLeads },
+    { a: S.p10, b: S.p11, fn: sQuotes, punch: 1 },
+    { a: S.p11, b: S.p14, fn: sGrowth, punch: 1 },
+    { a: S.p14, b: S.p15, fn: sAndDave },
+    { a: S.p15, b: S.p16, fn: sDinnerGood, punch: 1 },
+    { a: S.p16, b: DUR + 1, fn: sCTA }
   ];
   window.render = render;
   if (Q.has('play')) { const t0 = performance.now(); const f = () => { render(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(f); }; f(); }
