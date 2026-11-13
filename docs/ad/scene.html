@@ -8,6 +8,8 @@
   render(t) puts every element where it belongs at time t (seconds); render.mjs
   steps t frame by frame, screenshots each one and pipes them to ffmpeg.
   Open it in a browser with ?t=12.5 to look at a single moment, or ?play to watch it run.
+  ?format=story (default) is 1080x1920 for Reels and Stories: key content stays inside Meta's
+  safe zone (14% top, 35% bottom, 6% sides clear). ?format=feed is 1080x1350 for the feed.
 -->
 <style>
 @font-face { font-family: Michroma; src: url(../../assets/fonts/michroma-400-latin.woff2) format('woff2'); font-weight: 400; }
@@ -60,7 +62,7 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 .typing i { width: 16px; height: 16px; border-radius: 50%; background: #dbe5ff; display: block; }
 
 /* the reply-time badge */
-#badge { left: 640px; top: 700px; width: 330px; padding: 22px 26px; border-radius: 34px; background: var(--brand);
+#badge { left: 640px; top: 760px; width: 330px; padding: 22px 26px; border-radius: 34px; background: var(--brand);
   box-shadow: 0 24px 70px rgba(var(--rgb), .55), inset 0 1px 0 rgba(255,255,255,.3); text-align: center; }
 #badge .mono { font-size: 22px; color: #dfe7ff; }
 #badge b { display: block; font-family: Michroma; font-weight: 400; font-size: 64px; line-height: 1.1; margin-top: 6px; color: #fff; }
@@ -69,13 +71,13 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 .site { position: absolute; inset: 0; background: #f4f1ea; color: #15181d; }
 .site .bar { position: absolute; left: 0; right: 0; top: 0; height: 150px; background: #e9e5dc; padding: 92px 40px 0; }
 .site .url { height: 46px; border-radius: 23px; background: #fff; font-size: 22px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #444; font-weight: 600; }
-.site .hero { position: absolute; left: 0; right: 0; top: 150px; height: 360px; background: linear-gradient(160deg, #2f4a6b, #1c2c44); overflow: hidden; }
+.site .hero { position: absolute; left: 0; right: 0; top: 150px; height: 260px; background: linear-gradient(160deg, #2f4a6b, #1c2c44); overflow: hidden; }
 .site .hero svg { position: absolute; left: 0; bottom: 0; width: 100%; }
 .site .brandline { position: absolute; left: 44px; top: 34px; color: #fff; font-family: 'DM Mono'; font-size: 22px; letter-spacing: .1em; }
-.site h2 { position: absolute; left: 44px; right: 44px; top: 540px; margin: 0; font-size: 50px; line-height: 1.08; letter-spacing: -.02em; font-weight: 800; }
-.site .stars { position: absolute; left: 44px; top: 676px; font-size: 26px; color: #6a6458; font-weight: 600; }
+.site h2 { position: absolute; left: 44px; right: 44px; top: 440px; margin: 0; font-size: 50px; line-height: 1.08; letter-spacing: -.02em; font-weight: 800; }
+.site .stars { position: absolute; left: 44px; top: 576px; font-size: 26px; color: #6a6458; font-weight: 600; }
 .site .stars em { color: #e2a400; font-style: normal; letter-spacing: 2px; }
-.site .callbtn { position: absolute; left: 44px; right: 44px; top: 742px; height: 104px; border-radius: 52px; background: #e4572e; color: #fff; display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 38px; font-weight: 800; overflow: hidden; }
+.site .callbtn { position: absolute; left: 44px; right: 44px; top: 636px; height: 104px; border-radius: 52px; background: #e4572e; color: #fff; display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 38px; font-weight: 800; overflow: hidden; }
 .ripple { position: absolute; width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,.55); }
 .call { position: absolute; inset: 0; background: linear-gradient(180deg, #1d3b2f, #0f1a16 70%); text-align: center; }
 .call .who { position: absolute; left: 0; right: 0; top: 150px; }
@@ -104,7 +106,7 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 
 /* brand */
 #bigmark { left: 390px; top: 930px; width: 300px; height: 300px; }
-#end { left: 0; width: 1080px; top: 790px; text-align: center; }
+#end { left: 0; width: 1080px; text-align: center; }
 #end .lock { display: inline-flex; align-items: center; gap: 30px; }
 #end .lock svg { width: 120px; height: 120px; }
 #end .lock b { font-family: Michroma; font-weight: 400; font-size: 44px; letter-spacing: .05em; text-align: left; line-height: 1.25; }
@@ -119,6 +121,7 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 <body>
 <canvas id="bg" width="1080" height="1920"></canvas>
 
+<div id="vis" class="abs" style="left:0;top:0;width:1080px;height:1920px;transform-origin:540px 790px">
 <!-- PHONE A: the lead that went cold -->
 <div class="phone abs" id="phoneA">
   <div class="screen">
@@ -127,10 +130,10 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
     <div class="thead"><div class="avatar">S</div><div><b>Sarah M.</b><span>New lead · text message</span></div></div>
     <div class="thread">
       <div class="msg in" id="a1" style="top:0">Hi! Do you fix roof leaks? Water is coming in over the kitchen.</div>
-      <div class="stamp" id="a1s" style="top:188px">Delivered 9:47 PM</div>
-      <div class="divider mono" id="aDiv" style="top:262px">Next morning · 7:12 AM</div>
-      <div class="msg in" id="a2" style="top:346px">Never mind. Found someone who answered right away.</div>
-      <div class="pill lost" id="aLost" style="top:534px"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>Job lost</div>
+      <div class="stamp" id="a1s" style="top:180px">Delivered 9:47 PM</div>
+      <div class="divider mono" id="aDiv" style="top:236px">Next morning · 7:12 AM</div>
+      <div class="msg in" id="a2" style="top:306px">Never mind. Found someone who answered right away.</div>
+      <div class="pill lost" id="aLost" style="top:458px"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg>Job lost</div>
     </div>
   </div>
 </div>
@@ -170,8 +173,7 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
         <div class="msg in" id="b1" style="top:0">Hi! Do you fix roof leaks? Water is coming in over the kitchen.</div>
         <div class="typing" id="bTyp" style="top:200px"><i></i><i></i><i></i></div>
         <div class="msg out" id="b2" style="top:200px">Hi Sarah, sorry about the leak! We can come out tomorrow. Does 10:30 AM work?</div>
-        <div class="msg in" id="b3" style="top:440px">Yes please, that works!</div>
-        <div class="pill won" id="bWon" style="top:574px"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Booked · Tomorrow 10:30 AM</div>
+        <div class="pill won" id="bWon" style="top:420px"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Booked · Tomorrow 10:30 AM</div>
       </div>
     </div>
     <div class="site" id="bSite">
@@ -193,6 +195,8 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 </div>
 <div id="badge" class="abs"><div class="mono">Replied in</div><b id="badgeN">4 sec</b></div>
 
+</div>
+
 <!-- END CARD -->
 <div id="end" class="abs">
   <div class="lock" id="eLock"><svg viewBox="0 0 40 40"><rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="#dce3ef" stroke-opacity=".3" stroke-width="1.3"/><path d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".6" stroke-width="2.8" stroke-linecap="square"/><path d="M9 22 L29 11.5" stroke="#4c7dff" stroke-width="2.8" stroke-linecap="square"/><circle cx="30.25" cy="10.75" r="3.25" fill="#4c7dff"/></svg><b>BUSINESS<br>RUNS BETTER</b></div>
@@ -206,6 +210,15 @@ html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; backgro
 
 <script>
 const OFF = 0.3;            // the voiceover starts this far into the video
+// Each format: canvas height, caption box, the visual group's placement (VY = where the
+// phone's top edge lands, S = its scale) and the end card's top.
+const LAYOUTS = {
+  story: { H: 1920, capTop: 290, capH: 330, font: 80, VY: 630, S: .78, endTop: 650 },
+  feed:  { H: 1350, capTop: 60,  capH: 330, font: 74, VY: 420, S: .86, endTop: 500 }
+};
+const FORMAT = new URLSearchParams(location.search).get('format') === 'feed' ? 'feed' : 'story';
+const L = LAYOUTS[FORMAT];
+const my = y => L.VY + (y - 790) * L.S;   // a y in the original 1920 layout, mapped to this format
 const DUR = 30;
 const $ = id => document.getElementById(id);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -257,7 +270,7 @@ function buildCaptions(words) {
   });
   PH.forEach((p, k) => p.end = k < PH.length - 1 ? PH[k + 1].start : DUR + 1);
   // centre each phrase vertically in the caption box
-  PH.forEach(p => { p.el.style.top = (500 - p.el.offsetHeight) / 2 + 'px'; });
+  PH.forEach(p => { p.el.style.top = (L.capH - p.el.offsetHeight) / 2 + 'px'; });
 }
 function renderCaptions(t) {
   PH.forEach(p => {
@@ -286,22 +299,22 @@ function renderBG(t) {
   g.globalCompositeOperation = 'source-over';
   const grd = g.createLinearGradient(0, 0, 0, 1920);
   grd.addColorStop(0, '#0d1013'); grd.addColorStop(1, '#12151a');
-  g.fillStyle = grd; g.fillRect(0, 0, 1080, 1920);
+  g.fillStyle = grd; g.fillRect(0, 0, 1080, L.H);
   // glow behind the visual zone
-  const gx = 540, gy = 1180;
-  const glow = (r, c, a) => { const rg = g.createRadialGradient(gx, gy, 0, gx, gy, r); rg.addColorStop(0, `rgba(${c},${a})`); rg.addColorStop(1, `rgba(${c},0)`); g.fillStyle = rg; g.fillRect(0, 0, 1080, 1920); };
+  const gx = 540, gy = my(1180);
+  const glow = (r, c, a) => { const rg = g.createRadialGradient(gx, gy, 0, gx, gy, r); rg.addColorStop(0, `rgba(${c},${a})`); rg.addColorStop(1, `rgba(${c},0)`); g.fillStyle = rg; g.fillRect(0, 0, 1080, L.H); };
   glow(820, '76,125,255', .10 + .16 * blue - .07 * red);
   glow(760, '255,93,108', .13 * red);
   // perspective floor grid
-  const hy = 1330, speed = t * (0.25 + 0.55 * blue);
+  const hy = my(1330), speed = t * (0.25 + 0.55 * blue);
   g.save();
-  g.beginPath(); g.rect(0, hy, 1080, 1920 - hy); g.clip();
+  g.beginPath(); g.rect(0, hy, 1080, L.H - hy); g.clip();
   const ga = .07 + .07 * blue;
   g.strokeStyle = blue > red ? `rgba(76,125,255,${ga})` : `rgba(220,227,239,${ga * .8})`;
   g.lineWidth = 1.5;
-  for (let i = -14; i <= 14; i++) { g.beginPath(); g.moveTo(540, hy); g.lineTo(540 + i * 210, 1920); g.stroke(); }
+  for (let i = -14; i <= 14; i++) { g.beginPath(); g.moveTo(540, hy); g.lineTo(540 + i * 210, L.H); g.stroke(); }
   for (let j = 0; j < 14; j++) {
-    const z = ((j + speed) % 14) / 14; const y = hy + Math.pow(z, 2.4) * (1920 - hy);
+    const z = ((j + speed) % 14) / 14; const y = hy + Math.pow(z, 2.4) * (L.H - hy);
     g.globalAlpha = clamp(z * 3); g.beginPath(); g.moveTo(0, y); g.lineTo(1080, y); g.stroke();
   }
   g.restore(); g.globalAlpha = 1;
@@ -313,12 +326,12 @@ function renderBG(t) {
   const sk = lin(t, 13.42, 14.4);
   if (sk > 0 && sk < 1) {
     g.strokeStyle = `rgba(76,125,255,${(1 - sk) * .7})`; g.lineWidth = 6 * (1 - sk) + 1;
-    g.beginPath(); g.arc(540, 1080, 120 + eo(sk) * 900, 0, Math.PI * 2); g.stroke();
+    g.beginPath(); g.arc(540, my(1080), 120 + eo(sk) * 900, 0, Math.PI * 2); g.stroke();
   }
   // vignette
-  const vg = g.createRadialGradient(540, 960, 500, 540, 960, 1250);
+  const vg = g.createRadialGradient(540, L.H / 2, 500, 540, L.H / 2, 1250);
   vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
-  g.fillStyle = vg; g.fillRect(0, 0, 1080, 1920);
+  g.fillStyle = vg; g.fillRect(0, 0, 1080, L.H);
 }
 
 /* ---------- scene 1: phone A ---------- */
@@ -416,8 +429,7 @@ function renderPhoneB(t) {
   $('bTyp').style.transformOrigin = '100% 100%';
   [...$('bTyp').children].forEach((d, k) => { d.style.opacity = .35 + .65 * (0.5 + 0.5 * Math.sin(t * 14 - k * 1.1)); });
   pop($('b2'), t, 16.38);
-  pop($('b3'), t, 17.15);
-  pop($('bWon'), t, 17.75, .38, .6);
+  pop($('bWon'), t, 17.3, .38, .6);
   $('bWon').style.transform += ' translateX(-50%)';
   // the 4-second badge counts while the reply is written
   const bIn = lin(t, 15.45, 15.75), bOut = lin(t, 18.55, 18.8);
@@ -460,11 +472,22 @@ function render(t) {
   renderBG(t); renderPhoneA(t); renderCards(t); renderMark(t); renderPhoneB(t); renderEnd(t); renderCaptions(t);
 }
 
+function applyLayout() {
+  document.documentElement.style.height = document.body.style.height = L.H + 'px';
+  bg.height = L.H; bg.style.height = L.H + 'px';
+  Object.assign($('cap').style, { top: L.capTop + 'px', height: L.capH + 'px' });
+  document.querySelectorAll('.phrase').forEach(p => { p.style.fontSize = L.font + 'px'; });
+  $('vis').style.transform = `translateY(${L.VY - 790}px) scale(${L.S})`;
+  $('end').style.top = L.endTop + 'px';
+}
+
 window.ready = (async () => {
   const words = await (await fetch('words.json')).json();
   await document.fonts.load('800 86px Manrope'); await document.fonts.load('40px Michroma'); await document.fonts.load('22px "DM Mono"');
   await document.fonts.ready;
   buildCaptions(words);
+  applyLayout();
+  PH.forEach(p => { p.el.style.top = (L.capH - p.el.offsetHeight) / 2 + 'px'; });
   // a problem card lands on the first word of each problem phrase
   CARD_AT = [2, 3, 4, 5, 6].map(k => PH[k].ws[0].s - .08);
   window.render = render;
