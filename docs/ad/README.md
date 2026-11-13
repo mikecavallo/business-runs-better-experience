@@ -69,6 +69,27 @@ On Stories, people tap through the cards one by one. In feeds, they swipe. The f
 
 **Primary text for the carousel:** A customer texts at 9:47 PM about a roof leak. Who answers? For businesses around Wilmington and Leland, I build the systems that answer every lead in seconds, get you found on Google, and take the busywork off your plate. Free 20-minute call, no pitch deck.
 
+## Ad 3: the cartoon ("Dave")
+
+`cartoon/brb-cartoon-30s-story.mp4` (1080×1920) and `cartoon/brb-cartoon-30s-feed.mp4` (1080×1350). Set it up exactly like Ad 1: one video ad, the feed file on Feeds and the story file on Stories and Reels.
+
+| Time | Voiceover | On screen |
+|---|---|---|
+| 0–3.5 s | This is Dave. Dave works all the time. | Dave at his desk at night: the clock races, coffee piles up, the phone won't stop |
+| 3.5–8.5 s | Calls on the roof. Texts at dinner. Quotes at midnight. Emails at five A.M. | Rain on the roof, a cold dinner, papers flying at midnight, a 5 AM alarm |
+| 8.5–11.7 s | Always busy. Always behind. | A hamster wheel of chores spins faster until it throws him out |
+| 11.7–14.6 s | Then Dave found Business Runs Better. | A little blue dot lands and becomes the logo |
+| 14.6–19.8 s | Now leads get answered in seconds. Quotes get drafted. The website brings in calls. | Calls answered and booked, quotes ready to send, new leads from the website |
+| 19.8–23.3 s | And Dave? Dave makes it home for dinner. | 5:30 PM. Dinner with the dog, phone face down |
+| 23.3–30 s | Book a free call at Business Runs Better dot com. | businessrunsbetter.com, free 20-minute call, 910-524-0056 |
+
+- **Primary text:** Meet Dave. Calls on the roof, texts at dinner, quotes at midnight. Then he found Business Runs Better. Now leads get answered in seconds, quotes get drafted, and Dave makes it home for dinner. Book a free 20-minute call.
+- **Headline:** Get your evenings back
+- **Button:** Learn More
+- **URL:** `https://businessrunsbetter.com/ad/?utm_source=meta&utm_medium=paid&utm_campaign=dave-cartoon`
+
+Run it next to Ad 1 in the same ad set and let Meta show the one that books more calls.
+
 ---
 
 ## Re-rendering
@@ -82,5 +103,7 @@ python3 docs/ad/synth.py /tmp                     # music.wav and sfx.wav
 cd /tmp && cp story.mp4 video-only.mp4 && cp <repo>/docs/ad/voiceover.mp3 . && bash <repo>/docs/ad/mix.sh 0.42 brb-ad-30s-story.mp4
 node docs/ad/render-cards.cjs                     # the 10 carousel PNGs into docs/ad/carousel/
 ```
+
+The cartoon lives in `docs/ad/cartoon/`: `voiceover.py` then `retime.py` (fits the voice to 30 s and writes `words-timed.json`), `scene.html` (all the drawing), `render.cjs`, `synth.py` and `mix.sh`, the same way as above.
 
 To view a single moment, open `docs/ad/scene.html?format=feed&t=12.5`; add `&play` to watch it run. To change the words, edit `TEXT` in `voiceover.py` and run it in `docs/ad/` (it writes `voiceover.mp3` and `words.json`), then adjust the cue times in `scene.html` and `synth.py`. The voice is ElevenLabs "Chris". The music and sound effects are synthesized in `synth.py`, so there is nothing to license.
