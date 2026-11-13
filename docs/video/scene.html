@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BRB "Meet Ray" video: scene</title>
+<!--
+  The 60-second "Meet Ray" marketing video (1920x1080), drawn as one deterministic page.
+  render(t) puts every element where it belongs at time t (seconds); render.cjs steps t
+  frame by frame, screenshots each one and pipes them to ffmpeg.
+  Open with ?t=12.5 to look at one moment, or ?play to watch it run (no sound).
+  Voiceover line start times live in timeline.json; word timings in segments.json.
+-->
+<style>
+@font-face { font-family: Michroma; src: url(../../assets/fonts/michroma-400-latin.woff2) format('woff2'); font-weight: 400; }
+@font-face { font-family: Manrope; src: url(../../assets/fonts/manrope-var-latin.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'DM Mono'; src: url(../../assets/fonts/dmmono-400-latin.woff2) format('woff2'); font-weight: 400; }
+@font-face { font-family: 'DM Mono'; src: url(../../assets/fonts/dmmono-500-latin.woff2) format('woff2'); font-weight: 500; }
+:root {
+  --brand: #1d5cff; --lift: #4c7dff; --rgb: 76, 125, 255;
+  --ink: #f3f6fb; --muted: #a8b2c4; --dim: #8b95a8;
+  --red: #ff5d6c; --redrgb: 255, 93, 108; --green: #2fd27a; --hat: #ffc83d;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; color: var(--ink);
+  font-family: Manrope, sans-serif; -webkit-font-smoothing: antialiased; }
+.abs { position: absolute; }
+.mono { font-family: 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+#stage { position: absolute; inset: 0; }
+.scene { position: absolute; inset: 0; overflow: hidden; display: none; transform-origin: 50% 50%; }
+svg { overflow: visible; }
+.full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+/* big kinetic type */
+.big { font-weight: 800; font-size: 118px; line-height: 1; letter-spacing: -.03em; white-space: nowrap; transform-origin: 0 50%; text-shadow: 0 8px 40px rgba(0,0,0,.45); }
+.big.red { color: var(--red); }
+.plate b { display: block; font-family: Michroma; font-weight: 400; font-size: 150px; line-height: 1; letter-spacing: .02em; }
+.plate span { display: block; margin-top: 22px; font-size: 30px; color: #fff; }
+.plate i { display: block; width: 120px; height: 10px; background: var(--hat); margin-bottom: 30px; }
+
+/* notification chips */
+.chip { position: absolute; display: flex; align-items: center; gap: 16px; padding: 16px 26px 16px 16px; border-radius: 24px; white-space: nowrap;
+  background: rgba(22, 24, 30, .93); box-shadow: 0 18px 44px rgba(0,0,0,.45), inset 0 0 0 1.5px rgba(255,255,255,.09); font-size: 30px; font-weight: 700; }
+.chip u { width: 52px; height: 52px; border-radius: 15px; background: rgba(var(--redrgb), .18); display: grid; place-items: center; text-decoration: none; }
+.chip u svg { width: 30px; height: 30px; }
+.chip small { display: block; font-family: 'DM Mono'; font-size: 17px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); font-weight: 400; }
+
+/* phones */
+.phone { position: absolute; border-radius: 62px; padding: 13px; background: linear-gradient(160deg, #2a3039, #14171c 40%, #1a1e24);
+  box-shadow: 0 50px 120px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.08); }
+.screen { position: absolute; inset: 13px; border-radius: 50px; overflow: hidden; background: linear-gradient(180deg, #171b21, #111418); }
+.island { position: absolute; left: 50%; top: 16px; width: 130px; height: 36px; margin-left: -65px; background: #000; border-radius: 20px; z-index: 5; }
+.pstat { position: absolute; left: 0; right: 0; top: 0; height: 66px; padding: 20px 40px 0; display: flex; justify-content: space-between; font-weight: 700; font-size: 21px; }
+.msg { position: absolute; max-width: 300px; padding: 14px 18px; border-radius: 22px; font-size: 20.5px; line-height: 1.28; font-weight: 600; }
+.msg.in { left: 0; background: #2a3039; border-bottom-left-radius: 7px; transform-origin: 0 100%; }
+.msg.out { right: 0; background: var(--brand); color: #fff; border-bottom-right-radius: 7px; transform-origin: 100% 100%; }
+.missed { position: absolute; left: 22px; right: 22px; height: 96px; border-radius: 24px; background: rgba(40, 44, 54, .96); display: flex; align-items: center; gap: 16px; padding: 0 18px;
+  box-shadow: inset 0 0 0 1.5px rgba(var(--redrgb), .35); }
+.missed u { width: 56px; height: 56px; border-radius: 16px; background: rgba(var(--redrgb), .2); display: grid; place-items: center; }
+.missed b { display: block; font-size: 24px; color: var(--red); }
+.missed span { display: block; font-size: 17px; color: var(--dim); margin-top: 3px; }
+
+/* browser */
+.browser { position: absolute; border-radius: 22px; overflow: hidden; background: #fff; color: #171a20; box-shadow: 0 50px 120px rgba(0,0,0,.55); }
+.browser .bar { position: absolute; left: 0; right: 0; top: 0; height: 58px; background: #e8eaee; display: flex; align-items: center; gap: 10px; padding: 0 22px; }
+.browser .bar i { width: 14px; height: 14px; border-radius: 50%; background: #c7cbd3; display: block; }
+.browser .bar .url { flex: 1; margin-left: 16px; height: 36px; border-radius: 18px; background: #fff; display: flex; align-items: center; padding: 0 18px; font-size: 18px; color: #555b66; font-weight: 600; gap: 10px; }
+.res { position: absolute; left: 60px; right: 60px; height: 132px; }
+.res em { display: block; font-style: normal; font-size: 18px; color: #6b7280; }
+.res b { display: block; font-size: 34px; color: #1a3fb8; margin-top: 4px; }
+.res span { display: block; font-size: 20px; color: #4b5563; margin-top: 6px; }
+.pg { position: absolute; left: 60px; right: 60px; height: 50px; border-top: 2px solid #e5e7eb; font-family: 'DM Mono'; font-size: 20px; letter-spacing: .1em; color: #9aa1ad; padding-top: 14px; text-transform: uppercase; }
+
+/* solution scenes */
+.tagchip { position: absolute; right: 80px; top: 62px; padding: 12px 22px; border-radius: 30px; font-size: 21px; color: #dbe5ff;
+  background: rgba(var(--rgb), .16); box-shadow: inset 0 0 0 1.5px rgba(var(--rgb), .55); white-space: nowrap; }
+.hl { position: absolute; left: 120px; top: 232px; width: 700px; font-weight: 800; font-size: 92px; line-height: 1.02; letter-spacing: -.03em; }
+.hl em { font-style: normal; color: var(--lift); }
+.sub { position: absolute; left: 120px; top: 468px; width: 640px; font-size: 33px; line-height: 1.35; color: var(--muted); font-weight: 500; }
+.glass { position: absolute; border-radius: 28px; background: rgba(18, 24, 44, .92); box-shadow: 0 40px 100px rgba(0,0,0,.5), inset 0 0 0 1.5px rgba(160,185,255,.16); }
+.card { position: absolute; border-radius: 26px; background: #fff; color: #14171c; box-shadow: 0 40px 90px rgba(0,0,0,.5); }
+#bug { position: absolute; left: 80px; top: 54px; display: flex; align-items: center; gap: 18px; font-family: Michroma; font-size: 21px; letter-spacing: .08em; }
+#bug svg { width: 54px; height: 54px; }
+#pip { position: absolute; left: 120px; top: 690px; width: 270px; height: 270px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 5px rgba(var(--rgb), .9), 0 0 0 14px rgba(var(--rgb), .18), 0 30px 70px rgba(0,0,0,.5); }
+#pipLab { position: absolute; left: 428px; top: 782px; font-size: 21px; line-height: 1.5; color: var(--muted); }
+#pipLab b { display: block; color: var(--ink); font-weight: 500; font-size: 24px; }
+.kpi { position: absolute; top: 96px; width: 284px; height: 150px; border-radius: 20px; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.08); padding: 22px 26px; }
+.kpi span { font-size: 17px; color: var(--dim); display: block; }
+.kpi b { display: block; font-size: 62px; font-weight: 800; letter-spacing: -.02em; margin-top: 6px; }
+.barrow { position: absolute; left: 34px; width: 520px; height: 44px; font-size: 20px; font-weight: 600; color: var(--muted); }
+.barrow i { position: absolute; left: 150px; top: 6px; height: 30px; border-radius: 8px; background: linear-gradient(90deg, var(--brand), var(--lift)); display: block; transform-origin: 0 50%; }
+.barrow b { position: absolute; top: 4px; font-size: 24px; color: var(--ink); }
+
+/* end card */
+#end { position: absolute; left: 0; top: 0; width: 1920px; text-align: center; }
+#eLock { position: absolute; left: 0; width: 1920px; top: 190px; display: flex; justify-content: center; align-items: center; gap: 36px; }
+#eLock svg { width: 132px; height: 132px; }
+#eLock b { font-family: Michroma; font-weight: 400; font-size: 68px; letter-spacing: .05em; }
+#eTag { position: absolute; left: 0; width: 1920px; top: 372px; font-size: 30px; color: var(--muted); }
+#eCta { position: absolute; left: 50%; top: 478px; height: 136px; line-height: 136px; padding: 0 76px; border-radius: 68px; background: var(--brand); white-space: nowrap;
+  font-size: 58px; font-weight: 800; letter-spacing: -.01em; }
+#eUrl { position: absolute; left: 0; width: 1920px; top: 668px; font-size: 54px; font-weight: 800; letter-spacing: -.01em; }
+#eUrl span { color: var(--muted); font-weight: 600; margin: 0 22px; }
+#eWhere { position: absolute; left: 0; width: 1920px; top: 768px; font-size: 23px; color: var(--dim); }
+#eRay { position: absolute; left: 0; width: 1920px; top: 850px; font-size: 29px; color: var(--muted); font-style: italic; font-weight: 500; }
+
+/* captions */
+#cap { position: absolute; left: 0; width: 1920px; top: 968px; height: 76px; z-index: 50; }
+.cl { position: absolute; left: 50%; top: 0; white-space: nowrap; padding: 14px 30px; border-radius: 22px; background: rgba(6, 8, 12, .78); font-size: 38px; font-weight: 700; letter-spacing: -.005em; }
+.cl span { white-space: pre; }
+#vig { position: absolute; inset: 0; z-index: 40; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.42) 100%); }
+#flash { position: absolute; inset: 0; z-index: 45; background: #fff; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="stage" width="1920" height="1080"></canvas>
+
+<div class="scene" id="sA"></div>
+<div class="scene" id="sB"></div>
+<div class="scene" id="sC"></div>
+<div class="scene" id="sD"></div>
+<div class="scene" id="sE"></div>
+<div class="scene" id="sF"></div>
+<div class="scene" id="sG"></div>
+<div class="scene" id="sH"></div>
+<div class="scene" id="sI"></div>
+<div class="scene" id="sJ"></div>
+<div class="scene" id="sK"></div>
+<div class="scene" id="sL"></div>
+
+<div id="sol" class="abs" style="inset:0;display:none">
+  <div id="bug"><svg viewBox="0 0 40 40"><rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="#dce3ef" stroke-opacity=".3" stroke-width="1.3"/><path d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".6" stroke-width="2.8" stroke-linecap="square"/><path d="M9 22 L29 11.5" stroke="#4c7dff" stroke-width="2.8" stroke-linecap="square"/><circle cx="30.25" cy="10.75" r="3.25" fill="#4c7dff"/></svg>BUSINESS RUNS BETTER</div>
+  <div id="pip"></div>
+  <div id="pipLab" class="mono"></div>
+</div>
+
+<div id="vig"></div>
+<div id="flash"></div>
+<div id="cap"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lin = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c1 = 1.6, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const mix = (a, b, k) => a + (b - a) * k;
+function set(el, o, tf) { el.style.opacity = o; if (tf !== undefined) el.style.transform = tf; el.style.visibility = o <= 0.001 ? 'hidden' : 'visible'; }
+function pop(el, t, a, d = .32, from = .8, extra = '') { const k = lin(t, a, a + d); set(el, eo(k), `${extra} scale(${mix(from, 1, back(k))}) translateY(${(1 - eo(k)) * 18}px)`); }
+function slam(el, t, a, extra = '') { const k = lin(t, a, a + .2); set(el, lin(t, a, a + .06), `${extra} scale(${mix(1.7, 1, eo(k))})`); }
+function slide(el, t, a, dx = 90, d = .5) { const k = lin(t, a, a + d); set(el, eo(k), `translateX(${(1 - eo(k)) * dx}px)`); }
+function rise(el, t, a, dy = 40, d = .45) { const k = lin(t, a, a + d); set(el, eo(k), `translateY(${(1 - eo(k)) * dy}px)`); }
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+let TL, SEG, DUR = 60;
+const S = i => TL.starts[i];
+const wt = (i, k) => S(i) + SEG[i].words[k][1];
+const SC = { A: [0, 7.3], B: [7.3, 12.05], C: [12.05, 15.35], D: [15.35, 18.55], E: [18.55, 22.45], F: [22.45, 27.6],
+  G: [27.6, 31.75], H: [31.75, 36.95], I: [36.95, 41.95], J: [41.95, 46.1], K: [46.1, 51.0], L: [51.0, 60.5] };
+const HIT = 26.35;   // the logo lands here; the music drops with it
+
+function scene(id, t, cam = .06) {
+  const [a, b] = SC[id], el = $('s' + id), on = t >= a && t < b;
+  el.style.display = on ? 'block' : 'none';
+  if (on && cam) el.style.transform = `scale(${1 + cam - cam * eo(lin(t, a, a + .9)) + .035 * lin(t, a, b)})`;
+  return on;
+}
+
+/* ============================================================ the people */
+const ICON = {
+  phoneX: '<svg viewBox="0 0 24 24" fill="none" stroke="#ff5d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 7 7L16 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/><path d="M15 3l6 6M21 3l-6 6"/></svg>',
+  phone: c => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 7 7L16 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>`,
+  msg: '<svg viewBox="0 0 24 24" fill="none" stroke="#ff5d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+  doc: '<svg viewBox="0 0 24 24" fill="none" stroke="#ff5d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="#ff5d6c"><path d="M12 2.5l2.9 6.2 6.6.8-4.9 4.6 1.3 6.6L12 17.4l-5.9 3.3 1.3-6.6L2.5 9.5l6.6-.8z"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="#ff5d6c" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  check: (c = '#fff', w = 3) => `<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+};
+const ITEM = {
+  hammer: '<rect x="-7" y="-14" width="14" height="128" rx="6" fill="#8a5a33"/><rect x="-40" y="96" width="74" height="34" rx="7" fill="#9aa3b2"/><rect x="-40" y="96" width="18" height="34" rx="4" fill="#6f7888"/>',
+  bundle: '<g transform="rotate(90)"><rect x="-40" y="-150" width="80" height="230" rx="8" fill="#3b4150"/><path d="M-40,-90H40M-40,-30H40M-40,30H40" stroke="#2a2f3a" stroke-width="5"/><rect x="-40" y="-150" width="80" height="16" fill="#555d70"/></g>',
+  cash: '<g transform="rotate(-80)"><rect x="-34" y="-10" width="68" height="110" rx="6" fill="#2e9e62"/><rect x="-26" y="-2" width="52" height="94" rx="4" fill="none" stroke="#bdf0d2" stroke-width="3"/><circle cx="0" cy="45" r="15" fill="#bdf0d2"/></g>',
+  fork: '<rect x="-4" y="0" width="8" height="100" rx="4" fill="#cfd5df"/><path d="M-12,96v26M0,96v26M12,96v26" stroke="#cfd5df" stroke-width="5" stroke-linecap="round"/>',
+  thumb: '<rect x="-10" y="-52" width="20" height="44" rx="10" fill="SKIN" transform="rotate(180)"/>',
+};
+const P = {};   // person instances by id
+function person(id, o = {}) {
+  const skin = o.skin || '#e3a47a', skinD = o.skinD || '#c98659', shirt = o.shirt || '#e8772e', shirtD = o.shirtD || '#c05b1b';
+  const arm = (s, item) => `<g class="arm${s}"><path class="up" stroke="${shirt}" stroke-width="54" stroke-linecap="round" fill="none"/><path class="fo" stroke="${skin}" stroke-width="36" stroke-linecap="round" fill="none"/>
+    <g class="hand"><g class="item">${(item || '').replace(/SKIN/g, skin)}</g><circle r="24" fill="${skin}"/></g></g>`;
+  const top = o.hat === false
+    ? `<path d="M-66,-104 Q-76,-176 0,-178 Q76,-176 66,-104 Q44,-142 0,-140 Q-44,-142 -66,-104Z" fill="${o.hair || '#4a3324'}"/>`
+    : `<path d="M-72,-124 Q-72,-208 0,-208 Q72,-208 72,-124 Z" fill="#ffc83d"/><rect x="-9" y="-208" width="18" height="84" rx="6" fill="#ffe08a"/><rect x="-88" y="-134" width="176" height="18" rx="9" fill="#eeb224"/>`;
+  P[id] = { o };
+  return `<g id="${id}">
+    <rect x="-23" y="-34" width="46" height="46" fill="${skinD}"/>
+    <path d="M-120,50 Q-124,6 -58,0 L58,0 Q124,6 120,50 L130,340 L-130,340 Z" fill="${shirt}"/>
+    <path d="M-26,0 L0,36 L26,0 Z" fill="${skinD}"/>
+    <path d="M-34,0 L0,46 L34,0 L24,-2 L0,30 L-24,-2Z" fill="${shirtD}"/>
+    ${o.kid ? '' : `<rect x="36" y="74" width="54" height="42" rx="7" fill="${shirtD}"/>`}
+    ${o.back ? arm('L', o.itemL) + arm('R', o.itemR) : ''}
+    <g class="head">
+      <circle cx="-64" cy="-86" r="14" fill="${skinD}"/><circle cx="64" cy="-86" r="14" fill="${skinD}"/>
+      <rect x="-63" y="-152" width="126" height="134" rx="57" fill="${skin}"/>
+      ${o.kid ? '' : `<path d="M-63,-84 Q-63,-18 0,-18 Q63,-18 63,-84 Q42,-52 0,-52 Q-42,-52 -63,-84Z" fill="#3a2418" opacity=".2"/>`}
+      <g class="bags"><path d="M-36,-76 q11,8 22,0M14,-76 q11,8 22,0" fill="none" stroke="#8c5a3c" stroke-width="4" stroke-linecap="round"/></g>
+      <g class="eyes"><ellipse class="eye" cx="-25" cy="-92" rx="7.5" ry="10" fill="#1b1b22"/><ellipse class="eye" cx="25" cy="-92" rx="7.5" ry="10" fill="#1b1b22"/></g>
+      <path class="browL" d="M-14,0H14" stroke="#3a2418" stroke-width="8" stroke-linecap="round"/>
+      <path class="browR" d="M-14,0H14" stroke="#3a2418" stroke-width="8" stroke-linecap="round"/>
+      <path d="M1,-86 q9,17 -5,21" fill="none" stroke="${skinD}" stroke-width="5" stroke-linecap="round"/>
+      <path class="mouth" fill="none" stroke="#5a2b1f" stroke-width="6.5" stroke-linecap="round"/>
+      <path class="grin" d="M-26,-58 Q0,-22 26,-58 Z" fill="#fff" stroke="#5a2b1f" stroke-width="5" stroke-linejoin="round"/>
+      <ellipse class="mopen" cx="0" cy="-46" rx="14" ry="10" fill="#5a2b1f"/>
+      ${top}
+      <g class="sweat"><path class="d1" d="M0,0 q9,14 0,20 q-9,-6 0,-20Z" fill="#9fd4ff"/><path class="d2" d="M0,0 q9,14 0,20 q-9,-6 0,-20Z" fill="#9fd4ff"/></g>
+    </g>
+    ${o.back ? '' : arm('L', o.itemL) + arm('R', o.itemR)}
+  </g>`;
+}
+function pose(id, t, p = {}) {
+  const g = $(id); if (!g) return;
+  const c = P[id].q || (P[id].q = Object.fromEntries(['head', 'bags', 'eyes', 'browL', 'browR', 'mouth', 'grin', 'mopen', 'sweat', 'armL', 'armR'].map(k => [k, g.querySelector('.' + k)])));
+  const b = p.brow || 0, by = p.browY || 0, sm = p.smile ?? 6, open = p.open || 0, grin = p.grin || 0;
+  c.head.setAttribute('transform', `translate(0,${p.headY || 0}) rotate(${p.head || 0} 0 -10)`);
+  c.browL.setAttribute('transform', `translate(-26,${-116 + by}) rotate(${-b})`);
+  c.browR.setAttribute('transform', `translate(26,${-116 + by}) rotate(${b})`);
+  const blink = ((t + (P[id].o.kid ? 1.3 : 0)) % 2.9) < .11 ? .1 : 1;
+  const ey = (p.eye ?? 1) * blink;
+  c.eyes.setAttribute('transform', `translate(${(p.look || 0) * 6},${(p.lookY || 0) * 4})`);
+  c.eyes.querySelectorAll('.eye').forEach(e => e.setAttribute('ry', Math.max(1.2, 10 * ey)));
+  c.bags.style.opacity = p.bags || 0;
+  c.mouth.setAttribute('d', `M-22,-52 Q0,${-52 + sm * 1.7} 22,-52`);
+  c.mouth.style.opacity = open > .08 || grin > .5 ? 0 : 1;
+  c.grin.style.opacity = grin > .5 && open <= .08 ? 1 : 0;
+  c.mopen.style.opacity = open > .08 ? 1 : 0; c.mopen.setAttribute('ry', 4 + open * 16); c.mopen.setAttribute('rx', 11 + open * 5);
+  const sw = p.sweat || 0; c.sweat.style.opacity = sw;
+  if (sw > 0) { const k1 = (t * 1.1) % 1, k2 = (t * 1.1 + .5) % 1;
+    c.sweat.querySelector('.d1').setAttribute('transform', `translate(78,${-128 + k1 * 60}) scale(${1 - k1 * .4})`);
+    c.sweat.querySelector('.d2').setAttribute('transform', `translate(-80,${-110 + k2 * 60}) scale(${.8 - k2 * .3})`); }
+  [['L', -110, p.aL || [-7, -3]], ['R', 110, p.aR || [7, 3]]].forEach(([s, sx, a]) => {
+    const A = c['arm' + s], r = Math.PI / 180, L1 = 96, L2 = 92;
+    const ex = sx + L1 * Math.sin(a[0] * r), ey2 = 44 + L1 * Math.cos(a[0] * r);
+    const hx = ex + L2 * Math.sin(a[1] * r), hy = ey2 + L2 * Math.cos(a[1] * r);
+    A.querySelector('.up').setAttribute('d', `M${sx},44 L${ex},${ey2}`);
+    A.querySelector('.fo').setAttribute('d', `M${ex},${ey2} L${hx},${hy}`);
+    A.querySelector('.hand').setAttribute('transform', `translate(${hx},${hy}) rotate(${-a[1] + (a[2] || 0)})`);
+  });
+}
+const svgAt = (x, y, s, inner, extra = '') => `<svg class="full" viewBox="0 0 1920 1080" ${extra}><g transform="translate(${x},${y}) scale(${s})">${inner}</g></svg>`;
+
+/* ============================================================ sets */
+function skyline(y, col, n = 26) {
+  let d = '', x = -40; seed = 23;
+  while (x < 1960) { const w = 70 + rnd() * 110, h = 50 + rnd() * 90, r = 26 + rnd() * 40;
+    d += `M${x},${y + 200}V${y - h}L${x + w / 2},${y - h - r}L${x + w},${y - h}V${y + 200}Z`;
+    if (rnd() > .55) d += `M${x + w + 26},${y + 200}m-34,-${210 + rnd() * 30}a34,44 0 1,1 68,0a34,44 0 1,1 -68,0`;
+    x += w + 8 + rnd() * 70; }
+  return `<path d="${d}" fill="${col}"/>`;
+}
+function roofWorld(key, sky, ray, extra = '') {
+  return `<svg class="full" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky${key}" x1="0" y1="0" x2="0" y2="1">${sky.map((c, i) => `<stop offset="${i / (sky.length - 1)}" stop-color="${c}"/>`).join('')}</linearGradient>
+    <radialGradient id="sun${key}"><stop offset="0" stop-color="#fff6d8"/><stop offset=".18" stop-color="#ffe6a0"/><stop offset=".4" stop-color="#ffc56b" stop-opacity=".45"/><stop offset="1" stop-color="#ffb35a" stop-opacity="0"/></radialGradient>
+    <pattern id="sh${key}" width="96" height="60" patternUnits="userSpaceOnUse" patternTransform="skewY(-2.4)">
+      <rect width="96" height="60" fill="#262a35"/><path d="M0,29.5H96M0,59.5H96" stroke="#14171e" stroke-width="4"/><path d="M48,0V30M0,30V60M95,30V60" stroke="#1b1e27" stroke-width="2.5"/>
+      <rect x="0" y="2" width="96" height="4" fill="#323746"/><rect x="0" y="32" width="96" height="4" fill="#323746"/></pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky${key})"/>
+  <circle class="sun" cx="420" cy="690" r="520" fill="url(#sun${key})"/>
+  <g class="clouds" fill="#fff" opacity=".2"><ellipse cx="300" cy="220" rx="260" ry="26"/><ellipse cx="520" cy="250" rx="190" ry="18"/><ellipse cx="1500" cy="160" rx="300" ry="24"/><ellipse cx="1280" cy="330" rx="220" ry="16"/></g>
+  <g class="far">${skyline(700, 'rgba(58,40,82,.55)')}</g>
+  <g class="near" transform="translate(-60,70)">${skyline(730, '#2b1f40')}</g>
+  ${extra}
+  ${ray}
+  <path d="M-40,872 L1960,788 V1120 H-40Z" fill="url(#sh${key})"/>
+  <path d="M-40,872 L1960,788" stroke="#454b5c" stroke-width="12"/>
+  <path d="M-40,886 L1960,802" stroke="#0e1016" stroke-width="10" opacity=".7"/>
+  </svg>`;
+}
+function kitchen(m, people, props) {
+  const n = m === 'night';
+  return `<svg class="full" viewBox="0 0 1920 1080"><defs>
+    <linearGradient id="kw${m}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${n ? '#0b0e1f' : '#4b2f33'}"/><stop offset="1" stop-color="${n ? '#141a35' : '#8c5a41'}"/></linearGradient>
+    <linearGradient id="ks${m}" x1="0" y1="0" x2="0" y2="1">${n ? '<stop offset="0" stop-color="#070b1c"/><stop offset="1" stop-color="#1b2550"/>' : '<stop offset="0" stop-color="#5b4c9a"/><stop offset=".55" stop-color="#f08a5d"/><stop offset="1" stop-color="#ffd27a"/>'}</linearGradient>
+    <linearGradient id="kc${m}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd68c" stop-opacity="${n ? .34 : .42}"/><stop offset="1" stop-color="#ffd68c" stop-opacity="0"/></linearGradient>
+    <radialGradient id="kg${m}"><stop offset="0" stop-color="${n ? '#8fb4ff' : '#ffcf8a'}" stop-opacity="${n ? .5 : .35}"/><stop offset="1" stop-color="#8fb4ff" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#kw${m})"/>
+  <g transform="translate(1440,110)"><rect width="400" height="330" rx="12" fill="url(#ks${m})"/>
+    ${n ? '<circle cx="290" cy="100" r="44" fill="#f4f1dc"/><circle cx="272" cy="90" r="40" fill="#0c1228"/><g fill="#fff"><circle cx="70" cy="70" r="3"/><circle cx="150" cy="150" r="2.5"/><circle cx="110" cy="240" r="3"/><circle cx="330" cy="220" r="2.5"/><circle cx="210" cy="50" r="2"/></g>'
+        : '<circle cx="200" cy="250" r="70" fill="#fff1c2"/><ellipse cx="120" cy="120" rx="110" ry="14" fill="#fff" opacity=".35"/><ellipse cx="300" cy="170" rx="90" ry="11" fill="#fff" opacity=".3"/>'}
+    <path d="M200,0V330M0,165H400" stroke="${n ? '#262c47' : '#3a2620'}" stroke-width="14"/><rect width="400" height="330" rx="12" fill="none" stroke="${n ? '#262c47' : '#3a2620'}" stroke-width="18"/>
+    <rect x="-24" y="330" width="448" height="22" rx="6" fill="${n ? '#262c47' : '#3a2620'}"/></g>
+  <path d="M960,-10V160" stroke="#07080c" stroke-width="7"/>
+  <path d="M860,246 L1060,246 L1420,1080 H500Z" fill="url(#kc${m})"/>
+  <path d="M866,246 L904,156 H1016 L1054,246Z" fill="${n ? '#1d2030' : '#2c1c1c'}"/><ellipse cx="960" cy="246" rx="94" ry="12" fill="#ffe9b8"/>
+  ${people}
+  <rect x="150" y="806" width="1620" height="50" rx="14" fill="${n ? '#3d2c25' : '#a06a43'}"/><rect x="150" y="806" width="1620" height="12" rx="6" fill="${n ? '#4c382f' : '#b98052'}"/>
+  <rect x="200" y="856" width="1520" height="240" fill="${n ? '#281d19' : '#7a4d2e'}"/>
+  ${props}
+  </svg>`;
+}
+const steam = (x, y, id) => `<g id="${id}" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".5"><path d="M${x - 22},${y} q-12,-18 0,-36 q12,-18 0,-36"/><path d="M${x},${y} q-12,-18 0,-36 q12,-18 0,-36"/><path d="M${x + 22},${y} q-12,-18 0,-36 q12,-18 0,-36"/></g>`;
+const plate = (x, y) => `<ellipse cx="${x}" cy="${y}" rx="130" ry="26" fill="#e9ecf2"/><ellipse cx="${x}" cy="${y - 4}" rx="96" ry="17" fill="#cfd5df"/><ellipse cx="${x - 26}" cy="${y - 14}" rx="46" ry="20" fill="#c7873f"/><ellipse cx="${x + 36}" cy="${y - 12}" rx="34" ry="15" fill="#5fae5a"/><ellipse cx="${x + 6}" cy="${y - 22}" rx="26" ry="12" fill="#e9c46a"/>`;
+
+/* ============================================================ build */
+function build() {
+  // ---- A: meet Ray
+  $('sA').innerHTML = roofWorld('A', ['#1b2350', '#4a4486', '#d06a7c', '#f7a35c', '#ffd995'],
+      `<g transform="translate(1210,560) scale(1.62)">${person('rA', { itemR: ITEM.hammer })}</g>`,
+      `<g><rect x="1620" y="520" width="150" height="330" fill="#7b3f35"/><path d="M1620,580H1770M1620,640H1770M1620,700H1770M1620,760H1770M1695,520V580M1660,580V640M1730,640V700M1690,700V760" stroke="#5a2b25" stroke-width="5"/><rect x="1604" y="496" width="182" height="34" rx="4" fill="#5a2b25"/></g>`)
+    + `<div id="aRed" class="abs" style="inset:0;background:radial-gradient(ellipse at 62% 45%, rgba(255,60,80,0) 20%, rgba(190,20,50,.5) 100%)"></div>
+    <div id="aPlate" class="abs plate" style="left:140px;top:330px"><i></i><b>RAY</b><span class="mono">Owner · Ray's Roofing</span></div>
+    <div id="aT1" class="abs big" style="left:140px;top:300px">HIS BUSINESS</div>
+    <div id="aT2" class="abs big red" style="left:140px;top:430px">RUNS HIM.</div>
+    <div id="aChips"></div>`;
+  const chips = [[ICON.phoneX, 'Phone', '3 missed calls', 760, 150], [ICON.msg, 'Text', '“Are you coming today?”', 1420, 96], [ICON.doc, 'Estimates', '4 quotes overdue', 540, 650],
+    [ICON.star, 'Review', '1 star: “never called back”', 1380, 330], [ICON.clock, 'Voicemail', 'Mailbox full', 1520, 600], [ICON.doc, 'Invoice #212', 'Unpaid, 31 days', 930, 640]];
+  $('aChips').innerHTML = chips.map((c, i) => `<div class="chip" id="ac${i}" style="left:${c[3]}px;top:${c[4]}px"><u>${c[0]}</u><div><small>${c[1]}</small>${c[2]}</div></div>`).join('');
+
+  // ---- B: missed call, missed job
+  $('sB').innerHTML = roofWorld('B', ['#3a2a5c', '#8a4a78', '#e0677a', '#f79a5c', '#ffcf8f'],
+      `<g transform="translate(380,520) scale(1.8)">${person('rB', { itemR: ITEM.bundle })}</g>`)
+    + `<div id="bRing" class="abs" style="left:1610px;top:500px;width:0;height:0"></div>
+    <div class="phone" id="bPhone" style="left:1410px;top:118px;width:400px;height:770px">
+      <div class="screen">
+        <div id="bCall" class="abs" style="inset:0;background:linear-gradient(180deg,#1d3b2f,#0f1a16 70%);text-align:center">
+          <div style="margin-top:120px;font-size:22px;color:#9fd8bd">Incoming call</div>
+          <div style="font-size:44px;font-weight:800;margin-top:10px">New customer</div>
+          <div style="font-size:22px;color:#b7c9c0;margin-top:8px">(910) 555-0142</div>
+          <div id="bAva" class="abs" style="left:50%;top:330px;width:150px;height:150px;margin-left:-75px;border-radius:50%;background:#2c4a3d;display:grid;place-items:center"><svg width="76" height="76" viewBox="0 0 24 24" fill="#9fd8bd"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21a8.5 8.5 0 0 1 17 0z"/></svg></div>
+          <div class="abs" style="left:60px;bottom:80px;width:104px;height:104px;border-radius:50%;background:#e5484d;display:grid;place-items:center"><div style="width:50px;height:50px;transform:rotate(135deg)">${ICON.phone('#fff')}</div></div>
+          <div class="abs" id="bAcc" style="right:60px;bottom:80px;width:104px;height:104px;border-radius:50%;background:#2fd27a;display:grid;place-items:center"><div style="width:50px;height:50px">${ICON.phone('#fff')}</div></div>
+        </div>
+        <div id="bLock" class="abs" style="inset:0;background:linear-gradient(180deg,#1b1420,#120d14)">
+          <div style="text-align:center;margin-top:84px;font-size:92px;font-weight:300;letter-spacing:-.02em">2:14</div>
+          ${[0, 1, 2].map(i => `<div class="missed" id="bm${i}" style="top:${250 + i * 110}px"><u><div style="width:32px;height:32px">${ICON.phoneX}</div></u><div><b>Missed call</b><span>New customer · ${['just now', '1:52 PM', '11:07 AM'][i]}</span></div></div>`).join('')}
+        </div>
+        <div class="island"></div>
+      </div>
+    </div>
+    <div id="bStamp" class="abs mono" style="left:1370px;top:700px;padding:16px 30px;border:7px solid var(--red);border-radius:16px;color:var(--red);font-size:58px;font-weight:500;letter-spacing:.06em;background:rgba(20,8,12,.9);white-space:nowrap">3 jobs gone</div>
+    <div id="bT1" class="abs big" style="left:1010px;top:60px;font-size:100px;display:none"></div>
+    <div id="bT2" class="abs big" style="left:640px;top:96px;font-size:104px">MISSED CALL.</div>
+    <div id="bT3" class="abs big red" style="left:640px;top:214px;font-size:104px">MISSED JOB.</div>`;
+
+  // ---- C: page 4
+  const names = [['The Other Guys Roofing', '4.9 ★★★★★ (212) · Open now'], ['Somebody Else & Sons', '4.8 ★★★★★ (187) · Open 24 hours'], ['Not Ray, LLC', '4.8 ★★★★★ (164) · Answers in minutes'],
+    ['Also Not Ray Roofing', '4.7 ★★★★★ (98)'], ['Roofers Who Picked Up', '4.7 ★★★★★ (143)'], ['A Franchise From Out Of Town', '4.5 ★★★★☆ (301)'],
+    ['Yet Another Roofer', '4.6 ★★★★★ (77)'], ['Roofing Directory Listing #7', 'Sponsored'], ['Some Guy With A Ladder', '4.4 ★★★★☆ (31)'],
+    ['A Blog About Gutters', 'gutterfacts.example'], ['Roof Repair Forum Thread (2011)', 'forum.example']];
+  let y = 150, list = '';
+  names.forEach((n, i) => {
+    if (i > 0 && i % 3 === 0 || i === 10) { if (i % 3 === 0) { list += `<div class="pg" style="top:${y}px">Page ${i / 3 + 1}</div>`; y += 70; } }
+    list += `<div class="res" style="top:${y}px"><em>roofing · near you</em><b>${n[0]}</b><span>${n[1]}</span></div>`; y += 150;
+  });
+  list += `<div class="res" id="cRay" style="top:${y}px;height:150px"><em>raysroofing.example · last updated 2014</em><b style="color:#7b849a">Ray's Roofing</b><span>No reviews yet · Hours not listed</span></div>`;
+  const listH = y + 190;
+  $('sC').innerHTML = `<div class="abs" style="inset:0;background:radial-gradient(ellipse at 40% 50%, #252030, #0e0c12 80%)"></div>
+    <div class="browser" id="cBr" style="left:110px;top:96px;width:1180px;height:850px">
+      <div class="bar"><i></i><i></i><i></i><div class="url"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555b66" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>roofer near me</div></div>
+      <div class="abs" style="left:0;right:0;top:58px;bottom:0;overflow:hidden"><div id="cList" class="abs" style="left:0;right:0;top:0;height:${listH}px" data-h="${listH}">
+        <div class="abs" style="left:60px;top:40px;font-size:20px;color:#6b7280">About 48,300 results</div>
+        <div class="pg" style="top:90px;border:0">Page 1</div>${list}
+        <svg class="abs" id="cWeb" style="left:770px;top:${y - 30}px" width="330" height="210" viewBox="0 0 330 210" fill="none" stroke="#9aa1ad" stroke-width="2.5"><path d="M330,0L60,0M330,0L110,90M330,0L200,170M330,0L290,210M330,0L330,210"/><path d="M250,0Q262,22 268,25Q284,34 300,38Q316,40 330,40M170,0Q196,44 206,51Q238,76 270,84Q300,90 330,90M100,0Q140,60 152,73Q200,116 240,133Q284,146 330,150"/></svg>
+        <div class="abs" id="cHi" style="left:34px;top:${y - 18}px;width:1110px;height:170px;border-radius:20px;border:6px solid #ff5d6c;box-shadow:0 0 0 9999px rgba(10,8,14,.55)"></div>
+      </div></div>
+    </div>
+    <div id="cT1" class="abs big red" style="left:1350px;top:120px;font-size:150px">PAGE 4</div>
+    <div id="cT2" class="abs mono" style="left:1356px;top:284px;font-size:30px;color:var(--muted)">Where nobody looks</div>
+    ${svgAt(1610, 700, 1.5, person('rC'))}`;
+
+  // ---- D: ads
+  $('sD').innerHTML = `<div class="abs" style="inset:0;background:radial-gradient(ellipse at 74% 50%, #2a1220, #0c0a10 75%)"></div>
+    <svg class="full" viewBox="0 0 1920 1080"><defs><radialGradient id="dh"><stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#12060c"/><stop offset="1" stop-color="#ff5d6c" stop-opacity="0"/></radialGradient></defs>
+      <g transform="translate(1440,580)"><circle r="330" fill="url(#dh)"/>
+        ${[300, 240, 180, 124, 74].map((r, i) => `<ellipse class="dring" rx="${r}" ry="${r}" fill="none" stroke="#ff5d6c" stroke-opacity="${.14 + i * .1}" stroke-width="${3 + i}" stroke-dasharray="${r * 1.4} ${r * .7}"/>`).join('')}
+        <circle r="46" fill="#000"/></g>
+      <g id="dBills"></g>
+      <g transform="translate(400,690) scale(1.6)">${person('rD', { itemR: ITEM.cash })}</g>
+      <path d="M0,1010H1920" stroke="rgba(255,255,255,.08)" stroke-width="3"/></svg>
+    <div class="abs mono" style="left:1340px;top:170px;width:200px;text-align:center;font-size:34px;color:var(--red);letter-spacing:.3em">A D S</div>
+    <div id="dQs"></div>
+    <div id="dT1" class="abs big" style="left:120px;top:70px;font-size:108px"><span id="dN">$0</span> A MONTH.</div>
+    <div id="dT2" class="abs big red" style="left:120px;top:190px;font-size:108px">NO CLUE.</div>
+    <div class="glass" id="dCard" style="left:1160px;top:800px;width:600px;height:150px;padding:26px 34px;background:rgba(26,12,18,.94)">
+      <div class="mono" style="font-size:19px;color:var(--dim)">Leads from ads</div>
+      <div id="dLeads" style="font-family:'DM Mono';font-size:64px;font-weight:500;color:var(--red);margin-top:4px">? ? ?</div></div>`;
+  $('dBills').innerHTML = Array.from({ length: 12 }, (_, i) => `<g id="db${i}"><rect x="-46" y="-24" width="92" height="48" rx="6" fill="#2e9e62"/><rect x="-39" y="-17" width="78" height="34" rx="4" fill="none" stroke="#bdf0d2" stroke-width="2.5"/><circle r="11" fill="#bdf0d2"/></g>`).join('');
+  $('dQs').innerHTML = Array.from({ length: 6 }, (_, i) => `<div class="abs" id="dq${i}" style="left:${1300 + i * 52}px;top:420px;font-size:${80 + (i % 3) * 30}px;font-weight:800;color:var(--red)">?</div>`).join('');
+
+  // ---- E: 10:04 PM
+  $('sE').innerHTML = kitchen('night',
+      `<g transform="translate(960,560) scale(1.7)">${person('rE', { hat: false })}</g><circle id="eGlow" cx="960" cy="470" r="330" fill="url(#kgnight)"/>`,
+      `<g transform="translate(790,610)"><rect width="340" height="214" rx="16" fill="#2a2f3d"/><rect x="6" y="6" width="328" height="202" rx="12" fill="#1b1f2a"/><circle cx="170" cy="107" r="18" fill="#8fb4ff" opacity=".8"/><rect x="-24" y="206" width="388" height="16" rx="8" fill="#3a4050"/></g>
+       <g transform="translate(330,700)"><rect x="6" y="64" width="250" height="18" rx="3" fill="#cfd5df" transform="rotate(-3 130 70)"/><rect x="0" y="48" width="250" height="18" rx="3" fill="#e9ecf2" transform="rotate(2 130 60)"/><rect x="4" y="30" width="250" height="20" rx="3" fill="#dfe4ec" transform="rotate(-2 130 40)"/>
+         <g transform="rotate(-5 130 20)"><rect x="0" y="-150" width="250" height="180" rx="5" fill="#f6f7fa"/><text x="22" y="-108" font-family="DM Mono" font-size="24" fill="#3b4250" letter-spacing="2">QUOTE #3 OF 3</text><path d="M22,-80H228M22,-54H228M22,-28H180M22,-2H150" stroke="#b9c0cc" stroke-width="5" stroke-linecap="round"/></g></g>
+       ${plate(1500, 800)}<g transform="translate(1240,726)"><rect width="76" height="84" rx="12" fill="#d7dbe4"/><path d="M76,20q36,0 36,24q0,24 -36,24" fill="none" stroke="#d7dbe4" stroke-width="12"/><ellipse cx="38" cy="6" rx="32" ry="7" fill="#3a2a22"/></g>`)
+    + `<div id="eT1" class="abs" style="left:120px;top:110px;font-family:'DM Mono';font-weight:500;font-size:150px;line-height:1;letter-spacing:-.02em;color:#ff6b78;text-shadow:0 0 40px rgba(255,93,108,.55)">10:04<span style="font-size:70px;margin-left:16px">PM</span></div>
+    <div id="eT2" class="abs big" style="left:124px;top:292px;font-size:62px">STILL WRITING QUOTES.</div>`;
+
+  // ---- F: the turn
+  $('sF').innerHTML = `<div id="fBlack" class="abs" style="inset:0;background:#000"></div>
+    <div id="fL1" class="abs" style="left:0;width:1920px;top:360px;text-align:center;font-size:76px;font-weight:700;color:var(--muted);letter-spacing:-.02em"></div>
+    <div id="fL2" class="abs" style="left:0;width:1920px;top:480px;text-align:center;font-size:104px;font-weight:800;letter-spacing:-.03em;white-space:nowrap"></div>
+    <svg id="fMark" class="abs" style="left:820px;top:270px;width:280px;height:280px" viewBox="0 0 40 40">
+      <rect id="bmR" x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="#dce3ef" stroke-opacity=".35" stroke-width="1.1" pathLength="1" stroke-dasharray="1 1"/>
+      <path id="bmB" d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".6" stroke-width="2.6" stroke-linecap="square" pathLength="1" stroke-dasharray="1 1"/>
+      <path id="bmD" d="M9 22 L29 11.5" stroke="#4c7dff" stroke-width="2.6" stroke-linecap="square" pathLength="1" stroke-dasharray="1 1"/>
+      <circle id="bmG" cx="30.25" cy="10.75" r="7" fill="#4c7dff" opacity="0"/><circle id="bmC" cx="30.25" cy="10.75" r="3" fill="#4c7dff"/></svg>
+    <div id="fWord" class="abs" style="left:0;width:1920px;top:620px;text-align:center;font-family:Michroma;font-size:84px;letter-spacing:.06em;white-space:nowrap"></div>`;
+  $('fL1').innerHTML = SEG[6].words.slice(0, 6).map((w, i) => `<span id="fw${i}">${w[0]} </span>`).join('');
+  $('fL2').innerHTML = SEG[6].words.slice(6).map((w, i) => `<span id="fw${i + 6}" style="${i >= 5 ? 'color:var(--lift)' : ''}">${w[0]} </span>`).join('');
+  $('fWord').innerHTML = 'BUSINESS RUNS BETTER'.split('').map((c, i) => `<span id="fc${i}" style="display:inline-block;white-space:pre">${c}</span>`).join('');
+
+  // ---- G: website
+  $('sG').innerHTML = `<div class="tagchip mono">01 · Websites + SEO</div>
+    <div class="hl">A website that <em>gets found.</em></div><div class="sub">Built to rank on Google, in the maps, and in AI answers. Then built to make people call.</div>
+    <div class="browser" id="gBr" style="left:880px;top:180px;width:940px;height:590px">
+      <div class="bar"><i></i><i></i><i></i><div class="url"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" fill="#555"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#555" stroke-width="2.4"/></svg>raysroofing.com</div></div>
+      <div class="abs" style="left:0;right:0;top:58px;height:70px;display:flex;align-items:center;padding:0 40px;justify-content:space-between;font-weight:800;font-size:24px"><span style="display:flex;align-items:center;gap:12px"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M2 13L12 4l10 9" fill="none" stroke="#e4572e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v8h14v-8" fill="#1c2c44"/></svg>RAY'S ROOFING</span><span style="font-size:18px;color:#5b6472;font-weight:600;word-spacing:22px">Services Reviews About <b style="color:#14171c">(910) 555-0199</b></span></div>
+      <div class="abs" style="left:0;right:0;top:128px;height:330px;background:linear-gradient(150deg,#2f4a6b,#16233a);overflow:hidden">
+        <svg class="abs" style="right:0;bottom:0" width="520" height="260" viewBox="0 0 520 260"><path d="M0 260V150l120-80 120 80v110zM210 260V120L360 30l150 90v140z" fill="#0f1a2a" opacity=".8"/></svg>
+        <div class="abs" style="left:44px;top:46px;width:520px;color:#fff;font-size:50px;line-height:1.08;font-weight:800;letter-spacing:-.02em">Roof leak? We'll be there tomorrow.</div>
+        <div class="abs" style="left:44px;top:176px;font-size:20px;color:#d7e2f2;font-weight:600"><span style="color:#ffc83d;letter-spacing:2px">★★★★★</span> &nbsp;Local · Licensed · Insured</div>
+        <div class="abs" id="gBtn" style="left:44px;top:226px;width:270px;height:76px;border-radius:38px;background:#e4572e;color:#fff;display:flex;align-items:center;justify-content:center;gap:12px;font-size:28px;font-weight:800;overflow:hidden"><div style="width:28px;height:28px">${ICON.phone('#fff')}</div>Call now<div id="gRip" class="abs" style="width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.6);left:50%;top:50%"></div></div>
+      </div>
+      <div class="abs" style="left:40px;right:40px;top:486px;display:flex;gap:22px">${['Leak repair', 'New roofs', 'Storm damage'].map(s => `<div style="flex:1;height:80px;border-radius:14px;background:#f1f3f6;display:flex;align-items:center;padding:0 22px;font-weight:700;font-size:21px;color:#2a2f3a">${s}</div>`).join('')}</div>
+    </div>
+    <div class="card" id="gRank" style="left:800px;top:650px;width:560px;height:196px;padding:24px 28px">
+      <div style="height:44px;border-radius:22px;background:#f1f3f6;display:flex;align-items:center;gap:10px;padding:0 18px;font-size:19px;color:#555b66;font-weight:600"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555b66" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>roofer near me</div>
+      <div style="margin-top:18px;font-size:30px;font-weight:800;color:#1a3fb8">Ray's Roofing</div>
+      <div style="font-size:18px;color:#4b5563;margin-top:4px;font-weight:600">Open now · Call · Directions</div>
+      <div class="abs" id="gPg" style="right:26px;top:84px;width:150px;height:90px;border-radius:18px;background:#fdecee;color:#d92d3f;text-align:center;font-weight:800"><div class="mono" style="font-size:15px;margin-top:12px">Page</div><div id="gPgN" style="font-size:46px;line-height:1.05">4</div></div>
+    </div>
+    <div class="glass" id="gToast" style="left:1420px;top:108px;height:104px;padding:0 34px 0 22px;display:flex;align-items:center;gap:20px;background:rgba(14,40,30,.96);box-shadow:0 30px 70px rgba(0,0,0,.5), inset 0 0 0 2px rgba(47,210,122,.6);white-space:nowrap">
+      <div id="gToastI" style="width:62px;height:62px;border-radius:50%;background:#2fd27a;display:grid;place-items:center"><div style="width:32px;height:32px">${ICON.phone('#fff')}</div></div>
+      <div><div class="mono" style="font-size:16px;color:#9fd8bd">Incoming call</div><div style="font-size:28px;font-weight:800">New customer</div></div></div>
+    <svg id="gCur" class="abs" width="54" height="54" viewBox="0 0 24 24" style="left:0;top:0"><path d="M5 3l14 8-6 1.6L10 19z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+
+  // ---- H: AI receptionist
+  $('sH').innerHTML = `<div class="tagchip mono">02 · AI Receptionist</div>
+    <div class="hl">Every call, <em>answered.</em></div><div class="sub">An AI receptionist picks up, answers the questions and books the job. The tricky ones go to Ray, with notes.</div>
+    <div class="phone" id="hPhone" style="left:900px;top:120px;width:400px;height:780px"><div class="screen" style="background:linear-gradient(180deg,#101a36,#0b1020)">
+      <div class="pstat"><span>2:14</span><span></span></div><div class="island"></div>
+      <div style="text-align:center;margin-top:88px"><div id="hOrb" style="width:104px;height:104px;border-radius:50%;margin:0 auto;background:radial-gradient(circle at 35% 30%,#8fb0ff,#1d5cff);display:grid;place-items:center;box-shadow:0 0 50px rgba(76,125,255,.7)"><svg width="54" height="54" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg></div>
+        <div style="font-size:27px;font-weight:800;margin-top:16px">AI Receptionist</div><div class="mono" style="font-size:15px;color:#9fb6ff;margin-top:4px">Ray's Roofing · on call <span id="hTime">0:00</span></div></div>
+      <div id="hWave" class="abs" style="left:40px;right:40px;top:300px;height:64px;display:flex;align-items:center;justify-content:space-between">${Array.from({ length: 30 }, () => '<i style="display:block;width:5px;border-radius:3px;background:#6f97ff"></i>').join('')}</div>
+      <div class="abs" style="left:26px;right:26px;top:392px">
+        <div class="msg in" id="h1" style="top:0">Hi, do you fix roof leaks?</div>
+        <div class="msg out" id="h2" style="top:74px">We do! I can get someone out Thursday at 10:30. Does that work?</div>
+        <div class="msg in" id="h3" style="top:228px">Perfect. See you then.</div>
+      </div></div></div>
+    <div class="card" id="hCal" style="left:1350px;top:250px;width:450px;height:300px;overflow:hidden">
+      <div class="mono" style="background:#1d5cff;color:#fff;font-size:19px;padding:16px 30px">Calendar · Thursday</div>
+      <div style="padding:26px 30px"><div style="font-size:64px;font-weight:800;letter-spacing:-.02em">10:30 AM</div><div style="font-size:26px;font-weight:700;margin-top:4px">Roof leak inspection</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:20px;font-size:20px;color:#1a8f52;font-weight:700"><span style="width:30px;height:30px;border-radius:50%;background:#2fd27a;display:grid;place-items:center"><span style="width:18px;height:18px">${ICON.check()}</span></span>Booked by the AI receptionist</div></div></div>
+    <div class="glass" id="hStat" style="left:1350px;top:590px;width:450px;height:150px;padding:24px 30px"><div class="mono" style="font-size:17px;color:var(--dim)">Calls answered today</div>
+      <div style="display:flex;align-items:center;gap:20px;margin-top:8px"><b style="font-size:60px;letter-spacing:-.02em"><span id="hN">0</span> of 3</b>
+      <span style="display:flex;gap:10px">${[0, 1, 2].map(i => `<span id="hd${i}" style="width:40px;height:40px;border-radius:50%;background:#1d5cff;display:grid;place-items:center"><span style="width:22px;height:22px">${ICON.check()}</span></span>`).join('')}</span></div></div>`;
+
+  // ---- I: lead follow-up
+  $('sI').innerHTML = `<div class="tagchip mono">03 · Lead follow-up</div>
+    <div class="hl">Replied in <em id="iSec">4 seconds.</em></div><div class="sub">Every new lead answered, qualified and booked. Even at 9:47 at night.</div>
+    <div class="phone" id="iPhone" style="left:900px;top:120px;width:400px;height:780px"><div class="screen">
+      <div class="pstat"><span id="iClock">9:47</span><span></span></div><div class="island"></div>
+      <div class="abs" style="left:0;right:0;top:70px;height:84px;display:flex;align-items:center;gap:14px;padding:0 26px;border-bottom:1px solid rgba(255,255,255,.07)"><div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(140deg,#f0a37a,#d0637c);display:grid;place-items:center;font-weight:800;font-size:23px">S</div><div><b style="font-size:23px;display:block">Sarah M.</b><span style="font-size:15px;color:var(--dim)">New lead · text message</span></div></div>
+      <div class="abs" style="left:22px;right:22px;top:176px">
+        <div class="msg in" id="i1" style="top:0">Hi! Do you fix roof leaks? Water is coming in over the kitchen.</div>
+        <div id="iTyp" class="abs" style="right:0;top:128px;display:flex;gap:7px;padding:17px 20px;border-radius:22px;border-bottom-right-radius:7px;background:rgba(76,125,255,.25)"><i style="width:11px;height:11px;border-radius:50%;background:#dbe5ff;display:block"></i><i style="width:11px;height:11px;border-radius:50%;background:#dbe5ff;display:block"></i><i style="width:11px;height:11px;border-radius:50%;background:#dbe5ff;display:block"></i></div>
+        <div class="msg out" id="i2" style="top:128px">Hi Sarah, sorry about the leak! We can come out tomorrow. Does 10:30 AM work?</div>
+        <div class="msg in" id="i3" style="top:282px">Yes please, that works.</div>
+        <div class="msg out" id="i4" style="top:350px">You're booked for 10:30 AM tomorrow. We'll text when we're on the way.</div>
+      </div></div></div>
+    <div id="iBadge" class="abs" style="left:1240px;top:210px;width:250px;padding:18px 20px;border-radius:26px;background:var(--brand);box-shadow:0 24px 70px rgba(76,125,255,.55), inset 0 1px 0 rgba(255,255,255,.3);text-align:center">
+      <div class="mono" style="font-size:17px;color:#dfe7ff">Replied in</div><b id="iBadgeN" style="display:block;font-family:Michroma;font-weight:400;font-size:48px;line-height:1.15;color:#fff">4 sec</b></div>
+    <div class="card" id="iCal" style="left:1350px;top:470px;width:450px;height:230px;overflow:hidden">
+      <div class="mono" style="background:#1d5cff;color:#fff;font-size:19px;padding:16px 30px">Calendar · Tomorrow</div>
+      <div style="padding:22px 30px"><div style="font-size:34px;font-weight:800;letter-spacing:-.01em">10:30 AM · Roof leak inspection</div><div style="font-size:21px;color:#4b5563;margin-top:10px;font-weight:600">Sarah M. · booked by text at 9:48 PM</div></div></div>
+    <div id="iMoon" class="abs" style="left:1600px;top:150px"><svg width="150" height="150" viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="#f4f1dc"/><circle cx="36" cy="42" r="31" fill="#0c1228"/></svg></div>
+    <div id="iNight" class="abs mono" style="left:1350px;top:740px;font-size:26px;color:#9fb6ff">9:47 PM · Nobody had to wake up</div>`;
+
+  // ---- J: dashboard
+  $('sJ').innerHTML = `<div class="tagchip mono">04 · Data-driven decisions</div>
+    <div class="hl">Know what's <em>working.</em></div><div class="sub">Ads, website, calls and sales in one place. In plain English.</div>
+    <div class="glass" id="jDash" style="left:850px;top:170px;width:980px;height:650px">
+      <div class="abs" style="left:34px;top:30px;font-size:25px;font-weight:800">Ray's Roofing <span style="color:var(--dim);font-weight:500">· this month</span></div>
+      <div class="abs mono" style="right:34px;top:34px;font-size:16px;color:#9fd8bd;display:flex;align-items:center;gap:10px"><span id="jLive" style="width:12px;height:12px;border-radius:50%;background:#2fd27a;display:block"></span>Live</div>
+      ${[['Leads', 'jk0', 34], ['Cost per lead', 'jk1', 348], ['Jobs booked', 'jk2', 662]].map(k => `<div class="kpi" id="${k[1]}w" style="left:${k[2]}px"><span class="mono">${k[0]}</span><b id="${k[1]}">0</b></div>`).join('')}
+      <div class="abs mono" style="left:34px;top:280px;font-size:17px;color:var(--dim)">Leads by source</div>
+      ${[['Google', 19], ['Ads', 14], ['Website', 9], ['Referrals', 5]].map((b, i) => `<div class="barrow" id="jb${i}" style="top:${322 + i * 54}px">${b[0]}<i data-v="${b[1]}"></i><b></b></div>`).join('')}
+      <div class="abs mono" style="left:610px;top:280px;font-size:17px;color:var(--dim)">Leads per week</div>
+      <svg class="abs" style="left:610px;top:316px" width="336" height="200" viewBox="0 0 336 200"><path d="M0,199H336M0,133H336M0,67H336" stroke="rgba(255,255,255,.07)" stroke-width="2"/>
+        <path id="jArea" d="M0,170 L56,150 L112,158 L168,110 L224,84 L280,52 L336,22 V200 H0Z" fill="rgba(76,125,255,.16)"/>
+        <path id="jLine" d="M0,170 L56,150 L112,158 L168,110 L224,84 L280,52 L336,22" fill="none" stroke="#6f97ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/><circle id="jDot" cx="336" cy="22" r="10" fill="#fff"/></svg>
+      <div class="abs" id="jCall" style="left:34px;right:34px;top:556px;height:66px;border-radius:18px;background:linear-gradient(90deg,#1d5cff,#3f72ff);display:flex;align-items:center;padding:0 26px;font-size:25px;font-weight:800;gap:16px;white-space:nowrap">
+        <span class="mono" style="font-size:16px;opacity:.85">Ads</span>$1,200 in <span style="opacity:.7">→</span> 14 leads <span style="opacity:.7">→</span> 6 booked jobs</div>
+    </div>`;
+
+  // ---- K: home for dinner
+  $('sK').innerHTML = kitchen('eve',
+      `<g transform="translate(900,560) scale(1.7)">${person('rK', { hat: false, itemR: ITEM.fork })}</g><g transform="translate(1330,650) scale(1.22)">${person('kid', { kid: true, hat: false, shirt: '#3aa6a0', shirtD: '#2a7f7a', hair: '#6b4226', itemL: ITEM.fork })}</g>
+       <circle cx="960" cy="470" r="520" fill="url(#kgeve)"/>`,
+      `${plate(900, 800)}${plate(1330, 800)}${steam(900, 760, 'kS1')}${steam(1330, 760, 'kS2')}
+       <g transform="translate(480,770) rotate(-8)"><rect width="150" height="76" rx="14" fill="#14171c"/><rect x="5" y="5" width="140" height="66" rx="10" fill="#22262e"/><circle cx="28" cy="38" r="9" fill="#0d0f13"/></g>`)
+    + `<div id="kChip" class="abs" style="left:390px;top:650px;padding:14px 24px 14px 14px;border-radius:30px;background:rgba(18,24,44,.95);box-shadow:0 18px 44px rgba(0,0,0,.4), inset 0 0 0 2px rgba(76,125,255,.7);display:flex;align-items:center;gap:12px;font-size:25px;font-weight:800;white-space:nowrap"><span style="width:38px;height:38px;border-radius:50%;background:#1d5cff;display:grid;place-items:center"><span style="width:22px;height:22px">${ICON.check()}</span></span>All caught up</div>
+    <div id="kT1" class="abs" style="left:120px;top:110px;font-family:'DM Mono';font-weight:500;font-size:150px;line-height:1;letter-spacing:-.02em;color:#fff3d6;text-shadow:0 0 40px rgba(255,214,140,.6)">5:42<span style="font-size:70px;margin-left:16px">PM</span></div>
+    <div id="kT2" class="abs big" style="left:124px;top:292px;font-size:62px">HOME FOR DINNER.</div>`;
+
+  // ---- L: end card
+  $('sL').innerHTML = `<div id="end">
+    <div id="eLock"><svg viewBox="0 0 40 40"><rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="#dce3ef" stroke-opacity=".3" stroke-width="1.3"/><path d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".6" stroke-width="2.8" stroke-linecap="square"/><path d="M9 22 L29 11.5" stroke="#4c7dff" stroke-width="2.8" stroke-linecap="square"/><circle cx="30.25" cy="10.75" r="3.25" fill="#4c7dff"/></svg><b>BUSINESS RUNS BETTER</b></div>
+    <div id="eTag" class="mono"><span id="et0">Websites</span> · <span id="et1">Marketing</span> · <span id="et2">AI for local business</span></div>
+    <div id="eCta">Book your free 20-minute call</div>
+    <div id="eUrl">businessrunsbetter.com<span>·</span>910-524-0056</div>
+    <div id="eWhere" class="mono">Leland, NC · In person or by video</div>
+    <div id="eRay">Ray is made up. His problems aren't.</div></div>
+    ${svgAt(1660, 850, 1.1, person('rL'))}`;
+
+  // ---- picture-in-picture Ray for the solution scenes
+  $('pip').innerHTML = `<svg width="270" height="270" viewBox="0 0 270 270"><defs>
+      <linearGradient id="pd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aa0ff"/><stop offset="1" stop-color="#cfe6ff"/></linearGradient>
+      <linearGradient id="pn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070b1c"/><stop offset="1" stop-color="#1b2550"/></linearGradient>
+      <linearGradient id="pb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16306e"/><stop offset="1" stop-color="#0d1a40"/></linearGradient></defs>
+    <rect id="pBgD" width="270" height="270" fill="url(#pd)"/><rect id="pBgN" width="270" height="270" fill="url(#pn)"/><rect id="pBgB" width="270" height="270" fill="url(#pb)"/>
+    <g id="pSun"><circle cx="212" cy="62" r="26" fill="#fff3c4"/></g>
+    <g id="pStars" fill="#fff"><circle cx="40" cy="50" r="2.5"/><circle cx="92" cy="30" r="2"/><circle cx="228" cy="92" r="2.5"/><circle cx="206" cy="38" r="12" fill="#f4f1dc"/><circle cx="200" cy="34" r="11" fill="#0a1026"/></g>
+    <g id="pPillow"><rect x="48" y="60" width="174" height="120" rx="40" fill="#e9eefb" transform="rotate(-6 135 120)"/></g>
+    <g id="pRayG" transform="translate(135,176) scale(.62)">${person('rP', { itemR: ITEM.hammer })}</g>
+    <g id="pRayH" transform="translate(135,176) scale(.62)">${person('rP2', { hat: false, itemR: ITEM.thumb })}</g>
+    <path id="pRoof" d="M0,236 L270,220 V270 H0Z" fill="#262a35"/>
+    <path id="pBlank" d="M0,206 Q135,176 270,206 V270 H0Z" fill="#1d5cff"/>
+    <text id="pZ" x="182" y="70" font-family="Manrope" font-weight="800" font-size="34" fill="#cfdcff">z z z</text>
+  </svg>`;
+}
+
+/* ============================================================ captions */
+let CL = [];
+function buildCaptions() {
+  SEG.forEach((sg, si) => {
+    let chunk = [];
+    const flush = () => {
+      if (!chunk.length) return;
+      const el = document.createElement('div'); el.className = 'cl';
+      const ws = chunk.map(w => { const s = document.createElement('span'); s.textContent = w[0] + ' '; el.appendChild(s); return { el: s, s: S(si) + w[1] }; });
+      ws[ws.length - 1].el.textContent = chunk[chunk.length - 1][0];
+      $('cap').appendChild(el);
+      CL.push({ el, ws, start: ws[0].s - .1, endW: S(si) + chunk[chunk.length - 1][2] }); chunk = [];
+    };
+    sg.words.forEach((w, k) => { chunk.push(w); const last = k === sg.words.length - 1; if (last || (/[.?!]$/.test(w[0]) && chunk.length >= 2) || (/,$/.test(w[0]) && chunk.length >= 5 && sg.words.length - k > 3)) flush(); });
+  });
+  CL.forEach((c, i) => { c.end = Math.min(c.endW + .7, i < CL.length - 1 ? CL[i + 1].start : DUR); });
+}
+function renderCaptions(t) {
+  CL.forEach(c => {
+    const o = lin(t, c.start, c.start + .12) * (1 - lin(t, c.end - .1, c.end));
+    set(c.el, o, `translateX(-50%) translateY(${(1 - eo(lin(t, c.start, c.start + .14))) * 10}px)`);
+    if (o > 0) c.ws.forEach(w => { w.el.style.opacity = mix(.42, 1, lin(t, w.s - .04, w.s + .1)); });
+  });
+}
+
+/* ============================================================ brand stage (canvas) */
+const cv = $('stage'), g = cv.getContext('2d');
+function renderStage(t) {
+  const on = t >= HIT - .05 && (t < SC.K[0] || t >= SC.L[0]);
+  cv.style.visibility = on ? 'visible' : 'hidden'; if (!on) return;
+  const k = lin(t, HIT, HIT + .5), night = lin(t, SC.I[0], SC.I[0] + .5) * (1 - lin(t, SC.I[1] - .3, SC.I[1]));
+  g.globalAlpha = 1; g.fillStyle = '#000'; g.fillRect(0, 0, 1920, 1080);
+  g.globalAlpha = eo(k);
+  const grd = g.createLinearGradient(0, 0, 0, 1080); grd.addColorStop(0, '#070b16'); grd.addColorStop(1, night > .5 ? '#0a1024' : '#0e1730');
+  g.fillStyle = grd; g.fillRect(0, 0, 1920, 1080);
+  const glow = (x, y, r, a) => { const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, `rgba(76,125,255,${a})`); rg.addColorStop(1, 'rgba(76,125,255,0)'); g.fillStyle = rg; g.fillRect(0, 0, 1920, 1080); };
+  const end = t >= SC.L[0];
+  glow(end ? 960 : 1340, end ? 520 : 500, 950, .26 - .08 * night); glow(200, 1000, 700, .1);
+  const hy = 760, sp = t * .7; g.save(); g.beginPath(); g.rect(0, hy, 1920, 1080 - hy); g.clip();
+  g.strokeStyle = 'rgba(76,125,255,.16)'; g.lineWidth = 1.5;
+  for (let i = -22; i <= 22; i++) { g.beginPath(); g.moveTo(960, hy - 40); g.lineTo(960 + i * 260, 1080); g.stroke(); }
+  for (let j = 0; j < 12; j++) { const z = ((j + sp) % 12) / 12, y = hy + Math.pow(z, 2.3) * (1080 - hy); g.globalAlpha = eo(k) * clamp(z * 3); g.beginPath(); g.moveTo(0, y); g.lineTo(1920, y); g.stroke(); }
+  g.restore(); g.globalAlpha = eo(k);
+  const hz = g.createLinearGradient(0, hy - 50, 0, hy + 130); hz.addColorStop(0, 'rgba(8,12,24,0)'); hz.addColorStop(.4, 'rgba(8,12,24,.95)'); hz.addColorStop(1, 'rgba(8,12,24,0)'); g.fillStyle = hz; g.fillRect(0, hy - 50, 1920, 180);
+  g.globalAlpha = 1;
+  [0, .16].forEach(d => { const s = lin(t, HIT + d, HIT + d + 1.1); if (s > 0 && s < 1) { g.strokeStyle = `rgba(110,150,255,${(1 - s) * .8})`; g.lineWidth = 8 * (1 - s) + 1; g.beginPath(); g.arc(960, 430, 100 + eo(s) * 1300, 0, 7); g.stroke(); } });
+}
+
+/* ============================================================ scenes */
+function rA(t) {
+  if (!scene('A', t)) return;
+  const s1 = S(1), stress = lin(t, wt(1, 5) + .3, wt(1, 9));
+  const sA = $('sA'); sA.querySelector('.clouds').setAttribute('transform', `translate(${t * 9},0)`);
+  sA.querySelector('.near').setAttribute('transform', `translate(${-60 - t * 3},70)`);
+  set($('aRed'), stress * .9);
+  // nameplate
+  const pk = lin(t, wt(0, 2) - .1, wt(0, 2) + .4), po = lin(t, s1 - .1, s1 + .2);
+  set($('aPlate'), eo(pk) * (1 - po), `translateX(${(1 - eo(pk)) * -60 - po * 60}px)`);
+  slam($('aT1'), t, wt(1, 6)); slam($('aT2'), t, wt(1, 8));
+  // chips fly in at him
+  for (let i = 0; i < 6; i++) { const a = s1 + .25 + i * .42, k = lin(t, a, a + .34), el = $('ac' + i), dir = i % 2 ? 1 : -1;
+    set(el, eo(k), `translate(${(1 - eo(k)) * dir * 260}px, ${Math.sin(t * 5 + i * 2) * 5}px) rotate(${(1 - back(k)) * dir * 14 + Math.sin(t * 6 + i) * 1.2 * stress}deg) scale(${mix(.7, 1, back(k))})`); }
+  // Ray: hammering, then swamped
+  const work = 1 - lin(t, s1 + .2, s1 + .5), ph = (t % .55) / .55;
+  const swing = ph < .7 ? mix(92, 188, eo(ph / .7)) : mix(188, 92, Math.pow((ph - .7) / .3, 2));
+  const pan = lin(t, s1 + .3, s1 + .8);
+  pose('rA', t, { aR: [mix(118, 128, work), mix(mix(172, 188, Math.sin(t * 13) * .5 + .5), swing, work)], aL: [mix(-128, -14, work), mix(-178 + Math.sin(t * 13 + 1) * 8, -40, work)],
+    smile: mix(-9, 9, work), grin: work > .9 && t > .3 ? 1 : 0, brow: 20 * pan, browY: -8 * pan, open: pan * (.5 + .2 * Math.sin(t * 9)), sweat: stress, look: pan * Math.sin(t * 4) * .9,
+    headY: work * (ph > .93 ? 3 : 0), head: pan * Math.sin(t * 4) * 5 });
+}
+function rB(t) {
+  if (!scene('B', t)) return;
+  const miss = wt(2, 8) - .05, job = wt(2, 10) - .05, ringing = t < miss;
+  $('sB').querySelector('.clouds').setAttribute('transform', `translate(${t * 9},0)`);
+  // the phone
+  const wig = ringing ? Math.sin(t * 70) * 2.4 * (((t - 7.3) % .9) < .55 ? 1 : 0) : 0;
+  const pin = lin(t, 7.3, 7.7), drop = lin(t, job, job + .25);
+  $('bPhone').style.transform = `translateY(${(1 - eo(pin)) * 500}px) rotate(${6 + wig + Math.sin(drop * Math.PI) * -3}deg)`;
+  set($('bCall'), ringing ? 1 : 0); set($('bLock'), ringing ? 0 : 1);
+  $('bAva').style.transform = `scale(${1 + Math.max(0, Math.sin(t * 8)) * .06})`;
+  $('bAcc').style.transform = `scale(${1 + Math.max(0, Math.sin(t * 9)) * .08})`;
+  let rings = '';
+  if (ringing && t > 7.6) for (let k = 0; k < 3; k++) { const p = ((t - 7.6 + k * .4) % 1.2) / 1.2; rings += `<div class="abs" style="left:${-320 - p * 240}px;top:${-460 - p * 240}px;width:${640 + p * 480}px;height:${920 + p * 480}px;border-radius:${110 + p * 200}px;border:5px solid rgba(47,210,122,${(1 - p) * .65})"></div>`; }
+  $('bRing').innerHTML = rings;
+  [0, 1, 2].forEach(i => pop($('bm' + i), t, miss + i * .24, .26, .7));
+  slam($('bT2'), t, miss); slam($('bT3'), t, job);
+  const st = lin(t, job + .12, job + .34); set($('bStamp'), lin(t, job + .12, job + .2), `rotate(-7deg) scale(${mix(2.2, 1, eo(st))})`);
+  // Ray: arms full, watching it ring out
+  const look = lin(t, 7.7, 8.1), sad = lin(t, miss, miss + .3), gone = lin(t, job, job + .3);
+  pose('rB', t, { aL: [-12, 74], aR: [12, -74, 74], look: look, brow: 12 * look + 14 * sad, browY: -6 * look, smile: mix(mix(4, -4, look), -12, sad), open: look * (1 - sad) * .55 + gone * .3,
+    sweat: look, head: look * 7 - gone * 4 + (ringing ? Math.sin(t * 6) * 1.2 * look : 0), headY: gone * 10, eye: 1 - gone * .25 });
+}
+function rC(t) {
+  if (!scene('C', t)) return;
+  const land = wt(3, 5), H = +$('cList').dataset.h, k = eio(lin(t, 12.3, land + .15)), y = -(H - 792) * k;
+  const v = Math.abs(eio(lin(t + .03, 12.3, land + .15)) - k) * 60;
+  $('cList').style.transform = `translateY(${y}px)`; $('cList').style.filter = v > .3 ? `blur(${Math.min(5, v)}px)` : 'none';
+  $('cBr').style.transform = `rotate(-1.2deg)`;
+  const hi = lin(t, land + .12, land + .4); set($('cHi'), hi, `scale(${mix(1.08, 1, eo(hi))})`);
+  set($('cWeb'), lin(t, land + .1, land + .5) * .9);
+  slam($('cT1'), t, land + .05); rise($('cT2'), t, wt(3, 7), 20);
+  const sad = lin(t, land, land + .4);
+  pose('rC', t, { look: -1, lookY: mix(-.6, .4, k), brow: 8 + 14 * sad, smile: mix(0, -12, sad), head: -6 - 3 * sad, headY: sad * 12, aL: [-6, -2], aR: [8, 4], eye: 1 - sad * .2 });
+}
+function rD(t) {
+  if (!scene('D', t)) return;
+  const a = SC.D[0];
+  document.querySelectorAll('.dring').forEach((r, i) => r.setAttribute('transform', `rotate(${t * (40 + i * 26) * (i % 2 ? -1 : 1)}) scale(1,${.94 + .04 * Math.sin(t * 2 + i)})`));
+  for (let i = 0; i < 12; i++) { const p = ((t - a) * .62 + i / 12) % 1, q = eio(p), u = 1 - q;
+    const x = u * u * 860 + 2 * u * q * 1080 + q * q * 1440, y = u * u * 800 + 2 * u * q * 180 + q * q * 580;
+    const el = $('db' + i); el.setAttribute('transform', `translate(${x},${y}) rotate(${p * 520 + i * 40}) scale(${mix(1.1, .08, Math.pow(q, 1.6))})`); el.style.opacity = Math.min(1, p * 8) * (1 - lin(p, .9, 1)); }
+  const n = Math.round(mix(0, 1200, eo(lin(t, a + .1, wt(4, 3) + .1))) / 10) * 10;
+  $('dN').textContent = '$' + n.toLocaleString('en-US');
+  slam($('dT1'), t, a + .1); const nc = wt(4, 7) - .05; slam($('dT2'), t, nc);
+  pop($('dCard'), t, wt(4, 5), .3); $('dLeads').textContent = ['? ? ?', '?? ?', '? ??', '???'][Math.floor(t * 9) % 4];
+  for (let i = 0; i < 6; i++) { const p = ((t - nc) * .8 + i / 6) % 1, el = $('dq' + i); set(el, t > nc ? Math.sin(p * Math.PI) * .9 : 0, `translate(${Math.sin(p * 5 + i) * 30}px, ${-p * 260}px) rotate(${Math.sin(i * 3 + p * 4) * 20}deg)`); }
+  const sh = lin(t, nc, nc + .3);
+  pose('rD', t, { aR: [62, 96 + Math.sin(t * 14) * 3], aL: [mix(-10, -42, sh), mix(-4, -128, sh)], look: 1, brow: 14 + 6 * sh, browY: -4, smile: -8 - 4 * sh, head: 5 - sh * 9, open: sh * .35, sweat: .8 });
+}
+function rE(t) {
+  if (!scene('E', t, .09)) return;
+  const a = SC.E[0], yawn = Math.sin(lin(t, 20.5, 22.1) * Math.PI), nod = Math.pow(Math.sin(lin(t, 19.0, 20.4) * Math.PI), 2);
+  rise($('eT1'), t, a + .1, 30); slam($('eT2'), t, wt(5, 6) - .05);
+  $('eT1').style.opacity = (Math.floor(t * 2) % 2 ? .82 : 1) * lin(t, a + .1, a + .4);
+  $('eGlow').setAttribute('opacity', .8 + .2 * Math.sin(t * 17) * Math.sin(t * 5.3));
+  pose('rE', t, { eye: mix(.42, .12, Math.max(nod, yawn)), bags: 1, brow: 8 + yawn * 10, browY: 4 - yawn * 10, smile: -5, open: yawn * 1.25, head: nod * 9 - yawn * 7, headY: nod * 16 - yawn * 6,
+    aL: [-14 - yawn * 30, mix(64, -150, yawn)], aR: [14, -66 + Math.sin(t * 22) * 3 * (1 - yawn)], lookY: 1 - yawn });
+}
+function rF(t) {
+  if (!scene('F', t, 0)) return;
+  const out = lin(t, HIT - .12, HIT), h = t >= HIT;
+  set($('fBlack'), h ? 0 : 1);
+  SEG[6].words.forEach((w, i) => { const k = lin(t, S(6) + w[1] - .05, S(6) + w[1] + .14); const el = $('fw' + i); el.style.opacity = eo(k) * (1 - out); el.style.display = 'inline-block'; el.style.whiteSpace = 'pre';
+    el.style.transform = `translateY(${(1 - eo(k)) * 24}px) scale(${i >= 11 ? 1 + out * .5 : 1})`; });
+  $('fL1').style.visibility = $('fL2').style.visibility = h ? 'hidden' : 'visible';
+  // logo
+  const shrink = eio(lin(t, SC.F[1] - .55, SC.F[1]));
+  set($('fMark'), h ? 1 - lin(t, SC.F[1] - .2, SC.F[1]) : 0, `translateY(${-shrink * 60}px) scale(${1 - shrink * .25})`);
+  const dash = (el, a, b) => { el.style.strokeDashoffset = 1 - eio(lin(t, a, b)); };
+  dash($('bmR'), HIT, HIT + .42); dash($('bmB'), HIT + .12, HIT + .4); dash($('bmD'), HIT + .22, HIT + .55);
+  const c = lin(t, HIT + .46, HIT + .74); $('bmC').setAttribute('r', 3.25 * back(c)); $('bmC').style.opacity = c > 0 ? 1 : 0;
+  const gk = lin(t, HIT + .5, HIT + 1.2); $('bmG').setAttribute('r', 3 + eo(gk) * 12); $('bmG').style.opacity = (1 - gk) * .5 * (gk > 0);
+  for (let i = 0; i < 20; i++) { const k = lin(t, HIT + .2 + i * .022, HIT + .5 + i * .022), el = $('fc' + i); el.style.opacity = eo(k) * (1 - lin(t, SC.F[1] - .25, SC.F[1])); el.style.transform = `translateY(${(1 - eo(k)) * 40}px)`; }
+  $('fWord').style.visibility = h ? 'visible' : 'hidden';
+}
+function sol(id, t) {   // shared entrance and exit for the solution scenes
+  const [a, b] = SC[id], el = $('s' + id), on = t >= a && t < b;
+  el.style.display = on ? 'block' : 'none'; if (!on) return false;
+  const out = lin(t, b - .22, b);
+  el.style.opacity = 1 - out; el.style.transform = `translateX(${-eio(out) * 80}px)`;
+  slide(el.querySelector('.tagchip'), t, a + .05, 40); slide(el.querySelector('.hl'), t, a + .08, -70); slide(el.querySelector('.sub'), t, a + .26, -50);
+  return true;
+}
+function rG(t) {
+  if (!sol('G', t)) return;
+  const a = SC.G[0], found = wt(7, 5), click = wt(7, 9) - .1;
+  slide($('gBr'), t, a + .1, 160, .6);
+  pop($('gRank'), t, a + .75, .35, .8);
+  const fl = lin(t, found - .15, found + .35), n = fl < .25 ? 4 : fl < .5 ? 3 : fl < .75 ? 2 : 1, done = fl >= .75;
+  $('gPgN').textContent = n; $('gPg').style.background = done ? '#e3f8ec' : '#fdecee'; $('gPg').style.color = done ? '#12894b' : '#d92d3f';
+  $('gPg').style.transform = `scale(${1 + Math.sin(lin(t, found + .22, found + .5) * Math.PI) * .18})`;
+  const cm = eio(lin(t, click - .9, click - .08)), cx = mix(1700, 1100, cm), cy = mix(900, 460, cm);
+  set($('gCur'), lin(t, click - .9, click - .7) * (1 - lin(t, click + .5, click + .7)), `translate(${cx}px,${cy}px) scale(${1 - Math.sin(lin(t, click - .06, click + .12) * Math.PI) * .2})`);
+  const rp = lin(t, click, click + .45); set($('gRip'), rp > 0 && rp < 1 ? 1 - rp : 0, `translate(-50%,-50%) scale(${1 + eo(rp) * 9})`);
+  $('gBtn').style.transform = `scale(${1 - Math.sin(lin(t, click - .02, click + .2) * Math.PI) * .06})`;
+  const ring = click + .22; pop($('gToast'), t, ring, .3, .6);
+  $('gToast').style.transform += ` rotate(${t > ring ? Math.sin((t - ring) * 60) * 1.6 * (((t - ring) % .5) < .3 ? 1 : 0) : 0}deg)`;
+  $('gToastI').style.boxShadow = `0 0 0 ${((t - ring) % .6) / .6 * 26}px rgba(47,210,122,${t > ring ? (1 - ((t - ring) % .6) / .6) * .5 : 0})`;
+}
+function rH(t) {
+  if (!sol('H', t)) return;
+  const a = SC.H[0];
+  slide($('hPhone'), t, a + .1, 160, .6);
+  const el = Math.max(0, t - a - .3); $('hTime').textContent = '0:0' + Math.min(9, Math.floor(el * 2.2));
+  const talk = t > a + .5;
+  [...$('hWave').children].forEach((b, i) => { const amp = talk ? (.25 + .75 * Math.abs(Math.sin(t * 9 + i * .7) * Math.sin(t * 3.1 + i * .23))) : .08; b.style.height = 6 + amp * 54 + 'px'; b.style.opacity = .5 + amp * .5; });
+  $('hOrb').style.transform = `scale(${1 + Math.sin(t * 7) * .04})`;
+  pop($('h1'), t, wt(8, 2)); pop($('h2'), t, wt(8, 5)); pop($('h3'), t, wt(8, 8) + .15);
+  const bk = wt(8, 10) - .1; pop($('hCal'), t, bk, .4, .7);
+  pop($('hStat'), t, wt(8, 7) - .1, .35);
+  const c0 = wt(8, 7) + .15; let n = 0;
+  [0, 1, 2].forEach(i => { const k = lin(t, c0 + i * .3, c0 + i * .3 + .2); if (k > .3) n = i + 1; set($('hd' + i), k, `scale(${mix(.3, 1, back(k))})`); });
+  $('hN').textContent = n;
+}
+function rI(t) {
+  if (!sol('I', t)) return;
+  const a = SC.I[0], t0 = a + .55, rep = wt(9, 6) + .15;
+  slide($('iPhone'), t, a + .1, 160, .6);
+  pop($('i1'), t, t0);
+  const ty = lin(t, t0 + .3, t0 + .42) * (1 - lin(t, rep - .08, rep)); set($('iTyp'), ty);
+  [...$('iTyp').children].forEach((d, k) => { d.style.opacity = .35 + .65 * (.5 + .5 * Math.sin(t * 14 - k * 1.1)); });
+  pop($('i2'), t, rep); pop($('i3'), t, wt(9, 8)); pop($('i4'), t, wt(9, 10) + .1);
+  $('iClock').textContent = t > wt(9, 8) ? '9:48' : '9:47';
+  const bIn = lin(t, t0 + .2, t0 + .5); set($('iBadge'), eo(bIn), `scale(${mix(.6, 1, back(bIn)) + Math.sin(lin(t, rep, rep + .3) * Math.PI) * .12}) rotate(${-5 + bIn * 5}deg)`);
+  $('iBadgeN').textContent = Math.round(mix(0, 4, lin(t, t0 + .1, rep))) + ' sec';
+  pop($('iCal'), t, wt(9, 10) + .5, .4, .7);
+  rise($('iMoon'), t, a + .5, 60, .8); rise($('iNight'), t, wt(9, 11), 20);
+}
+function rJ(t) {
+  if (!sol('J', t)) return;
+  const a = SC.J[0], c = a + .55;
+  slide($('jDash'), t, a + .1, 160, .6);
+  const cnt = (id, v, d, f = x => x) => { const k = eo(lin(t, c + d, c + d + .9)); $(id).textContent = f(Math.round(v * k)); pop($(id + 'w'), t, c + d - .25, .3, .85); };
+  cnt('jk0', 47, 0); cnt('jk1', 26, .15, x => '$' + x); cnt('jk2', 19, .3);
+  [0, 1, 2, 3].forEach(i => { const row = $('jb' + i), bar = row.querySelector('i'), v = +bar.dataset.v, k = eo(lin(t, c + .5 + i * .12, c + 1.2 + i * .12));
+    bar.style.width = v * 16 + 'px'; bar.style.transform = `scaleX(${k})`; const lab = row.querySelector('b'); lab.textContent = Math.round(v * k); lab.style.left = 162 + v * 16 * k + 'px'; row.style.opacity = lin(t, c + .3 + i * .1, c + .5 + i * .1); });
+  const lk = eio(lin(t, c + .6, c + 1.9)); $('jLine').style.strokeDashoffset = 1 - lk; $('jArea').style.opacity = lin(t, c + 1.5, c + 2.1);
+  set($('jDot'), lk >= 1 ? 1 : 0); $('jDot').setAttribute('r', 9 + Math.sin(t * 7) * 2.5);
+  $('jLive').style.opacity = .5 + .5 * Math.sin(t * 6);
+  const w = wt(10, 6); pop($('jCall'), t, w - .1, .35, .85); $('jCall').style.boxShadow = `0 0 ${30 + Math.sin(t * 6) * 16}px rgba(76,125,255,${t > w ? .7 : 0})`;
+}
+function rPip(t) {
+  const on = t >= SC.G[0] + .2 && t < SC.J[1];
+  $('sol').style.display = t >= SC.G[0] - .5 && t < SC.J[1] ? 'block' : 'none'; if (t < SC.G[0] - .5 || t >= SC.J[1]) return;
+  const bi = lin(t, SC.G[0] - .15, SC.G[0] + .3), outAll = lin(t, SC.J[1] - .22, SC.J[1]);
+  set($('bug'), eo(bi) * (1 - outAll), `translateY(${(1 - eo(bi)) * -20}px)`);
+  const pk = lin(t, SC.G[0] + .35, SC.G[0] + .75);
+  set($('pip'), eo(pk) * (1 - outAll), `scale(${mix(.5, 1, back(pk))})`); set($('pipLab'), lin(t, SC.G[0] + .7, SC.G[0] + 1) * (1 - outAll));
+  const m = t < SC.I[0] ? 0 : t < SC.J[0] ? 1 : 2;   // 0 on the roof, 1 asleep, 2 thumbs up
+  const sw = [SC.I[0], SC.J[0]].reduce((s, c) => s + Math.sin(lin(t, c - .15, c + .15) * Math.PI), 0);
+  $('pip').style.transform += ` scale(${1 - sw * .12})`;
+  const show = (id, v) => { $(id).style.display = v ? 'block' : 'none'; };
+  show('pBgD', m === 0); show('pSun', m === 0); show('pRoof', m === 0); show('pBgN', m === 1); show('pStars', m === 1); show('pPillow', m === 1); show('pBlank', m === 1); show('pZ', m === 1); show('pBgB', m === 2);
+  show('pRayG', m === 0); show('pRayH', m > 0);
+  $('pipLab').innerHTML = ['<b>Ray</b>On a roof. Hands full.', '<b>Ray</b>Still on the roof.', '<b>Ray</b>Asleep.', '<b>Ray</b>Finally knows.'][t < SC.H[0] ? 0 : m + 1];
+  if (m === 0) { const ph = (t % .6) / .6, swing = ph < .7 ? mix(92, 188, eo(ph / .7)) : mix(188, 92, Math.pow((ph - .7) / .3, 2));
+    pose('rP', t, { aR: [118, swing], aL: [-14, -40], smile: 9, grin: 1, headY: ph > .93 ? 3 : 0 }); }
+  else if (m === 1) { $('pRayH').setAttribute('transform', 'translate(128,186) scale(.62) rotate(-8)');
+    pose('rP2', 1, { eye: 0, smile: 5, aL: [-4, 0], aR: [4, 0], headY: Math.sin(t * 2) * 2 });
+    $('pZ').setAttribute('transform', `translate(${Math.sin(t * 1.5) * 4},${-((t * 14) % 16)})`); $('pZ').style.opacity = 1 - ((t * 14) % 16) / 22; }
+  else { $('pRayH').setAttribute('transform', 'translate(118,186) scale(.62)');
+    const up = back(lin(t, SC.J[0] + .5, SC.J[0] + .9));
+    pose('rP2', t, { grin: 1, smile: 10, brow: -3, browY: -6, aL: [-7, -3], aR: [mix(10, 118, up), mix(4, 178, up), 0], head: Math.sin(t * 3) * 2 }); }
+}
+function rK(t) {
+  if (!scene('K', t, .09)) return;
+  const a = SC.K[0];
+  rise($('kT1'), t, a + .15, 30); slam($('kT2'), t, wt(11, 11) - .05);
+  pop($('kChip'), t, wt(11, 11) + .5, .35, .7);
+  ['kS1', 'kS2'].forEach((id, i) => { $(id).setAttribute('transform', `translate(${Math.sin(t * 2 + i) * 4},${-((t * 16 + i * 9) % 18)})`); $(id).style.opacity = .5 * (1 - ((t * 16 + i * 9) % 18) / 18); });
+  const laugh = Math.max(0, Math.sin((t - a) * 2.2));
+  pose('rK', t, { grin: 1, smile: 10, brow: -2, browY: -5, look: .8, head: 5 + laugh * 3, aL: [-12, 60], aR: [34, mix(158, 146, laugh)], headY: -laugh * 3 });
+  pose('kid', t, { grin: 1, smile: 10, look: -.9, browY: -6, head: -6 - laugh * 4, aL: [-34, mix(-158, -144, laugh)], aR: [10, -50], headY: -laugh * 5 });
+}
+function rL(t) {
+  if (!scene('L', t, 0)) return;
+  const a = SC.L[0], s = S(12);
+  const k = lin(t, a + .05, a + .5); set($('eLock'), eo(k), `translateY(${(1 - eo(k)) * 40}px) scale(${mix(.88, 1, eo(k))})`);
+  [0, 1, 2].forEach(i => { const w = [3, 4, 6][i]; $('et' + i).style.opacity = mix(.3, 1, lin(t, wt(12, w) - .05, wt(12, w) + .15)); });
+  rise($('eTag'), t, wt(12, 3) - .3, 20);
+  const ca = wt(12, 10) - .15, c = lin(t, ca, ca + .38), pulse = t > ca + .6 ? Math.sin((t - ca) * 3.2) * .5 + .5 : 0;
+  set($('eCta'), eo(c), `translateX(-50%) scale(${mix(.7, 1, back(c)) + pulse * .025})`);
+  $('eCta').style.boxShadow = `0 30px ${80 + pulse * 50}px rgba(76,125,255,${.45 + pulse * .3}), inset 0 1.5px 0 rgba(255,255,255,.3)`;
+  rise($('eUrl'), t, ca + .5, 24); rise($('eWhere'), t, ca + .8, 16); rise($('eRay'), t, s + SEG[12].dur + .5, 16);
+  const r = lin(t, a + .5, a + 1), wave = Math.sin(t * 9) * 16;
+  $('rL').parentNode.setAttribute('transform', `translate(1660,${850 + (1 - eo(r)) * 420}) scale(1.1)`);
+  pose('rL', t, { grin: 1, smile: 10, browY: -6, look: -.6, head: -4 + Math.sin(t * 2) * 2, aR: [128, 176 + wave, 0], aL: [-8, -3] });
+}
+function renderFlash(t) {
+  let o = 0; Object.values(SC).forEach(([a], i) => { if (i > 0 && i !== 5 && i < 7) o = Math.max(o, (1 - lin(t, a, a + .13)) * .22 * (t >= a)); });
+  o = Math.max(o, (1 - lin(t, HIT, HIT + .4)) * .85 * (t >= HIT), (1 - lin(t, SC.K[0], SC.K[0] + .3)) * .3 * (t >= SC.K[0]), (1 - lin(t, SC.L[0], SC.L[0] + .3)) * .3 * (t >= SC.L[0]));
+  $('flash').style.opacity = o; $('flash').style.background = t >= HIT && t < HIT + .5 ? '#cfe0ff' : '#fff';
+}
+function render(t) {
+  renderStage(t); rA(t); rB(t); rC(t); rD(t); rE(t); rF(t); rG(t); rH(t); rI(t); rJ(t); rPip(t); rK(t); rL(t); renderFlash(t); renderCaptions(t);
+}
+
+window.ready = (async () => {
+  [TL, SEG] = await Promise.all([fetch('timeline.json').then(r => r.json()), fetch('segments.json').then(r => r.json())]);
+  DUR = TL.duration;
+  for (const f of ['800 90px Manrope', '500 30px Manrope', '40px Michroma', '400 22px "DM Mono"', '500 22px "DM Mono"']) await document.fonts.load(f);
+  await document.fonts.ready;
+  build(); buildCaptions();
+  window.render = render;
+  const q = new URLSearchParams(location.search);
+  if (q.has('play')) { const t0 = performance.now() - parseFloat(q.get('t') || '0') * 1000; const f = () => { render(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(f); }; f(); }
+  else render(parseFloat(q.get('t') || '0'));
+  return true;
+})();
+</script>
+</body>
+</html>
