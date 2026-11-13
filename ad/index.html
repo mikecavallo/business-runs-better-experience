@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The 9:47 PM Test</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A new customer texts at 9:47 PM. What happens at your business? Take the 60-second test and see where your week leaks.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The 9:47 PM Test | Business Runs Better">
+<meta property="og:description" content="A new customer texts at 9:47 PM. What happens at your business?">
+<meta property="og:image" content="https://businessrunsbetter.com/assets/img/social.jpg">
+<meta property="og:url" content="https://businessrunsbetter.com/ad/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b0e11">
+<link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml">
+<!--FONTS-->
+<style>
+/*LOCAL-FONTS*/
+@font-face { font-family: Michroma; src: url(/assets/fonts/michroma-400-latin.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: Manrope; src: url(/assets/fonts/manrope-var-latin.woff2) format('woff2'); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: 'DM Mono'; src: url(/assets/fonts/dmmono-400-latin.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'DM Mono'; src: url(/assets/fonts/dmmono-500-latin.woff2) format('woff2'); font-weight: 500; font-display: swap; }
+/*END-LOCAL-FONTS*/
+
+/* Layout: one story-sized card, three steps, progress bars on top like a story. Dark only, like the site. */
+:root {
+  --bg: #0b0e11; --panel: #14171b; --lift: #1c2027; --bubble: #2a3039; --line: rgba(220, 227, 239, .1);
+  --ink: #f3f6fb; --muted: #a8b2c4; --dim: #8b95a8;
+  --brand: #1d5cff; --brand-lift: #4c7dff; --brand-rgb: 76, 125, 255; --on-brand: #ffffff;
+  --red: #ff6b78; --red-rgb: 255, 107, 120; --amber: #f2b45a; --amber-rgb: 242, 180, 90;
+  --display: Michroma, 'Eurostile', 'Arial Black', sans-serif;
+  --body: Manrope, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+[tabindex="-1"]:focus { outline: none; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased; }
+#grid { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--brand-lift); outline-offset: 3px; }
+a { color: inherit; }
+
+.frame { position: relative; z-index: 1; max-width: 440px; margin: 0 auto; padding-block: 14px 28px; display: flex; flex-direction: column; gap: 18px; min-height: 100%; }
+@media (min-width: 560px) {
+  .frame { margin-block: 32px; min-height: 0; padding: 18px 24px 28px; border-radius: 28px; background: rgba(20, 23, 27, .88);
+    box-shadow: 0 0 0 1px var(--line), 0 40px 100px rgba(0, 0, 0, .55); }
+}
+
+/* top: story progress and brand */
+.bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.bars button { height: 18px; border: 0; padding: 7px 0; background: none; }
+.bars button span { display: block; height: 4px; border-radius: 2px; background: rgba(220, 227, 239, .16); overflow: hidden; }
+.bars button span i { display: block; height: 100%; background: var(--brand-lift); transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s ease; }
+.bars button.done span i, .bars button.on span i { transform: scaleX(1); }
+.bars button:disabled { cursor: default; }
+.brandrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: -6px; }
+.brandrow .lock { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 10.5px; letter-spacing: .08em; text-decoration: none; }
+.brandrow .lock svg { width: 26px; height: 26px; flex: none; }
+.brandrow .where { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+
+.step { display: flex; flex-direction: column; gap: 16px; animation: rise .45s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--brand-lift); margin: 0; }
+h1, h2 { margin: 0; font-weight: 800; letter-spacing: -.025em; line-height: 1.08; text-wrap: balance; }
+h1 { font-size: clamp(28px, 7.4vw, 34px); }
+h2 { font-size: clamp(26px, 6.6vw, 30px); }
+.sub { margin: -6px 0 0; color: var(--muted); font-size: 15.5px; }
+.hl { color: var(--brand-lift); }
+.bad { color: var(--red); }
+
+/* the text thread */
+.chat { position: relative; background: var(--panel); border-radius: 24px; padding: 14px 14px 16px; box-shadow: inset 0 0 0 1px var(--line); }
+.chathead { display: flex; align-items: center; gap: 12px; padding: 2px 2px 12px; border-bottom: 1px solid var(--line); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 800; color: #fff; background: linear-gradient(140deg, #f0a37a, #d0637c); }
+.chathead b { display: block; font-size: 15.5px; line-height: 1.2; }
+.chathead small { display: block; font-size: 12.5px; color: var(--dim); }
+.clock { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.speed { margin-left: auto; padding: 6px 12px; border-radius: 999px; background: var(--brand); color: var(--on-brand); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; white-space: nowrap; box-shadow: 0 8px 24px rgba(var(--brand-rgb), .45); }
+.thread { display: flex; flex-direction: column; gap: 6px; padding-top: 14px; min-height: 120px; }
+.msg { max-width: 84%; padding: 10px 14px; border-radius: 20px; font-size: 15px; line-height: 1.35; font-weight: 600; animation: pop .32s cubic-bezier(.3, 1.4, .5, 1) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.85) translateY(8px); } }
+.msg.in { align-self: flex-start; background: var(--bubble); border-bottom-left-radius: 6px; transform-origin: 0 100%; }
+.msg.out { align-self: flex-end; background: var(--brand); color: var(--on-brand); border-bottom-right-radius: 6px; transform-origin: 100% 100%; }
+.ts { font-family: var(--mono); font-size: 11px; color: var(--dim); margin: 0 6px 6px; animation: pop .3s ease both; }
+.ts.in { align-self: flex-start; } .ts.out { align-self: flex-end; }
+.divider { align-self: center; margin: 8px 0; padding: 4px 12px; border-radius: 999px; background: rgba(255, 255, 255, .06); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); animation: pop .3s ease both; }
+.typing { align-self: flex-end; display: flex; gap: 5px; padding: 13px 16px; border-radius: 20px; border-bottom-right-radius: 6px; background: rgba(var(--brand-rgb), .25); }
+.typing.in { align-self: flex-start; background: var(--bubble); border-bottom-right-radius: 20px; border-bottom-left-radius: 6px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: #dbe5ff; animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 50% { opacity: .3; } }
+.tag { align-self: flex-start; margin-top: 8px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 800; animation: pop .35s cubic-bezier(.3, 1.6, .5, 1) both; }
+.tag.lost { color: var(--red); background: rgba(var(--red-rgb), .13); box-shadow: inset 0 0 0 1.5px rgba(var(--red-rgb), .5); }
+.tag.saved { color: var(--amber); background: rgba(var(--amber-rgb), .12); box-shadow: inset 0 0 0 1.5px rgba(var(--amber-rgb), .5); }
+.tag.won { align-self: center; color: #d6e1ff; background: rgba(var(--brand-rgb), .16); box-shadow: inset 0 0 0 1.5px rgba(var(--brand-rgb), .6); }
+
+.q { margin: 0; font-size: 17px; font-weight: 800; }
+.choices { display: grid; gap: 10px; }
+.choice { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; padding: 15px 16px; border-radius: 16px; border: 0;
+  background: var(--lift); box-shadow: inset 0 0 0 1px var(--line); font-size: 16px; font-weight: 700; transition: background .15s, box-shadow .15s, transform .1s; }
+.choice:hover { background: #222832; box-shadow: inset 0 0 0 1px rgba(var(--brand-rgb), .5); }
+.choice:active { transform: scale(.985); }
+.choice svg { flex: none; color: var(--brand-lift); }
+.verdict { margin: 0; font-size: 20px; font-weight: 800; line-height: 1.25; letter-spacing: -.01em; text-wrap: balance; animation: rise .4s ease both; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 0; text-decoration: none;
+  font-size: 16px; font-weight: 800; letter-spacing: -.005em; transition: filter .15s, transform .1s; }
+.btn:active { transform: scale(.98); }
+.btn.primary { background: var(--brand); color: var(--on-brand); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 10px 30px -8px rgba(var(--brand-rgb), .8); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px rgba(220, 227, 239, .25); }
+.btn.ghost:hover { box-shadow: inset 0 0 0 1.5px rgba(var(--brand-rgb), .7); }
+.btn.wide { width: 100%; }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+
+/* step 2: the week */
+.group { display: flex; flex-direction: column; gap: 8px; }
+.grouplabel { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); margin: 4px 0 0; }
+.task { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border-radius: 16px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow .15s, background .15s; }
+.task.on { background: rgba(var(--brand-rgb), .1); box-shadow: inset 0 0 0 1.5px rgba(var(--brand-rgb), .65); }
+.toggle { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 13px 14px; border: 0; background: none; text-align: left; font-size: 15px; font-weight: 700; line-height: 1.3; }
+.box { width: 22px; height: 22px; flex: none; border-radius: 7px; box-shadow: inset 0 0 0 2px rgba(220, 227, 239, .3); display: grid; place-items: center; transition: background .15s, box-shadow .15s; }
+.box svg { opacity: 0; }
+.task.on .box { background: var(--brand); box-shadow: none; }
+.task.on .box svg { opacity: 1; }
+.stepper { display: flex; align-items: center; gap: 2px; padding-right: 8px; }
+.stepper[hidden] { display: none !important; }
+.stepper button { width: 34px; height: 34px; border-radius: 10px; border: 0; background: rgba(255, 255, 255, .07); font-size: 18px; font-weight: 700; line-height: 1; }
+.stepper button:hover { background: rgba(var(--brand-rgb), .3); }
+.stepper output { min-width: 50px; text-align: center; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.rate { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--line); }
+.rate label { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-weight: 700; }
+.rate label output { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--brand-lift); }
+input[type=range] { width: 100%; accent-color: var(--brand); }
+.tally { position: sticky; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 10px 10px 18px; border-radius: 22px; background: rgba(20, 23, 27, .96); box-shadow: 0 0 0 1px rgba(var(--brand-rgb), .4), 0 18px 40px rgba(0, 0, 0, .55); backdrop-filter: blur(8px); }
+.tally .num { font-family: var(--display); font-size: 20px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.tally small { display: block; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tally .btn { min-height: 46px; padding: 0 18px; font-size: 15px; flex: none; }
+
+/* step 3: the plan */
+.big { display: flex; flex-direction: column; gap: 6px; }
+.big .n { font-family: var(--display); font-size: clamp(40px, 12vw, 54px); line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.big p { margin: 0; font-size: 17px; font-weight: 700; color: var(--muted); }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.fact { padding: 12px; border-radius: 14px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--line); }
+.fact b { display: block; font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.fact span { display: block; font-size: 12px; color: var(--dim); line-height: 1.3; margin-top: 2px; }
+.payback { margin: 0; padding: 14px 16px; border-radius: 16px; background: rgba(var(--brand-rgb), .1); box-shadow: inset 0 0 0 1px rgba(var(--brand-rgb), .35); font-size: 15px; }
+.payback b { color: #d6e1ff; }
+.fixes { display: flex; flex-direction: column; gap: 10px; }
+.fix { padding: 14px 16px; border-radius: 16px; background: var(--lift); box-shadow: inset 0 0 0 1px var(--line); display: flex; flex-direction: column; gap: 4px; }
+.fix .top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.fix .kind { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--brand-lift); }
+.fix .price { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.fix b { font-size: 16.5px; line-height: 1.3; }
+.fix p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.45; }
+.fix.first { box-shadow: inset 0 0 0 1.5px rgba(var(--brand-rgb), .65); }
+.fix .first-tag { align-self: flex-start; margin-bottom: 4px; padding: 3px 10px; border-radius: 999px; background: var(--brand); color: var(--on-brand); font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; }
+.cta { display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+.fine { margin: 0; font-size: 13px; color: var(--dim); text-align: center; }
+.fine a { color: var(--muted); }
+.phone { text-align: center; font-size: 15px; color: var(--muted); margin: 0; }
+.phone a { color: var(--ink); font-weight: 800; text-decoration: none; user-select: all; }
+.linkish { align-self: center; border: 0; background: none; color: var(--dim); font-size: 13.5px; text-decoration: underline; text-underline-offset: 3px; padding: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<canvas id="grid" aria-hidden="true"></canvas>
+
+<main class="frame">
+  <nav class="bars" aria-label="Progress">
+    <button type="button" data-go="1" aria-label="Step 1: the 9:47 PM test"><span><i></i></span></button>
+    <button type="button" data-go="2" aria-label="Step 2: your week" disabled><span><i></i></span></button>
+    <button type="button" data-go="3" aria-label="Step 3: your plan" disabled><span><i></i></span></button>
+  </nav>
+  <div class="brandrow">
+    <a class="lock" href="https://businessrunsbetter.com/?utm_source=social&amp;utm_medium=paid&amp;utm_campaign=947pm-test" target="_blank" rel="noopener">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1.25" y="1.25" width="37.5" height="37.5" rx="4.5" fill="none" stroke="#dce3ef" stroke-opacity=".3" stroke-width="1.5"/><path d="M9 28.5 H31" stroke="#dce3ef" stroke-opacity=".6" stroke-width="3" stroke-linecap="square"/><path d="M9 22 L29 11.5" stroke="#4c7dff" stroke-width="3" stroke-linecap="square"/><circle cx="30.25" cy="10.75" r="3.25" fill="#4c7dff"/></svg>
+      BUSINESS RUNS BETTER
+    </a>
+    <span class="where">Leland, NC</span>
+  </div>
+
+  <!-- STEP 1: the 9:47 PM test -->
+  <section class="step" id="s1" aria-labelledby="s1h">
+    <p class="eyebrow">The 9:47 PM test</p>
+    <h1 id="s1h">A new customer just texted you.</h1>
+    <div class="chat">
+      <div class="chathead">
+        <div class="avatar" aria-hidden="true">S</div>
+        <div><b>Sarah M.</b><small>New lead · text message</small></div>
+        <span class="clock" id="clock">9:47 PM</span>
+      </div>
+      <div class="thread" id="thread" aria-live="polite"></div>
+    </div>
+    <div id="ask">
+      <p class="q" id="askq">It's 9:47 PM. What happens at your business?</p>
+      <div class="choices" role="group" aria-labelledby="askq" style="margin-top:12px">
+        <button type="button" class="choice" data-pick="morning">Nobody sees it until morning <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button type="button" class="choice" data-pick="couch">I answer it myself, from the couch <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        <button type="button" class="choice" data-pick="fast">Something answers in seconds <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <p class="verdict" id="verdict" hidden></p>
+    <div class="actions" id="s1actions" hidden>
+      <button type="button" class="btn primary" id="replay">See the 4-second version</button>
+      <button type="button" class="btn ghost" id="toS2">Next: your week</button>
+    </div>
+  </section>
+
+  <!-- STEP 2: where the week goes -->
+  <section class="step" id="s2" aria-labelledby="s2h" hidden>
+    <p class="eyebrow">Step 2 of 3 · Your week</p>
+    <h2 id="s2h">Tap what eats your week.</h2>
+    <p class="sub">Then set the hours. Your best guess is fine.</p>
+    <div class="group">
+      <p class="grouplabel">Busywork · hours a week</p>
+      <div id="tasks" class="group"></div>
+    </div>
+    <div class="group">
+      <p class="grouplabel">Growth</p>
+      <div id="growth" class="group"></div>
+    </div>
+    <div class="rate">
+      <label for="rate">An hour of your time is worth <output id="rateOut" for="rate">$75</output></label>
+      <input type="range" id="rate" min="25" max="250" step="5" value="75">
+    </div>
+    <div class="tally" role="status">
+      <div><div class="num" id="tHrs">4 hrs/wk</div><small id="tVal">about $1,300 a month</small></div>
+      <button type="button" class="btn primary" id="toS3">See my plan</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: the plan -->
+  <section class="step" id="s3" aria-labelledby="s3h" hidden>
+    <p class="eyebrow">Step 3 of 3 · Your plan</p>
+    <div class="big">
+      <h2 class="n" id="s3h">0 hrs</h2>
+      <p>a week on work a system could do.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><b id="fMonth">0</b><span>hours a month</span></div>
+      <div class="fact"><b id="fDays">0</b><span>full workdays a month</span></div>
+      <div class="fact"><b id="fVal">$0</b><span id="fValL">a month of your time</span></div>
+    </div>
+    <p class="payback" id="payback"></p>
+    <p class="eyebrow" style="margin-top:6px">What I'd build first</p>
+    <div class="fixes" id="fixes"></div>
+    <div class="cta">
+      <a class="btn primary wide" id="book" href="https://cal.com/mike-cavallo/business-is-better" target="_blank" rel="noopener">Book a free 20-minute call</a>
+      <a class="btn ghost wide" id="audit" href="https://businessrunsbetter.com/pricing.html?utm_source=social&amp;utm_medium=paid&amp;utm_campaign=947pm-test#price-run" target="_blank" rel="noopener">Or start with the $500 Time Audit</a>
+      <p class="phone">Rather talk now? Call <a href="tel:+19105240056">910-524-0056</a></p>
+      <p class="fine">No pitch deck. Mike will tell you honestly what he'd do first. Your answers stay on this page; nothing is sent until you book.</p>
+      <button type="button" class="linkish" id="again">Take the test again</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const UTM = 'utm_source=social&utm_medium=paid&utm_campaign=947pm-test';
+  const CAL = 'https://cal.com/mike-cavallo/business-is-better';
+
+  /* ---------- background: the site's perspective grid, slowed down ---------- */
+  const cv = $('grid'), g = cv.getContext('2d');
+  let W = 0, H = 0;
+  function size() { const d = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; g.setTransform(d, 0, 0, d, 0, 0); }
+  function drawGrid(t) {
+    g.clearRect(0, 0, W, H);
+    const rg = g.createRadialGradient(W / 2, H * .62, 0, W / 2, H * .62, Math.max(W, H) * .7);
+    rg.addColorStop(0, 'rgba(76,125,255,.13)'); rg.addColorStop(1, 'rgba(76,125,255,0)');
+    g.fillStyle = rg; g.fillRect(0, 0, W, H);
+    const hy = H * .6; g.save(); g.beginPath(); g.rect(0, hy, W, H - hy); g.clip();
+    g.strokeStyle = 'rgba(76,125,255,.12)'; g.lineWidth = 1;
+    for (let i = -16; i <= 16; i++) { g.beginPath(); g.moveTo(W / 2, hy); g.lineTo(W / 2 + i * W * .16, H); g.stroke(); }
+    const s = t / 6000;
+    for (let j = 0; j < 12; j++) { const z = ((j + s) % 12) / 12, y = hy + Math.pow(z, 2.4) * (H - hy); g.globalAlpha = Math.min(1, z * 3); g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+    g.restore(); g.globalAlpha = 1;
+    const fade = g.createLinearGradient(0, hy - 30, 0, hy + 120); fade.addColorStop(0, 'rgba(11,14,17,0)'); fade.addColorStop(.4, 'rgba(11,14,17,.95)'); fade.addColorStop(1, 'rgba(11,14,17,0)');
+    g.fillStyle = fade; g.fillRect(0, hy - 30, W, 150);
+  }
+  size(); addEventListener('resize', () => { size(); if (reduce) drawGrid(0); });
+  if (reduce) drawGrid(0);
+  else { const loop = t => { if (!document.hidden) drawGrid(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+
+  /* ---------- step navigation ---------- */
+  let step = 1, reached = 1;
+  const bars = [...document.querySelectorAll('.bars button')];
+  function go(n, quiet) {
+    step = n; reached = Math.max(reached, n);
+    [1, 2, 3].forEach(k => { $('s' + k).hidden = k !== n; });
+    bars.forEach((b, i) => { b.classList.toggle('done', i + 1 < n); b.classList.toggle('on', i + 1 === n); b.disabled = i + 1 > reached; if (i + 1 === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    if (n === 3) renderPlan();
+    if (quiet) return;
+    scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    const h = $('s' + n).querySelector('h1, h2'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+  }
+  bars.forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+
+  /* ---------- step 1: the text thread ---------- */
+  const thread = $('thread'), clock = $('clock');
+  let run = 0;
+  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+  function add(cls, text, tag = 'div') { const el = document.createElement(tag); el.className = cls; el.textContent = text; thread.appendChild(el); return el; }
+  function addTag(cls, text, icon) {
+    const el = document.createElement('div'); el.className = 'tag ' + cls;
+    el.innerHTML = icon === 'x' ? '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>'
+      : '<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    el.appendChild(document.createTextNode(text)); thread.appendChild(el); return el;
+  }
+  async function typing(side, ms, id) { const t = document.createElement('div'); t.className = 'typing ' + side; t.innerHTML = '<i></i><i></i><i></i>'; t.setAttribute('aria-label', 'typing'); thread.appendChild(t); await wait(ms); t.remove(); return id === run; }
+  function setClock(text, speed) {
+    const old = document.querySelector('.chathead .speed'); if (old) old.remove();
+    if (speed) { clock.hidden = true; const s = document.createElement('span'); s.className = 'speed'; s.textContent = speed; document.querySelector('.chathead').appendChild(s); }
+    else { clock.hidden = false; clock.textContent = text; }
+  }
+  async function opening() {
+    const id = ++run; thread.innerHTML = ''; setClock('9:47 PM');
+    await wait(500); if (id !== run) return;
+    if (!(await typing('in', 900, id))) return;
+    add('msg in', 'Hi! Do you fix roof leaks? Water is coming in over the kitchen.');
+    add('ts in', '9:47 PM');
+  }
+  const SCRIPTS = {
+    async morning(id) {
+      await wait(700); if (id !== run) return;
+      add('divider', 'Next morning · 7:12 AM'); setClock('7:12 AM');
+      await wait(800); if (!(await typing('out', 700, id))) return;
+      add('msg out', 'Morning Sarah! Yes we do. Want us to come take a look?'); add('ts out', '7:12 AM');
+      await wait(900); if (!(await typing('in', 1100, id))) return;
+      add('msg in', 'Thanks, but I found someone last night. They answered right away.'); add('ts in', '7:15 AM');
+      await wait(700); if (id !== run) return;
+      addTag('lost', 'Job lost to a faster competitor', 'x');
+      return ['You didn\'t lose that job to a better business. You lost it to <span class="bad">the one that answered first.</span>', true];
+    },
+    async couch(id) {
+      await wait(700); if (id !== run) return;
+      add('divider', 'Dinner, 10:12 PM'); setClock('10:12 PM');
+      await wait(800); if (!(await typing('out', 700, id))) return;
+      add('msg out', 'Hi Sarah, yes! We can come by tomorrow. 10:30 work?'); add('ts out', '10:12 PM');
+      await wait(900); if (!(await typing('in', 900, id))) return;
+      add('msg in', 'Yes please, thank you!'); add('ts in', '10:14 PM');
+      await wait(700); if (id !== run) return;
+      addTag('saved', 'Saved. Cost: another evening');
+      return ['You saved this one. But you can\'t be on call every night, and the calls you miss <span class="bad">while you\'re on a job</span> don\'t wait.', true];
+    },
+    async fast(id) {
+      if (!(await typing('out', 1000, id))) return;
+      setClock(null, 'Replied in 4 sec');
+      add('msg out', 'Hi Sarah, sorry about the leak! We can come out tomorrow. Does 10:30 AM work?'); add('ts out', '9:47 PM');
+      await wait(900); if (!(await typing('in', 900, id))) return;
+      add('msg in', 'Yes please, that works.'); add('ts in', '9:48 PM');
+      await wait(600); if (id !== run) return;
+      addTag('won', 'Booked · Tomorrow 10:30 AM');
+      return null;
+    }
+  };
+  async function pick(which) {
+    const id = ++run;
+    $('ask').hidden = true; $('verdict').hidden = true; $('s1actions').hidden = true;
+    // make sure Sarah's first text is on screen before the story continues
+    if (!thread.querySelector('.msg.in')) { thread.innerHTML = ''; add('msg in', 'Hi! Do you fix roof leaks? Water is coming in over the kitchen.'); add('ts in', '9:47 PM'); }
+    const res = await SCRIPTS[which](id);
+    if (id !== run) return;
+    await wait(500);
+    const v = $('verdict');
+    if (res) { v.innerHTML = res[0]; $('replay').hidden = false; $('toS2').className = 'btn ghost'; }
+    else {
+      v.innerHTML = which === 'fast' && !replayed ? 'You\'re ahead of most. <span class="hl">Now let\'s find where else your week leaks.</span>'
+        : 'That\'s the version I build: <span class="hl">answered in 4 seconds, booked while you sleep.</span>';
+      $('replay').hidden = true; $('toS2').className = 'btn primary';
+    }
+    v.hidden = false; $('s1actions').hidden = false;
+  }
+  let replayed = false;
+  document.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => { replayed = false; pick(b.dataset.pick); }));
+  $('replay').addEventListener('click', async () => {
+    replayed = true; ++run; thread.innerHTML = ''; setClock('9:47 PM');
+    $('verdict').hidden = true; $('s1actions').hidden = true;
+    add('msg in', 'Hi! Do you fix roof leaks? Water is coming in over the kitchen.'); add('ts in', '9:47 PM');
+    await wait(400); pick('fast');
+  });
+  $('toS2').addEventListener('click', () => go(2));
+
+  /* ---------- step 2: the week ---------- */
+  const TASKS = [
+    { id: 'leads', label: 'Calling back missed calls and chasing leads', hrs: 4, on: true },
+    { id: 'faq', label: 'Answering the same questions', hrs: 3 },
+    { id: 'quotes', label: 'Writing quotes and estimates', hrs: 3 },
+    { id: 'sched', label: 'Scheduling, reminders and reschedules', hrs: 2 },
+    { id: 'admin', label: 'Data entry, invoices and admin', hrs: 4 },
+    { id: 'reviews', label: 'Asking for reviews and posting on social', hrs: 2 }
+  ];
+  const GROWTH = [
+    { id: 'website', label: 'My website doesn\'t bring in calls' },
+    { id: 'ads', label: 'I can\'t tell if my ads are working' }
+  ];
+  const tick = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function row(item, withHours) {
+    const wrap = document.createElement('div'); wrap.className = 'task';
+    const tg = document.createElement('button'); tg.type = 'button'; tg.className = 'toggle'; tg.id = 't-' + item.id;
+    tg.innerHTML = `<span class="box">${tick}</span><span></span>`; tg.lastChild.textContent = item.label;
+    wrap.appendChild(tg);
+    let st = null;
+    if (withHours) {
+      st = document.createElement('div'); st.className = 'stepper';
+      st.innerHTML = `<button type="button" aria-label="Fewer hours">−</button><output aria-live="polite"></output><button type="button" aria-label="More hours">+</button>`;
+      const [minus, out, plus] = st.children;
+      const show = () => { out.textContent = item.hrs + ' hrs'; };
+      minus.addEventListener('click', () => { item.hrs = Math.max(1, item.hrs - 1); show(); tally(); });
+      plus.addEventListener('click', () => { item.hrs = Math.min(40, item.hrs + 1); show(); tally(); });
+      show(); wrap.appendChild(st);
+    }
+    const sync = () => { wrap.classList.toggle('on', !!item.on); tg.setAttribute('aria-pressed', item.on ? 'true' : 'false'); if (st) st.hidden = !item.on; };
+    tg.addEventListener('click', () => { item.on = !item.on; sync(); tally(); });
+    sync(); return wrap;
+  }
+  TASKS.forEach(t => $('tasks').appendChild(row(t, true)));
+  GROWTH.forEach(t => $('growth').appendChild(row(t, false)));
+  const rate = $('rate');
+  const money = n => '$' + Math.round(n).toLocaleString('en-US');
+  const hours = () => TASKS.filter(t => t.on).reduce((s, t) => s + t.hrs, 0);
+  function tally() {
+    const h = hours(), r = +rate.value;
+    $('rateOut').textContent = money(r);
+    $('tHrs').textContent = h + ' hrs/wk';
+    $('tVal').textContent = h ? 'about ' + money(h * r * 52 / 12) + ' a month' : 'tap what applies';
+    $('toS3').disabled = !h && !GROWTH.some(x => x.on);
+  }
+  rate.addEventListener('input', tally);
+  $('toS3').addEventListener('click', () => go(3));
+  tally();
+
+  /* ---------- step 3: the plan ---------- */
+  const FIX = {
+    leads: { kind: 'AI receptionist + lead follow-up', title: 'Every call and text answered in seconds', body: 'Missed calls get a text back, new leads get qualified, and jobs land on your calendar. Even at 9:47 PM.', price: 'Builds from $2,500' },
+    faq: { kind: 'AI assistant', title: 'The same questions, answered for you', body: 'Hours, prices, service area and "are you open Saturday?" answered instantly. The tricky ones come to you with a summary.', price: 'Builds from $2,500' },
+    quotes: { kind: 'Estimates', title: 'Quotes drafted before you get home', body: 'Estimates built from your price list and job notes, ready for you to check and send.', price: 'Builds from $2,500' },
+    sched: { kind: 'Scheduling', title: 'Booking and reminders that run themselves', body: 'Customers book online, get reminders, and reschedule without a phone call.', price: 'Builds from $2,500' },
+    admin: { kind: 'Workflow automation', title: 'Your apps, finally talking to each other', body: 'Leads, invoices and job details flow between the tools you already use, so nobody types them twice.', price: 'Builds from $2,500' },
+    reviews: { kind: 'Reviews & marketing', title: 'Review requests that send themselves', body: 'A review request goes out after every finished job, and your social posts get drafted for you.', price: 'Builds from $2,500' },
+    website: { kind: 'Website', title: 'A website that rings your phone', body: 'Five pages, custom design, fast on every phone, and set up to show up on Google and in the map results.', price: '$499 · normally $899' },
+    ads: { kind: 'Ads management', title: 'Ads tracked to booked jobs, not clicks', body: 'Google or Facebook ads with call and form tracking, so you see what every lead costs.', price: 'From $299/mo' }
+  };
+  function renderPlan() {
+    const h = hours(), r = +rate.value, month = h * 52 / 12, val = month * r;
+    $('s3h').textContent = h + (h === 1 ? ' hr' : ' hrs');
+    $('fMonth').textContent = Math.round(month);
+    $('fDays').textContent = (month / 8).toFixed(1).replace(/\.0$/, '');
+    $('fVal').textContent = money(val); $('fValL').textContent = 'a month at ' + money(r) + '/hr';
+    const pb = $('payback');
+    if (h) {
+      const weeks = Math.ceil(2500 / (h * r * .5));
+      pb.innerHTML = weeks <= 52
+        ? `If a system took even <b>half</b> of that off your plate, a $2,500 build would pay for itself in about <b>${weeks} week${weeks === 1 ? '' : 's'}</b>.`
+        : 'At these numbers a full build may not pay off fast. The <b>$500 Time Audit</b> finds the one change that would.';
+      pb.hidden = false;
+    } else pb.hidden = true;
+    const picks = TASKS.filter(t => t.on).sort((a, b) => b.hrs - a.hrs).slice(0, 3).map(t => t.id).concat(GROWTH.filter(x => x.on).map(x => x.id));
+    const box = $('fixes'); box.innerHTML = '';
+    picks.forEach((id, i) => {
+      const f = FIX[id], el = document.createElement('article'); el.className = 'fix' + (i === 0 ? ' first' : '');
+      el.innerHTML = (i === 0 ? '<span class="first-tag">Start here</span>' : '') + '<div class="top"><span class="kind"></span><span class="price"></span></div><b></b><p></p>';
+      el.querySelector('.kind').textContent = f.kind; el.querySelector('.price').textContent = f.price;
+      el.querySelector('b').textContent = f.title; el.querySelector('p').textContent = f.body;
+      box.appendChild(el);
+    });
+    // hand the answers to the booking form so the call starts where this left off
+    const parts = TASKS.filter(t => t.on).map(t => `${t.label.toLowerCase()} (${t.hrs}h)`).concat(GROWTH.filter(x => x.on).map(x => x.label.toLowerCase()));
+    const notes = `From the 9:47 PM test: about ${h} hrs/week on busywork. ${parts.join('; ')}.`;
+    $('book').href = `${CAL}?notes=${encodeURIComponent(notes)}&${UTM}`;
+  }
+  $('again').addEventListener('click', () => {
+    reached = 1; ++run; thread.innerHTML = ''; $('ask').hidden = false; $('verdict').hidden = true; $('s1actions').hidden = true;
+    go(1); opening();
+  });
+
+  go(1, true); opening();
+})();
+</script>
+</body>
+</html>
